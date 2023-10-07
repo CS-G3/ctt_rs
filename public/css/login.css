@@ -1,0 +1,89 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    max-width: 250px;
+    width: 100%;
+}
+
+.login-container img {
+    width: 110px;
+    height: 100px;
+    /* border-radius: 50%; */
+    margin-bottom: 20px;
+}
+
+.login-container input[type="text"],
+.login-container input[type="password"],
+.login-container input[type="date"] {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0px 10px 0px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.login-container button {
+    background-color: #73AF42;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 40px;
+    cursor: pointer;
+    margin: 30px 0 30px 0;
+}
+
+.login-container label {
+    text-align: left; /* Left-align the labels */
+    display: block; /* Make labels display as block elements */
+    font-size: 14px;
+    margin-top: 10px;
+    /* margin-left: 10px; */
+    /* background-color:aqua; */
+}
+
+.login-container h4 {
+    font-weight: normal;
+}
+
+.login-container .forgot-password {
+    text-align: right;
+    font-size: small;
+}
+
+.login-container .forgot-password  a{
+    text-decoration: none;
+}
+
+/* session alert */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+    font-size: smaller;
+}
+
+.alert.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
