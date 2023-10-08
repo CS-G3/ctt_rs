@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::post('/add_student', 'StudentController@register')->name('students.add');
     Route::put('/register-student', 'StudentController@updateByIndex')->name('students.updateByIndex');
     Route::post('/register', 'UserController@register')->name('register');
+
+    Route::get('/users', 'UserController@getAllUsers');
+
+    Route::delete('/users/{user}', 'UserController@deleteUser')->name('user.delete');
     
 });
 
@@ -41,7 +46,13 @@ Route::get('/manager/dashboard', function () {
 });
 
 Route::get('/admin/dashboard', function () {
-    return view('admin_dashboard');
+    // $users = User::all();
+    $users = User::where('role', 'manager')->get();
+    return view('admin_dashboard', compact('users'));
+});
+
+Route::get('/admin/setting', function () {
+    return view('setting');
 });
 
 Route::get('/student/dashboard', function () {

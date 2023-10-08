@@ -11,6 +11,17 @@ class UserController extends Controller
 {
     // ...
 
+     // Function to fetch all users
+     public function getAllUsers()
+     {
+         $users = User::all(); // Retrieve all user records from the 'users' table
+ 
+         // You can return the users data to a view or as JSON response
+        //  return view('/admin/dashboard', compact('users')); // If returning to a view
+         // OR
+         return response()->json($users); // If returning JSON response
+     }
+
     public function register(Request $request)
     {
         // Validate user registration data
@@ -29,6 +40,15 @@ class UserController extends Controller
 
         // Redirect or perform any other action after registration
         // return redirect('/login'); // Redirect to the dashboard or another page
+        return back()->with('success', 'User added successfully.');
+    }
+
+    public function deleteUser(User $user)
+    {
+        $user->delete();
+
+        // Redirect or return a response after deletion
+        return back()->with('success', 'User deleted successfully.');
     }
 
     // ...
