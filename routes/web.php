@@ -57,3 +57,7 @@ Route::post('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name
 // Route::get('/std', function () {
 //     return view('std');
 // });
+Route::post('/import', 'App\Http\Controllers\CsvImportController@import')->name('import.csv');
+
+Route::get('/import', 'App\Http\Controllers\CsvImportController@showUploadForm')->name('import.form');
+
