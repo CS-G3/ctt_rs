@@ -17,12 +17,34 @@
 
             <h4>Register to CTT RS</h4>
 
+            @if(Session::has('success'))
+                <div class="alert alert-success">
+                    {{ Session::get('success') }}
+                    @if(session('index_number'))
+                    <div style="margin-top: 20px">
+                    Index Number: {{ session('index_number') }}
+                    </div>
+                    @endif
+                </div>
+            @endif
+
+            @if(Session::has('error'))
+                <div class="alert alert-danger">
+                    {{ Session::get('error') }}
+                    @if(session('index_number'))
+                    <div style="margin-top: 20px">
+                    Index Number: {{ session('index_number') }}
+                    </div>
+                    @endif
+                </div>
+            @endif
+
             <label>Index Number</label>
-            <input type="text" placeholder="Index Number" pattern="[0-9]{12}"
+            <input type="text" placeholder="Index Number" pattern="[0-9]{12}" name="index_number"
              title="Enter a valid index number." required>
 
             <label >Contact Number</label>
-            <input type="text" placeholder="Contact Number" pattern="[0-9]{8,11}" title="Enter a valid number. Ex. 17123456 or 77123456">
+            <input type="text" placeholder="Contact Number" pattern="[0-9]{8,11}" name="contact_number" title="Enter a valid number. Ex. 17123456 or 77123456">
 
             <button type="submit">Register</button>
         </form>

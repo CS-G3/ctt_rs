@@ -58,7 +58,7 @@ class StudentController extends Controller
         // return redirect('/login'); // Redirect to the student list or another page
     }
 
-    public function updateByIndex(Request $request)
+    public function updateByIndex(Request $request)//student apply for ctt
     {
         $indexNumber = $request->input('index_number');
     
@@ -69,41 +69,45 @@ class StudentController extends Controller
         } catch (\Exception $e) {
             // Log the error for debugging
             \Log::error($e);
-            return back()->with('error', 'Invalid index number.');
+            return back()->with('error', 'Invalid index number.')
+                        ->with('index_number', $indexNumber);
             // return redirect()->route('register_user')->with('error', 'Error updating student');
         }
 
-            echo $student;
+            // echo $student;
 
             echo $request->contact_number;
 
             $id = $student->id;
             echo "id",$id;
+            echo "eligibilty status: ",$student->eligibility_status;
+
+            $eligibility_status = $student->eligibility_status;
 
             // Update the student data with validation rules
             // $validatedData = $request->validate($this->validationRules($id));
             // $student = Student::findOrFail($id);
             // $student->update($validatedData);
 
-            $validatedData = $request->validate([
+            if ($eligibility_status) {
+                 $validatedData = $request->validate([
                 'contact_number' => 'required|regex:/^\d{8}$/',//required length of contact number is 8
             ]);
 
             echo "validate", json_encode($validatedData);
 
-            if ($validatedData) {
-                $student->update([
-                    'contact_number'=>$request->contact_number
-                    // 'is_applied'=>true
-                ]);
+            if ($validatedData) $student->update(['contact_number'=>$request->contact_number]);
 
             // Session::flash('success', 'update successful.'); // Set success message
-            return back()->with('success', 'You have applied to GCIT CTT successful.');
+            return back()->with('success', 'You have successful applied.')
+                        ->with('index_number', $indexNumber);
 
-        } else {
-            // Session::flash('error', 'Please try again.'); // Set error message
-            return back()->with('error', 'You are not eligible for GCIT CTT.');
-        }
+            } else {
+                // Session::flash('error', 'Please try again.'); // Set error message
+                return back()->with('error', 'You are not eligible for GCIT CTT.')
+                            ->with('index_number', $indexNumber);
+
+            }
 
             // $validatedData = $request->validate($this->validationRules($student->id)); // assuming you have 'id' as the primary key
             // $student->update($validatedData);
