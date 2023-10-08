@@ -8,11 +8,46 @@ use Illuminate\Support\Facades\Session;
 
 class StudentController extends Controller
 {
+
+    public function loginForm()
+    {
+        return view('std_login');
+    }
+
     // public function index()
     // {
     //     $students = Student::all();
     //     return view('std', compact('students'));
     // }
+
+    public function login(Request $request)
+    {
+        // Validate the login data
+        $request->validate([
+            'index_number' => 'required|string',
+            'date_of_birth' => 'required|date',
+        ]);
+
+        $indexNumber = $request->input('index_number');
+        $dateOfBirth = $request->input('date_of_birth');
+
+        // echo $indexNumber;
+        // echo $dateOfBirth;
+
+        // Check if the student exists in the database
+        $student = Student::where('index_number', $indexNumber)
+            ->where('date_of_birth', $dateOfBirth)
+            ->first();
+
+        if ($student) {
+            // Student is authenticated, you can store the student's ID in the session
+            // return back()->with('success', 'Login successful.');
+            Session::put('student_id', $student->id);
+            return redirect('/student/dashboard');
+        } else {
+            return back()->with('error', 'No user found.');
+        }
+    }
 
     public function create()
     {
@@ -154,5 +189,13 @@ class StudentController extends Controller
             'eligibility_status' => 'nullable|boolean',
             'rank' => 'nullable|integer',
         ];
+    }
+
+    public function logout(Request $request)
+    {
+        Session::flush(); // Flush the session
+        // Auth::logout(); // Log the user out
+
+        return Redirect('student-login');
     }
 }

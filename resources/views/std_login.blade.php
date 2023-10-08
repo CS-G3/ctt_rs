@@ -27,18 +27,28 @@
     <div class="login-container">
         <img src="{{ asset('images/gcit_logo.png') }}" alt="User Image">
 
-        <form method="POST" action="{{ route('students.updateByIndex') }}">
+        <form method="POST" action="{{ route('student.login') }}">
     
             @csrf
-            @method('PUT')
-
             <h4>Login to CTT RS</h4>
 
-            <label>Email</label>
-            <input type="text" placeholder="Email" required>
+            @if(Session::has('success'))
+                <div class="alert alert-success">
+                    {{ Session::get('success') }}
+                </div>
+            @endif
+
+            @if(Session::has('error'))
+                <div class="alert alert-danger">
+                    {{ Session::get('error') }}
+                </div>
+            @endif
+            
+            <label>Index Number</label>
+            <input type="text" placeholder="Index Number" name="index_number" required>
 
             <label >Date of Birth</label>
-            <input type="date" placeholder="Date of Birth" id="dateInput" required>
+            <input type="date" placeholder="Date of Birth" name="date_of_birth" required>
 
             <button type="submit">Login</button>
         </form>

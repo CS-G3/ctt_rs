@@ -16,10 +16,25 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/login', function () {
 //     return view('login');
 // });
+Route::namespace('App\Http\Controllers\Auth')->group(function () {
+    // Authentication routes
+    Route::get('/login', 'LoginController@show')->name('login');
+    Route::post('/login', 'LoginController@login')->name('login');
+    Route::post('/logout', 'LoginController@logout')->name('logout');
 
-Route::get('/login', 'App\Http\Controllers\Auth\LoginController@show')->name('login.show');
+});
 
-Route::post('/login', 'App\Http\Controllers\Auth\LoginController@login')->name('login');
+Route::namespace('App\Http\Controllers')->group(function () {
+    // student
+    Route::get('/student-login', 'StudentController@loginForm')->name('student.loginForm');
+    Route::post('/student-login', 'StudentController@login')->name('student.login');
+    Route::post('/student-logout', 'StudentController@logout')->name('student.logout');
+
+    Route::post('/add_student', 'StudentController@register')->name('students.add');
+    Route::put('/register-student', 'StudentController@updateByIndex')->name('students.updateByIndex');
+    Route::post('/register', 'UserController@register')->name('register');
+    
+});
 
 Route::get('/manager/dashboard', function () {
     return view('manager_dashboard');
@@ -29,29 +44,21 @@ Route::get('/admin/dashboard', function () {
     return view('admin_dashboard');
 });
 
-Route::get('/std_login', function () {
-    return view('std_login');
+Route::get('/student/dashboard', function () {
+    return view('std_dashboard');
 });
 
-Route::get('/std_register', function () {
+Route::get('/ctt-registration', function () {
     return view('std_register');
 });
-
-Route::post('/add_student', 'App\Http\Controllers\StudentController@register')->name('students.add');
-
-Route::put('/', 'App\Http\Controllers\StudentController@updateByIndex')->name('students.updateByIndex');
 
 Route::get('/forgot_password', function () {
     return view('forgot_password');
 });
 
-Route::post('/register', 'App\Http\Controllers\UserController@register')->name('register');
-
 Route::get('/register_user', function () {
     return view('register_user');
 });
-
-Route::post('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
 // Route::get('/students', 'App\Http\Controllers\StudentController@index')->name('students.index');
 // Route::get('/std', function () {
