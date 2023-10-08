@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<div>manager dashboard</div>
+<div>admin dashboard</div>
 
     @if(Session::has('success'))
         <div class="alert alert-success">
@@ -26,10 +26,10 @@
     @endif
 
     <script>
-        // JavaScript code to redirect after logout and disable caching
-        document.getElementById('logout-form').addEventListener('submit', function() {
-            window.location.href = "{{ route('login') }}";
-        });
+        // // JavaScript code to redirect after logout and disable caching
+        // document.getElementById('logout-form').addEventListener('submit', function() {
+        //     window.location.href = "{{ route('login') }}";
+        // });
         
         // // Disable caching for this page
         // window.onload = function() {

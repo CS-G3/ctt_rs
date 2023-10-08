@@ -13,14 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', function () {
-    return view('login');
-});
+// Route::get('/login', function () {
+//     return view('login');
+// });
 
-Route::post('/', 'App\Http\Controllers\Auth\LoginController@login')->name('login');
+Route::get('/login', 'App\Http\Controllers\Auth\LoginController@show')->name('login.show');
+
+Route::post('/login', 'App\Http\Controllers\Auth\LoginController@login')->name('login');
 
 Route::get('/manager/dashboard', function () {
     return view('manager_dashboard');
+});
+
+Route::get('/admin/dashboard', function () {
+    return view('admin_dashboard');
 });
 
 Route::get('/std_login', function () {

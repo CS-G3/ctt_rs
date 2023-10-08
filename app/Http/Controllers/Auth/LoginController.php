@@ -14,7 +14,7 @@ class LoginController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function showLoginForm()
+    public function show()
     {
         return view('login');
     }
@@ -32,7 +32,20 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             // Authentication passed
             Session::flash('success', 'Login successful.'); // Set success message
-            return redirect()->intended('/manager/dashboard'); // Redirect to the intended page or another page
+
+            if (Auth::check()) {
+                $user = Auth::user();
+            
+                if ($user->role === 'admin') {
+                    return redirect('/admin/dashboard');
+                } elseif ($user->role === 'manager') {
+                    return redirect('/manager/dashboard');
+                } else {
+                    return redirect()->route('login');
+                }
+            }
+            
+            // return redirect()->intended('/manager/dashboard'); // Redirect to the intended page or another page
         }
 
         // Authentication failed
@@ -48,9 +61,18 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        Session::flush();//flush the session
-        Auth::logout();
+        Session::flush(); // Flush the session
+        Auth::logout(); // Log the user out
 
-        return redirect('/login');
+        return Redirect('login');
+
+        // // Set cache control headers to prevent caching
+        // $response = response()->view('login'); // Replace 'logout' with the actual view or route for logout
+        // $response->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+        // $response->header('Pragma', 'no-cache');
+        // $response->header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
+    
+        // return $response;
     }
+    
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Student;
+use Illuminate\Support\Facades\Session;
 
 class StudentController extends Controller
 {
@@ -64,7 +65,14 @@ class StudentController extends Controller
         try {
             // Find the student by index number
             $student = Student::where('index_number', $indexNumber)->firstOrFail();
-            
+
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            \Log::error($e);
+            return back()->with('error', 'Invalid index number.');
+            // return redirect()->route('register_user')->with('error', 'Error updating student');
+        }
+
             echo $student;
 
             echo $request->contact_number;
@@ -88,18 +96,20 @@ class StudentController extends Controller
                     'contact_number'=>$request->contact_number
                     // 'is_applied'=>true
                 ]);
-            }
+
+            // Session::flash('success', 'update successful.'); // Set success message
+            return back()->with('success', 'You have applied to GCIT CTT successful.');
+
+        } else {
+            // Session::flash('error', 'Please try again.'); // Set error message
+            return back()->with('error', 'You are not eligible for GCIT CTT.');
+        }
 
             // $validatedData = $request->validate($this->validationRules($student->id)); // assuming you have 'id' as the primary key
             // $student->update($validatedData);
     
             // return redirect()->route('register_user')->with('success', 'Student updated successfully');
-        } catch (\Exception $e) {
-            // Log the error for debugging
-            \Log::error($e);
-    
-            // return redirect()->route('register_user')->with('error', 'Error updating student');
-        }
+
     }
     
     public function destroy($id)
