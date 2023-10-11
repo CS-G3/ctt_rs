@@ -42,17 +42,24 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::post('/otp', 'OtpController@sendOtp')->name('otp');
     Route::post('/validate-otp', 'OtpController@validateOtp')->name('validate.otp');
     Route::post('/update-password', 'UserController@updatePassword')->name('update.password');
-    
+    Route::post('/update', 'UserController@update')->name('update.user');
+    // Route::get('/user/{user}/edit', 'UserController@edit')->name('user.edit');
+    Route::get('/user/{id}/edit', 'UserController@editManager')->name('user.edit');
+
 });
+
+// Route::get('/admin/edit', function () {
+//     return view('admin/edit');
+// });
 
 Route::get('/manager/dashboard', function () {
     return view('manager/manager_dashboard');
 });
 
 Route::get('/admin/dashboard', function () {
-    // $users = User::all();
+    $authUser = User::all();
     $users = User::where('role', 'manager')->get();
-    return view('admin/admin_dashboard', compact('users'));
+    return view('admin/admin_dashboard', compact('users', 'authUser'));
 });
 
 Route::get('/admin/setting', function () {

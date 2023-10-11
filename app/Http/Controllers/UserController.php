@@ -9,7 +9,34 @@ use App\Models\User;
 
 class UserController extends Controller
 {
-    // ...
+    // public function edit()
+    // {
+    //     $user = auth()->user(); // Get the authenticated user
+    //     return view('/sidebar', compact('user'));
+    // }
+
+    public function editManager($id)
+    {
+        $user = User::find($id); // Retrieve the user by ID
+        return view('/admin/edit', compact('user'));
+    }
+
+    public function update(Request $request)
+    {
+        // $user = auth()->user();
+
+        $user = User::where('email', $request->input('email'))->first();
+
+        // Validate and update user data
+        $user->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            // Add more fields as needed
+        ]);
+
+        return back()->with('success', 'User updated successfully');
+    }
+
 
      // Function to fetch all users
      public function getAllUsers()

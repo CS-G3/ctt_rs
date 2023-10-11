@@ -1,3 +1,4 @@
+@if(Auth::check())   
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,8 +8,7 @@
     <!-- <link rel="stylesheet" href="{{ asset('css/login.css') }}"> Link to the external CSS file -->
 </head>
 <body>
-
-@include('sidebar') <!-- Include the sidebar partial -->
+@include('sidebar')
 
 <div>admin dashboard</div>
 
@@ -45,7 +45,8 @@
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->created_at }}</td>
                 <td>
-                <button>Edit</button>
+                <a href="{{ route('user.edit', ['id' => $user->id]) }}" class="btn btn-primary">Edit</a>
+                <!-- <a href="{{ route('user.edit', $user) }}" class="btn btn-primary">Edit</a> -->
                 <form action="{{ route('user.delete', $user) }}" method="POST">
                     @csrf
                     @method('DELETE')
@@ -57,27 +58,9 @@
     </tbody>
     </table>
 
-
-    <!-- @if(Auth::check())
-        <form id="logout-form" action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit">Logout</button>
-        </form>
-    @else
-        <p>You are not logged in.</p>
-    @endif -->
-
-    <script>
-        // // JavaScript code to redirect after logout and disable caching
-        // document.getElementById('logout-form').addEventListener('submit', function() {
-        //     window.location.href = "{{ route('login') }}";
-        // });
-        
-        // // Disable caching for this page
-        // window.onload = function() {
-        //     window.history.pushState({}, document.title, "{{ route('login') }}");
-        // };
-    </script>
+@else
+    <p>You are not logged in.</p>
+@endif
 
 </body>
 </html>
