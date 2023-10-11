@@ -94,3 +94,7 @@ Route::get('/register_user', function () {
 // Route::get('/std', function () {
 //     return view('std');
 // });
+Route::post('/import', 'App\Http\Controllers\CsvImportController@import')->name('import.csv');
+
+Route::get('/import', 'App\Http\Controllers\CsvImportController@showUploadForm')->name('import.form');
+
