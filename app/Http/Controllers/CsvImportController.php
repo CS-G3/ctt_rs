@@ -28,11 +28,24 @@ class CsvImportController extends Controller
         // Check if it's an Excel file and convert to CSV if necessary
         if ($file->getClientOriginalExtension() === 'xlsx' || $file->getClientOriginalExtension() === 'xls') {
             $csvData = Excel::toArray(new CSVImportClass, $file);
-            $csvData = array_shift($csvData);
+            // $array = array_shift($csvData);
+            // $array = array_merge(...$csvData);
+            $csvRows = [];
+
+    foreach ($csvData as $array) {
+        foreach ($array as $row) {
+            $csvRow = implode(',', $row);
+            $csvRows[] = $csvRow;
+        }
+    }
+
+            // $csvData = implode("\n", $csvRows);
+            $csvData=$csvRows;
+            
         } else {
             $csvData = file($file);
         }
-    
+        // error_log(print_r($csvData, true));
         // error_log(print_r($csvData, true));
         // Process and store data in the database
         foreach ($csvData as $key => $row) {
