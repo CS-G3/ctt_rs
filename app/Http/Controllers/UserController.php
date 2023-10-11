@@ -51,5 +51,37 @@ class UserController extends Controller
         return back()->with('success', 'User deleted successfully.');
     }
 
-    // ...
+    public function updatePassword(Request $request)
+    {
+        // Validate the password update data
+        $request->validate([
+            'email' => 'required|string|email',
+            'new_password' => 'required|string|min:8',
+        ]);
+
+        // Check if the provided email exists in your database
+        $user = User::where('email', $request->input('email'))->first();
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'Email not found.');
+        }
+
+        // Update the user's password
+        $user->update([
+            'password' => Hash::make($request->input('new_password')),
+        ]);
+
+        if ($user->save()) {
+            // Password updated successfully
+            return redirect()->route('login')->with('success', 'User password updated successfully.');
+        } else {
+            // Password update failed
+            return back()->with('error', 'Failed to update password. Please try again.');
+        }
+
+        // Redirect or return a response after the password is updated
+        // return redirect()->route('reset-password')->with('success', 'Password reset successfully.');
+        // return back()->with('success', 'User password updated successfully.');
+    }
+
 }

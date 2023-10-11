@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="login-container">
-        <img src="{{ asset('images/gcit_logo.png') }}" alt="User Image">
+        <img src="{{ asset('images/gcit_logo.png') }}" alt="GCIT logo">
 
         <form method="POST" action="{{ route('login') }}">
         @csrf
@@ -20,6 +20,12 @@
                 </div>
             @endif
 
+            @if(Session::has('success'))
+                <div class="alert alert-success">
+                    {{ Session::get('success') }}
+                </div>
+            @endif
+
             <label>Email</label>
             <input type="text" placeholder="Email" name="email" required>
 
@@ -27,7 +33,7 @@
             <input type="password" placeholder="Password" name="password" required>
 
             <div class="forgot-password">
-                <a href="fogot_password.html">Forgot Password?</a>
+                <a href="{{ ('forgot-password') }}">Forgot Password?</a>
             </div>
 
             <button type="submit">Login</button>

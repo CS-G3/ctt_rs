@@ -38,17 +38,21 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/users', 'UserController@getAllUsers');
 
     Route::delete('/users/{user}', 'UserController@deleteUser')->name('user.delete');
+
+    Route::post('/otp', 'OtpController@sendOtp')->name('otp');
+    Route::post('/validate-otp', 'OtpController@validateOtp')->name('validate.otp');
+    Route::post('/update-password', 'UserController@updatePassword')->name('update.password');
     
 });
 
 Route::get('/manager/dashboard', function () {
-    return view('manager_dashboard');
+    return view('manager/manager_dashboard');
 });
 
 Route::get('/admin/dashboard', function () {
     // $users = User::all();
     $users = User::where('role', 'manager')->get();
-    return view('admin_dashboard', compact('users'));
+    return view('admin/admin_dashboard', compact('users'));
 });
 
 Route::get('/admin/setting', function () {
@@ -56,15 +60,23 @@ Route::get('/admin/setting', function () {
 });
 
 Route::get('/student/dashboard', function () {
-    return view('std_dashboard');
+    return view('student/std_dashboard');
 });
 
 Route::get('/ctt-registration', function () {
-    return view('std_register');
+    return view('student/std_register');
 });
 
-Route::get('/forgot_password', function () {
-    return view('forgot_password');
+Route::get('/forgot-password', function () {
+    return view('forgot_password/forgot_password');
+});
+
+Route::get('/validate-otp', function () {
+    return view('forgot_password/validate_otp');
+});
+
+Route::get('/set-password', function () {
+    return view('forgot_password/set_password');
 });
 
 Route::get('/register_user', function () {

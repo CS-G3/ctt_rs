@@ -11,7 +11,7 @@ class StudentController extends Controller
 
     public function loginForm()
     {
-        return view('std_login');
+        return view('student/std_login');
     }
 
     // public function index()
