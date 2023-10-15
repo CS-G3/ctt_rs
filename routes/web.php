@@ -46,6 +46,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
     // Route::get('/user/{user}/edit', 'UserController@edit')->name('user.edit');
     Route::get('/user/{id}/edit', 'UserController@editManager')->name('user.edit');
 
+    // Route::post('/student-details', 'StudentController@getStudentByIndex')->name('get.student.details');
+    Route::get('/student/{student_id}/dashboard', 'StudentController@show')->name('student.show');
+
 });
 
 // Route::get('/admin/edit', function () {
@@ -54,6 +57,18 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
 Route::get('/manager/dashboard', function () {
     return view('manager/manager_dashboard');
+});
+
+Route::get('/manager/rank', function () {
+    return view('manager/rank');
+});
+
+Route::get('/manager/archive', function () {
+    return view('manager/archive');
+});
+
+Route::get('/manager/setting', function () {
+    return view('manager/setting');
 });
 
 Route::get('/admin/dashboard', function () {
@@ -66,9 +81,9 @@ Route::get('/admin/setting', function () {
     return view('setting');
 });
 
-Route::get('/student/dashboard', function () {
-    return view('student/std_dashboard');
-});
+// Route::get('/student/dashboard', function () {
+//     return view('student/std_dashboard');
+// });
 
 Route::get('/ctt-registration', function () {
     return view('student/std_register');

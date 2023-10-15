@@ -10,8 +10,6 @@
     <div class="login-container">
         <img src="{{ asset('images/gcit_logo.png') }}" alt="User Image">
         
-        <form method="POST" action="{{ route('update.password') }}" id="password-reset-form" onsubmit="clearFormFields()">
-            @csrf
             <h4>Set New Password</h4>
 
             <div style="font-size: smaller; color: grey; margin-bottom: 20px;" id="info">
@@ -29,6 +27,9 @@
                     {{ Session::get('success') }}
                 </div>
             @endif
+            
+            <form method="POST" action="{{ route('update.password') }}" id="password-reset-form" onsubmit="clearFormFields()">
+            @csrf
 
             <input type="text" placeholder="email" name='email' value="{{ session('email') }}" hidden>
 

@@ -10,7 +10,7 @@
 
 @include('manager.sidebar')
 
-<div>manager dashboard</div>
+<div>manager archive</div>
 
     @if(Session::has('success'))
         <div class="alert alert-success">

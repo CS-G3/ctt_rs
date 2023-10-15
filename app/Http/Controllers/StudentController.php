@@ -20,6 +20,11 @@ class StudentController extends Controller
     //     return view('std', compact('students'));
     // }
 
+    public function show($id) {
+        $student = Student::findOrFail($id);
+        return view('student/std_dashboard', compact('student'));
+    }
+
     public function login(Request $request)
     {
         // Validate the login data
@@ -36,18 +41,44 @@ class StudentController extends Controller
 
         // Check if the student exists in the database
         $student = Student::where('index_number', $indexNumber)
-            ->where('date_of_birth', $dateOfBirth)
-            ->first();
+        ->where('date_of_birth', $dateOfBirth)
+        ->where('eligibility_status', true) //student should be eligible 
+        ->whereNotNull('contact_number') //not null contact num = applied
+        ->first();
 
         if ($student) {
             // Student is authenticated, you can store the student's ID in the session
             // return back()->with('success', 'Login successful.');
             Session::put('student_id', $student->id);
-            return redirect('/student/dashboard');
+            // return redirect('/student/student_id/dashboard');
+            $redirectURL = route('student.show', ['student_id' => $student->id]);
+            return redirect($redirectURL);
         } else {
             return back()->with('error', 'No user found.');
         }
     }
+
+    // //fetch particular student details
+    // public function getStudentByIndex(Request $request)
+    // {
+    //     // Validate the input
+    //     $request->validate([
+    //         'index_number' => 'required|string',
+    //     ]);
+
+    //     $indexNumber = $request->input('index_number');
+
+    //     // Find the student by index number
+    //     $student = Student::where('index_number', $indexNumber)->first();
+
+    //     if ($student) {
+    //         // Student found, you can return the student details or perform any other action
+    //         return view('student.student_details', compact('student'));
+    //     } else {
+    //         // Student not found
+    //         return back()->with('error', 'Student not found for the given index number.');
+    //     }
+    // }
 
     public function create()
     {
