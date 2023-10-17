@@ -25,13 +25,12 @@ class UserController extends Controller
     {
         // $user = auth()->user();
 
-        $user = User::where('email', $request->input('email'))->first();
+        $user = User::where('id', $request->input('id'))->first();
 
         // Validate and update user data
         $user->update([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            // Add more fields as needed
         ]);
 
         return back()->with('success', 'User updated successfully');
