@@ -4,6 +4,7 @@
 <form method="POST" action="{{ route('update.user') }}">
     @csrf
     <!-- @method('PUT') -->
+    <input type="text" id="id" name="id" value="{{ $user->id }}" required hidden>
 
     <div class="form-group">
         <label for="name">Name</label>
@@ -14,6 +15,8 @@
         <label for="email">Email</label>
         <input type="email" id="email" name="email" value="{{ $user->email }}" required>
     </div>
+    <button type="submit">Update Profile</button>
+</form>
 
 @if(auth()->user()->id === $user->id)   
     <form method="POST" action="{{ route('update.password') }}" id="password-reset-form" onsubmit="clearFormFields()">
@@ -30,8 +33,8 @@
         <button type="submit">Update</button>
     </form>
 
-    <button type="submit">Update Profile</button>
 @else
+
 @endif
 
     <script>
@@ -41,4 +44,3 @@
            }, 3000);
         }
     </script>
-</form>

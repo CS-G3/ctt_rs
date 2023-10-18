@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
@@ -132,53 +133,77 @@ class StudentController extends Controller
             // Find the student by index number
             $student = Student::where('index_number', $indexNumber)->firstOrFail();
 
+            //get colnames without nulll values
+            //then compare the none null col with eligibilty table col
+            //return tru if all greater the min marks
+            //todo
+
+            // Define the list of columns to compare
+            $columnsToCompare = ['eng', 'dzo', 'com', 'acc', 'bmt', 'geo', 'his', 'eco', 'med', 'bent', 'evs', 'rige', 'agfs', 'mat', 'phy', 'che', 'bio'];
+
+            // Retrieve the first row of the "eligibility" table
+            $eligibilityRow = DB::table('eligibility')->first();
+
+            if (!$eligibilityRow) {
+                // Handle the case where there's no data in the "eligibility" table.
+                echo "No eligibility data found in the table.\n";
+            } else {
+                // Retrieve all columns from the "students" table
+                // $studentData = DB::table('students')->select($columnsToCompare)->get();
+               
+                //return $studentData = index_number
+                $studentData = DB::table('students')
+                ->select($columnsToCompare)
+                ->where('index_number', $indexNumber)
+                ->first();
+    
+                // Loop through each row in the "eligibility" table
+                $isEligible = true;
+
+                foreach ($columnsToCompare as $column) {
+                    $studentValue = $studentData->$column;
+                    $eligibilityValue = $eligibilityRow->$column;
+
+                    echo $studentValue,"+";
+
+                    if (!is_null($studentValue) && !is_null($eligibilityValue) && $studentValue < $eligibilityValue) {
+                        // If any column is not greater, the student is not eligible
+                        $isEligible = false;
+                        break;
+                    }
+                }
+
+                if ($isEligible) {
+                    echo "Student is eligible\n";
+                    echo $request->contact_number;
+                    echo $student;
+                    
+                    $validatedData = $request->validate([
+                        'contact_number' => 'required|regex:/^\d{8}$/',//required length of contact number is 8
+                    ]);
+
+                    echo "validate", json_encode($validatedData);
+
+                    if ($validatedData) $student->update(['contact_number'=>$request->contact_number]);
+
+                    $student->update(['eligibility_status'=> true]);
+                // // Session::flash('success', 'update successful.'); // Set success message
+                return back()->with('success', 'You have successful applied.')
+                            ->with('index_number', $indexNumber);
+            
+                } else {
+                    echo "Student is not eligible\n";
+                    $student->update(['eligibility_status'=> false]);
+                    return back()->with('error', 'You are not eligible for GCIT CTT.')
+                            ->with('index_number', $indexNumber);
+                }
+            }
+
         } catch (\Exception $e) {
             // Log the error for debugging
             \Log::error($e);
-            return back()->with('error', 'Invalid index number.')
-                        ->with('index_number', $indexNumber);
-            // return redirect()->route('register_user')->with('error', 'Error updating student');
+            return back()->with('error', 'Internal error.');
         }
-
-            // echo $student;
-
-            echo $request->contact_number;
-
-            $id = $student->id;
-            echo "id",$id;
-            echo "eligibilty status: ",$student->eligibility_status;
-
-            $eligibility_status = $student->eligibility_status;
-
-            // Update the student data with validation rules
-            // $validatedData = $request->validate($this->validationRules($id));
-            // $student = Student::findOrFail($id);
-            // $student->update($validatedData);
-
-            if ($eligibility_status) {
-                 $validatedData = $request->validate([
-                'contact_number' => 'required|regex:/^\d{8}$/',//required length of contact number is 8
-            ]);
-
-            echo "validate", json_encode($validatedData);
-
-            if ($validatedData) $student->update(['contact_number'=>$request->contact_number]);
-
-            // Session::flash('success', 'update successful.'); // Set success message
-            return back()->with('success', 'You have successful applied.')
-                        ->with('index_number', $indexNumber);
-
-            } else {
-                // Session::flash('error', 'Please try again.'); // Set error message
-                return back()->with('error', 'You are not eligible for GCIT CTT.')
-                            ->with('index_number', $indexNumber);
-
-            }
-
-            // $validatedData = $request->validate($this->validationRules($student->id)); // assuming you have 'id' as the primary key
-            // $student->update($validatedData);
-    
-            // return redirect()->route('register_user')->with('success', 'Student updated successfully');
 
     }
     

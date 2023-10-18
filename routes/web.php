@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
+use App\Models\Eligibility;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
     // Route::post('/student-details', 'StudentController@getStudentByIndex')->name('get.student.details');
     Route::get('/student/{student_id}/dashboard', 'StudentController@show')->name('student.show');
 
+    Route::post('/update-eligibility', 'eligibilityController@update')->name('update.eligibility');
+
 });
 
 // Route::get('/admin/edit', function () {
@@ -56,7 +59,12 @@ Route::namespace('App\Http\Controllers')->group(function () {
 // });
 
 Route::get('/manager/dashboard', function () {
-    return view('manager/manager_dashboard');
+    $eligibility = Eligibility::first(); // Fetch the first eligibility record
+
+    if (!$eligibility) {
+        // Handle the case where eligibility data is not found
+    }
+    return view('manager/manager_dashboard', compact('eligibility'));
 });
 
 Route::get('/manager/rank', function () {
