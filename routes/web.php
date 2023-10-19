@@ -33,6 +33,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::post('/student-logout', 'StudentController@logout')->name('student.logout');
 
     Route::post('/add_student', 'StudentController@register')->name('students.add');
+    Route::post('/add_archive', 'archiveController@add')->name('archive.add');
     Route::put('/register-student', 'StudentController@updateByIndex')->name('students.updateByIndex');
     Route::post('/register', 'UserController@register')->name('register');
 
@@ -109,10 +110,13 @@ Route::get('/set-password', function () {
     return view('forgot_password/set_password');
 });
 
+Route::get('/archive', function () {
+    return view('archive');
+});
+
 Route::get('/register_user', function () {
     return view('register_user');
 });
-
 // Route::get('/students', 'App\Http\Controllers\StudentController@index')->name('students.index');
 // Route::get('/std', function () {
 //     return view('std');
