@@ -33,6 +33,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::post('/student-logout', 'StudentController@logout')->name('student.logout');
 
     Route::post('/add_student', 'StudentController@register')->name('students.add');
+    Route::post('/add_registrationDate', 'registrationPeriodController@add')->name('registrationDate.add');
     Route::put('/register-student', 'StudentController@updateByIndex')->name('students.updateByIndex');
     Route::post('/register', 'UserController@register')->name('register');
 
@@ -113,6 +114,9 @@ Route::get('/register_user', function () {
     return view('register_user');
 });
 
+Route::get('/registration_date', function () {
+    return view('registration_date');
+});
 // Route::get('/students', 'App\Http\Controllers\StudentController@index')->name('students.index');
 // Route::get('/std', function () {
 //     return view('std');
