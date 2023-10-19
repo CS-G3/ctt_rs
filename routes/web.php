@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Models\Eligibility;
+use App\Models\Placement;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/student/{student_id}/dashboard', 'StudentController@show')->name('student.show');
 
     Route::post('/update-eligibility', 'eligibilityController@update')->name('update.eligibility');
+    Route::post('/add_placement', 'PlacementController@add')->name('placement.add');
+    Route::delete('/placement/{placement}', 'PlacementController@delete')->name('placement.delete');
 
 });
 
@@ -113,6 +116,16 @@ Route::get('/register_user', function () {
     return view('register_user');
 });
 
+Route::get('/placement', function () {
+
+    $placement = Placement::all(); // Fetch the first eligibility record
+
+    if (!$placement) {
+        // Handle the case where eligibility data is not found
+    }
+    return view('placement', compact('placement'));
+    
+});
 // Route::get('/students', 'App\Http\Controllers\StudentController@index')->name('students.index');
 // Route::get('/std', function () {
 //     return view('std');
