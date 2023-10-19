@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Models\Eligibility;
+use App\Models\RegistrationPeriod;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/student/{student_id}/dashboard', 'StudentController@show')->name('student.show');
 
     Route::post('/update-eligibility', 'eligibilityController@update')->name('update.eligibility');
+    Route::delete('/registrationPeriod/{registrationPeriod}', 'registrationPeriodController@delete')->name('registrationPeriod.delete');
 
 });
 
@@ -115,7 +117,13 @@ Route::get('/register_user', function () {
 });
 
 Route::get('/registration_date', function () {
-    return view('registration_date');
+    $registration_period = RegistrationPeriod::all(); 
+
+    if (!$registration_period) {
+        
+    }
+    return view('registration_date', compact('registration_period'));
+   
 });
 // Route::get('/students', 'App\Http\Controllers\StudentController@index')->name('students.index');
 // Route::get('/std', function () {

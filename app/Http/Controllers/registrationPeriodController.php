@@ -17,6 +17,15 @@ class RegistrationPeriodController extends Controller
         ]);
 
         RegistrationPeriod::create($data);
+        return back();
 
+    }
+
+    public function delete(RegistrationPeriod $registrationPeriod )
+    {
+        $registrationPeriod ->delete();
+
+        // Redirect or return a response after deletion
+        return back();
     }
 }
