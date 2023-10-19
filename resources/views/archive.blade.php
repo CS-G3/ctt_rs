@@ -17,3 +17,18 @@
             <button type="submit" class="btn btn-primary">Add Record</button>
         </form>
     </div>
+    @foreach ($archives as $archive)
+                        <tr>
+                            <td>{{ $archive->id }}</td>
+                            <td>{{ $archive->fileURL }}</td>
+                            <td>{{ $archive->archivedDate }}</td>
+                            <td>{{ $archive->archivedBy }}</td>
+                            <td>
+                            <form action="{{ route('archive.delete', $archive) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+                            </td>
+                        </tr>
+                    @endforeach

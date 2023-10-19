@@ -25,5 +25,14 @@ class ArchiveController extends Controller
 
         // Optionally, you can redirect to a view or return a response
         // return redirect('/archives')->with('success', 'Record added successfully');
+        return back();
+    }
+
+    public function delete(Archive $archive )
+    {
+        $archive ->delete();
+
+        // Redirect or return a response after deletion
+        return back();
     }
 }

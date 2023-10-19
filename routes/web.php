@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Models\Eligibility;
-
+use App\Models\Archive;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -52,6 +52,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/student/{student_id}/dashboard', 'StudentController@show')->name('student.show');
 
     Route::post('/update-eligibility', 'eligibilityController@update')->name('update.eligibility');
+    Route::delete('/archive/{archive}', 'ArchiveController@delete')->name('archive.delete');
 
 });
 
@@ -111,7 +112,12 @@ Route::get('/set-password', function () {
 });
 
 Route::get('/archive', function () {
-    return view('archive');
+    $archives = Archive::all(); // Fetch the first eligibility record
+
+    if (!$archives) {
+        // Handle the case where eligibility data is not found
+    }
+    return view('archive', compact('archives'));
 });
 
 Route::get('/register_user', function () {
