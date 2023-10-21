@@ -35,6 +35,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     Route::post('/add_student', 'StudentController@register')->name('students.add');
     Route::put('/register-student', 'StudentController@updateByIndex')->name('students.updateByIndex');
+    Route::put('/update-student/{id}', 'StudentController@update')->name('student.update'); // update std
     Route::post('/register', 'UserController@register')->name('register');
 
     Route::get('/users', 'UserController@getAllUsers');
@@ -47,6 +48,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::post('/update', 'UserController@update')->name('update.user');
     // Route::get('/user/{user}/edit', 'UserController@edit')->name('user.edit');
     Route::get('/user/{id}/edit', 'UserController@editManager')->name('user.edit');
+    Route::get('/user/{id}', 'UserController@edit')->name('manager.edit');
 
     // Route::post('/student-details', 'StudentController@getStudentByIndex')->name('get.student.details');
     Route::get('/student/{student_id}/dashboard', 'StudentController@show')->name('student.show');
@@ -63,11 +65,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
 Route::get('/manager/dashboard', function () {
     $eligibility = Eligibility::first(); // Fetch the first eligibility record
-
-    if (!$eligibility) {
-        // Handle the case where eligibility data is not found
-    }
-    return view('manager/manager_dashboard', compact('eligibility'));
+    $placement = Placement::all();
+    return view('manager/manager_dashboard', compact('eligibility', 'placement'));
 });
 
 Route::get('/manager/rank', function () {

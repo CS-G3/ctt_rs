@@ -74,6 +74,32 @@
 
     <hr>
 
+    <h4>Add Placement</h4>
+        <form method="POST" action="{{ route('placement.add') }}">
+            @csrf
+
+            <div class="form-group">
+                <label for="location">Location:</label>
+                <input type="text" name="location" id="location" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="time">Time:</label>
+                <input type="datetime-local" name="time" id="time" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Placement</button>
+        </form>
+        
+        <br>
+
+    <select>
+            <option value="" disabled selected>Choose your placement.</option>
+            @foreach($placement as $item)
+            <option value="option1">{{ $item->location }}{{ $item->id }}</option>
+            @endforeach
+        </select>
+
         <!-- <ul>
             <li>English {{ $eligibility->eng }}</li>
             <li>Dzongkha: {{ $eligibility->dzo }}</li>

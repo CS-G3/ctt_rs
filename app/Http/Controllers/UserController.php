@@ -21,6 +21,12 @@ class UserController extends Controller
         return view('/admin/edit', compact('user'));
     }
 
+    public function edit($id)//user self
+    {
+        $user = User::find($id); // Retrieve the user by ID
+        return view('/manager/setting', compact('user'));
+    }
+
     public function update(Request $request)
     {
         // $user = auth()->user();

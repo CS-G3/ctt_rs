@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\Placement;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 
@@ -23,7 +24,9 @@ class StudentController extends Controller
 
     public function show($id) {
         $student = Student::findOrFail($id);
-        return view('student/std_dashboard', compact('student'));
+        $placement = Placement::all(); // Fetch the first eligibility record
+
+        return view('student/std_dashboard', compact('student', 'placement'));
     }
 
     public function login(Request $request)
@@ -103,12 +106,23 @@ class StudentController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validatedData = $request->validate($this->validationRules($id));
+        try {
+    
+            $student = Student::where('id', $id)->firstOrFail();
 
-        $student = Student::findOrFail($id);
-        $student->update($validatedData);
+            $validatedData = $request->validate([
+                'contact_number' => 'required|regex:/^\d{8}$/',//required length of contact number is 8
+            ]);
 
-        return redirect()->route('students.index')->with('success', 'Student updated successfully');
+            if ($validatedData) $student->update(['contact_number'=>$request->contact_number]);
+
+                return back()->with('success', 'Updated successful.');
+    
+        } catch (\Exception $e) {
+            // Handle the exception, such as displaying an error message or logging the error.
+            \Log::error($e);
+            return back()->with('error', $e);
+        }
     }
 
     public function register(Request $request)

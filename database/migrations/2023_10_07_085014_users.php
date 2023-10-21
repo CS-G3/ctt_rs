@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name'); // String column
             $table->string('email')->unique(); // Unique email column
             $table->string('password'); // String column for password
+            $table->string('role')->default('manager'); // 'manager' is the default role
             $table->timestamps(); // Created at and updated at timestamps
         });
     }
