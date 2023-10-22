@@ -40,7 +40,7 @@
             @endif
 
             <label>Index Number</label>
-            <input type="text" placeholder="Index Number" pattern="[0-9]{12}" name="index_number"
+            <input type="text" placeholder="Index Number" pattern="[0-9]{11}" name="index_number"
              title="Enter a valid index number." required>
 
             <label >Contact Number</label>
