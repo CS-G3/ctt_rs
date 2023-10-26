@@ -31,7 +31,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($credentials)) {
             // Authentication passed
-            Session::flash('success', 'Login successful.'); // Set success message
+            // Session::flash('success', 'Login successful.'); // Set success message
 
             if (Auth::check()) {
                 $user = Auth::user();

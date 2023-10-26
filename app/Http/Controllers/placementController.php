@@ -30,11 +30,22 @@ class PlacementController extends Controller
         return back();
     }
 
-    public function delete(Placement $placement)
+    // public function delete(Placement $placement)
+    // {
+    //     $placement->delete();
+
+    //     // Redirect or return a response after deletion
+    //     return back();
+    // }
+
+    public function delete(Request $request)
     {
+        $selectedPlacementId = $request->input('selectedPlacement');
+
+        $placement = Placement::find($selectedPlacementId);
         $placement->delete();
 
-        // Redirect or return a response after deletion
         return back();
     }
+
 }

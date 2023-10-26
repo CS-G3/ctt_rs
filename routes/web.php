@@ -36,6 +36,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::post('/add_student', 'StudentController@register')->name('students.add');
     Route::put('/register-student', 'StudentController@updateByIndex')->name('students.updateByIndex');
     Route::put('/update-student/{id}', 'StudentController@update')->name('student.update'); // update std
+    Route::put('/update-student-placement/{id}', 'StudentController@updatePlacement')->name('student.updatePlacement'); // update std
     Route::post('/register', 'UserController@register')->name('register');
 
     Route::get('/users', 'UserController@getAllUsers');
@@ -51,11 +52,13 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/user/{id}', 'UserController@edit')->name('manager.edit');
 
     // Route::post('/student-details', 'StudentController@getStudentByIndex')->name('get.student.details');
-    Route::get('/student/{student_id}/dashboard', 'StudentController@show')->name('student.show');
+    // Route::get('/student/{student_id}/dashboard', 'StudentController@show')->name('student.show');
+    Route::get('/student/dashboard', 'StudentController@show')->name('student.show');
 
     Route::post('/update-eligibility', 'eligibilityController@update')->name('update.eligibility');
     Route::post('/add_placement', 'PlacementController@add')->name('placement.add');
-    Route::delete('/placement/{placement}', 'PlacementController@delete')->name('placement.delete');
+    // Route::delete('/placement/{placement}', 'PlacementController@delete')->name('placement.delete');
+    Route::delete('/placement', 'PlacementController@delete')->name('placement.delete');
 
 });
 
@@ -113,6 +116,10 @@ Route::get('/set-password', function () {
 
 Route::get('/register_user', function () {
     return view('register_user');
+});
+
+Route::get('/admin/add-user', function () {
+    return view('admin/addUser');
 });
 
 Route::get('/placement', function () {

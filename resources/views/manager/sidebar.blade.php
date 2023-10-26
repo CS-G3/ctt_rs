@@ -1,4 +1,4 @@
-<aside class="sidebar">
+<aside class="bg-secondary h-100 p-5">
     <ul>
     <li><a href="{{ ('/manager/dashboard') }}">dashboard</a></li>
     <li><a href="{{ ('/manager/rank') }}">rank</a></li>

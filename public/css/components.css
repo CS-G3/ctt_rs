@@ -1,0 +1,49 @@
+
+input {
+    width: 70%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+button {
+    background-color: #73AF42;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+label {
+    text-align: left; /* Left-align the labels */
+    display: block; /* Make labels display as block elements */
+    font-size: 14px;
+    margin-top: 10px;
+    /* margin-left: 10px; */
+    /* background-color:aqua; */
+}
+
+/* session alert */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+    font-size: smaller;
+}
+
+.alert.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+    font-size: smaller;
+}

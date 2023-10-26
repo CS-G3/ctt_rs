@@ -22,8 +22,16 @@ class StudentController extends Controller
     //     return view('std', compact('students'));
     // }
 
-    public function show($id) {
-        $student = Student::findOrFail($id);
+    // public function show($id) {
+    //     $student = Student::findOrFail($id);
+    //     $placement = Placement::all(); // Fetch the first eligibility record
+
+    //     return view('student/std_dashboard', compact('student', 'placement'));
+    // }
+
+    public function show() {
+        $student_id = Session::get('student_id');
+        $student = Student::findOrFail($student_id);
         $placement = Placement::all(); // Fetch the first eligibility record
 
         return view('student/std_dashboard', compact('student', 'placement'));
@@ -55,7 +63,8 @@ class StudentController extends Controller
             // return back()->with('success', 'Login successful.');
             Session::put('student_id', $student->id);
             // return redirect('/student/student_id/dashboard');
-            $redirectURL = route('student.show', ['student_id' => $student->id]);
+            // $redirectURL = route('student.show', ['student_id' => $student->id]);
+            $redirectURL = route('student.show');
             return redirect($redirectURL);
         } else {
             return back()->with('error', 'No user found.');
@@ -115,6 +124,29 @@ class StudentController extends Controller
             ]);
 
             if ($validatedData) $student->update(['contact_number'=>$request->contact_number]);
+
+                return back()->with('success', 'Updated successful.');
+    
+        } catch (\Exception $e) {
+            // Handle the exception, such as displaying an error message or logging the error.
+            \Log::error($e);
+            return back()->with('error', $e);
+        }
+    }
+
+    public function updatePlacement(Request $request, $id)
+    {
+        try {
+    
+            $student = Student::where('id', $id)->firstOrFail();
+
+            echo $student;
+
+            $validatedData = $request->validate([
+                'placement_id' => 'required',
+            ]);
+
+            if ($validatedData) $student->update(['placement_id'=>$request->placement_id]);
 
                 return back()->with('success', 'Updated successful.');
     

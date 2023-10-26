@@ -2,13 +2,13 @@
 <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Student dashboard
 </title>
 <link rel="stylesheet" href="{{ asset('css/login.css') }}"> 
- <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head> 
 
-<body style="display:flex; flex-direction:column;">  
+<body style="display:flex; flex-direction:column; justify-content:start; height:auto;">  
 
-<div style="background:#fff; padding:10px; width: 100%; position: fixed; top: 0; left: 0; display: flex; justify-content: space-between; align-items: center; z-index: 100;">
-    Welcome, {{ $student->index_number }}.
+<div style="background:#fff; padding:10px 0px 10px 0px; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+    <span style="padding-left: 10px;">Welcome, {{ $student->index_number }}.</span>
     <form id="logout-form" action="{{ route('student.logout') }}" method="POST">
         @csrf
         <button type="submit" style="border: none; background-color: transparent; color: rgba(220, 20, 60, 0.8); cursor: pointer; margin-right: 20px;">
@@ -19,10 +19,11 @@
     </form>
 </div>
 
-<br><br><br>
-
     @if(session('student_id')) 
-        <div class="dashboard-container"> @if(Session::has('success')) 
+    
+        <div class="dashboard-container"> 
+            
+        @if(Session::has('success')) 
             <div class="alert
             alert-success"> {{ Session::get('success') }} 
             @if(session('index_number')) 
@@ -136,13 +137,20 @@
         id="contactNumberInput">
 
         <button type="submit"
-            style="display: none; padding: 10px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 3px; cursor: pointer; margin: 10px;"
+            style="display: none; padding: 10px 20px; background-color: #73AF42; color: #fff; border: none; border-radius: 3px; cursor: pointer; margin: 10px;"
             id="saveButton">Save</button>
         </form>
+
         <label style="font-size: 16px; margin-left: 5px;">Placement:</label>
 
+        <form method="POST" action="{{ route('student.updatePlacement', ['id' => $student->id])}}" style="display: flex;
+        flex-direction: row; align-items: center;">
+        @csrf
+        @method('PUT')
+
         <select name="placement_id" id="placementSelect"
-            style="padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 3px;">
+            style="padding: 10px 0px 10px 0px; border: 1px solid #ccc; border-radius: 3px;"
+            >
             <option value="" @if($student->placement_id === null) selected @endif>Choose your placement</option>
             @foreach($placement as $item)
             <option value="{{ $item->id }}" @if($student->placement_id == $item->id) selected @endif>
@@ -150,9 +158,12 @@
             </option>
             @endforeach
         </select>
+    
+            <button id="saveButton2" type="submit"
+            style="padding: 10px 20px; background-color: #73AF42; color: #fff; border: none; border-radius: 3px; cursor: pointer; margin: 10px; display:none;">
+            Save</button>
+        </form>
 
-        <button id="saveButton2"
-            style="padding: 10px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 3px; cursor: pointer; margin: 10px 0; display:none;">Save</button>
         </div>
 
     </div>

@@ -57,6 +57,9 @@
             <input type="text" placeholder="Email" name='email' required>
             <button type="submit" id="submitBtn">Get OTP</button>
         </form>
+
+        <a href="/login" style="font-size:12px; text-decoration: none">Back</a>
+
     </div>
 
     <!-- Add the modal for "Please Wait" -->
