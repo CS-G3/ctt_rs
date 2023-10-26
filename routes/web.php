@@ -140,3 +140,10 @@ Route::post('/import', 'App\Http\Controllers\CsvImportController@import')->name(
 
 Route::get('/import', 'App\Http\Controllers\CsvImportController@showUploadForm')->name('import.form');
 
+Route::post('/update-ranking-criteria', 'App\Http\Controllers\RankingController@updateOrCreateRankingCriteria')->name('update-ranking-criteria');
+Route::get('/show-form', function () {
+    return View::make('rank_criteria');
+});
+
+
+Route::post('/rank-students', 'App\Http\Controllers\RankingController@rank')->name('rankStudents');

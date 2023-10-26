@@ -33,6 +33,16 @@
 
             <button type="submit">Upload</button>
         </form>
+        <form action="{{ route('rankStudents') }}" method="POST">
+            @csrf
+            <label for="stream">Select Stream:</label>
+            <select name="stream" id="stream" class="form-control">
+                <option value="Science">Science</option>
+                <option value="Arts and Commerce">Arts and Commerce</option>
+            </select>
+        <button type="submit" class="btn btn-primary">Rank Students</button>
+        </form>
+
     </div>
 </body>
 </html>

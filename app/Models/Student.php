@@ -35,5 +35,9 @@ class Student extends Model
         'rank',
     ];
 
+    public function rankingCriteria() {
+        return $this->belongsTo(RankingCriteria::class, 1);
+    }
+
     // Define any relationships (e.g., belongsTo, hasMany) with other models here
 }
