@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CTT</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="navstyle.css" />
+  </head>
+  <body>
+    <div class="sidebar active">
+      <div class="top">
+        <div class="logo"></div>
+        <i class="bx bx-menu" id="btn"></i>
+      </div>
+      <div class="user">
+        <img src="prjlogo.png" alt="me" class="user-img" />
+      </div>
+      <ul>
+        <li>
+          <a href="home.html">
+            <i class="bx bx-home"></i>
+            <span class="nav-item">Home</span>
+          </a>
+          <span class="tooltip">Home</span>
+        </li>
+        <li>
+          <a href="rank.html">
+            <i class="bx bx-star"></i>
+            <span class="nav-item">Rank</span>
+          </a>
+          <span class="tooltip">Rank</span>
+        </li>
+        <li>
+          <a href="archive.html">
+            <i class="bx bx-archive-in"></i>
+            <span class="nav-item">Archive</span>
+          </a>
+          <span class="tooltip">Archive</span>
+        </li>
+
+        <li>
+          <a href="setting.html">
+            <i class="bx bx-cog"></i>
+            <span class="nav-item">Setting</span>
+          </a>
+          <span class="tooltip">Setting</span>
+        </li>
+        <li>
+          <a href="login.html"> <!-- Change the "href" to your login page -->
+            <i class="bx bx-log-out"></i>
+            <span class="nav-item">Logout</span>
+          </a>
+          <span class="tooltip">Logout</span>
+        </li>
+      </ul>
+    </div>
+
+    <script>
+      let sidebar = document.querySelector(".sidebar");
+      let btn = document.querySelector("#btn");
+      
+      btn.onclick = function () {
+        sidebar.classList.toggle("active");
+      };
+    </script>
+  </body>
+</html>
