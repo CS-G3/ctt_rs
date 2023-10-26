@@ -7,7 +7,7 @@
     <form action="{{ route('update-ranking-criteria') }}" method="post">
         @csrf
         
-        <input type="text" name="ranking_criteria_id" placeholder="Year"><br>
+        {{-- <input type="text" name="ranking_criteria_id" placeholder="Year"><br> --}}
         <input type="text" name="eng" placeholder="eng"><br>
         <input type="text" name="dzo" placeholder="dzo"><br>
         <input type="text" name="com" placeholder="com"><br>

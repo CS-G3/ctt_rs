@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('ranking_criteria', function (Blueprint $table) {
             $table->id();
-            $table->integer('ranking_criteria_id')->default(0);
+            $table->integer('ranking_criteria_id')->default(1);
             $table->integer('eng')->default(0);
             $table->integer('dzo')->default(0);
             $table->integer('com')->default(0);

@@ -11,7 +11,7 @@ class CreateStudentsTable extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id(); // Auto-incremental primary key
             $table->bigInteger('index_number')->unique();
-            
+
             $table->string('contact_number', 20)->nullable();
             $table->integer('placement_id')->nullable();
             $table->date('date_of_birth')->nullable();
@@ -37,6 +37,7 @@ class CreateStudentsTable extends Migration
             $table->integer('bio')->nullable();
             $table->boolean('eligibility_status')->nullable();
             $table->integer('rank')->nullable();
+            $table->integer('total')->nullable();
             // $table->boolean('is_applied')->default(false);
             $table->timestamps(); // Created_at and updated_at columns
         });

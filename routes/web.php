@@ -125,3 +125,6 @@ Route::post('/update-ranking-criteria', 'App\Http\Controllers\RankingController@
 Route::get('/show-form', function () {
     return View::make('rank_criteria');
 });
+
+
+Route::post('/rank-students', 'App\Http\Controllers\RankingController@rank')->name('rankStudents');
