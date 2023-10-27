@@ -84,10 +84,10 @@
 
 @endif
 
-  <script>
-    // Add event listeners to detect changes in the email, name, and password fields
+<script>
     const userUpdateForm = document.getElementById("user-update-form");
     const userUpdateButton = document.getElementById("user-update-button");
+    const passwordResetForm = document.getElementById("password-reset-form");
     const passwordUpdateButton = document.getElementById("password-update-button");
 
     // For username and email fields
@@ -96,16 +96,13 @@
     });
 
     // For password fields
-    const passwordFields = document.querySelectorAll("#password-reset-form input[type='text']");
-    passwordFields.forEach((field) => {
-        field.addEventListener("input", function () {
+    passwordResetForm.addEventListener("input", function () {
             passwordUpdateButton.style.display = "block";
-        });
     });
 
     function clearFormFields() {
         setTimeout(() => {
-            document.getElementById("password-reset-form").reset();
+            passwordResetForm.reset();
         }, 3000);
     }
 </script>
