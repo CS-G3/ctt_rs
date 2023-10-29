@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -29,6 +30,13 @@ class LoginController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
+        $user = User::where('email', $request->input('email'))->first();
+
+        if (!$user) {
+            Session::flash('error', 'No user found. Check your email.'); // Set error message
+            return back()->withErrors(['email' => 'Invalid credentials'])->withInput($request->except('password'));
+        }
+
         if (Auth::attempt($credentials)) {
             // Authentication passed
             // Session::flash('success', 'Login successful.'); // Set success message
@@ -49,7 +57,7 @@ class LoginController extends Controller
         }
 
         // Authentication failed
-        Session::flash('error', 'Invalid credentials. Please try again.'); // Set error message
+        Session::flash('error', 'Invalid password. Please try again.'); // Set error message
         return back()->withErrors(['email' => 'Invalid credentials'])->withInput($request->except('password'));
     }
 
