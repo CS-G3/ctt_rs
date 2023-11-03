@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Models\Eligibility;
 use App\Models\Placement;
+use App\Models\RegistrationPeriod;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::post('/student-logout', 'StudentController@logout')->name('student.logout');
 
     Route::post('/add_student', 'StudentController@register')->name('students.add');
+    Route::post('/add_registrationDate', 'registrationPeriodController@add')->name('registrationDate.add');
     Route::put('/register-student', 'StudentController@updateByIndex')->name('students.updateByIndex');
     Route::put('/update-student/{id}', 'StudentController@update')->name('student.update'); // update std
     Route::put('/update-student-placement/{id}', 'StudentController@updatePlacement')->name('student.updatePlacement'); // update std
@@ -59,6 +61,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::post('/add_placement', 'PlacementController@add')->name('placement.add');
     // Route::delete('/placement/{placement}', 'PlacementController@delete')->name('placement.delete');
     Route::delete('/placement', 'PlacementController@delete')->name('placement.delete');
+    Route::delete('/registrationPeriod/{registrationPeriod}', 'registrationPeriodController@delete')->name('registrationPeriod.delete');
 
 });
 
@@ -131,6 +134,15 @@ Route::get('/placement', function () {
     }
     return view('placement', compact('placement'));
     
+});
+Route::get('/registration_date', function () {
+    $registration_period = RegistrationPeriod::all(); 
+
+    if (!$registration_period) {
+        
+    }
+    return view('registration_date', compact('registration_period'));
+   
 });
 // Route::get('/students', 'App\Http\Controllers\StudentController@index')->name('students.index');
 // Route::get('/std', function () {
