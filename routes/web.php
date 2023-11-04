@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Models\Eligibility;
+use App\Models\Archive;
 use App\Models\Placement;
 use App\Models\RegistrationPeriod;
 
@@ -35,6 +36,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::post('/student-logout', 'StudentController@logout')->name('student.logout');
 
     Route::post('/add_student', 'StudentController@register')->name('students.add');
+    Route::post('/add_archive', 'archiveController@add')->name('archive.add');
     Route::post('/add_registrationDate', 'registrationPeriodController@add')->name('registrationDate.add');
     Route::put('/register-student', 'StudentController@updateByIndex')->name('students.updateByIndex');
     Route::put('/update-student/{id}', 'StudentController@update')->name('student.update'); // update std
@@ -58,6 +60,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/student/dashboard', 'StudentController@show')->name('student.show');
 
     Route::post('/update-eligibility', 'eligibilityController@update')->name('update.eligibility');
+    Route::delete('/archive/{archive}', 'ArchiveController@delete')->name('archive.delete');
     Route::post('/add_placement', 'PlacementController@add')->name('placement.add');
     // Route::delete('/placement/{placement}', 'PlacementController@delete')->name('placement.delete');
     Route::delete('/placement', 'PlacementController@delete')->name('placement.delete');
@@ -140,33 +143,19 @@ Route::get('/set-password', function () {
     return view('forgot_password/set_password');
 });
 
+Route::get('/archive', function () {
+    $archives = Archive::all(); // Fetch the first eligibility record
+
+    if (!$archives) {
+        // Handle the case where eligibility data is not found
+    }
+    return view('archive', compact('archives'));
+});
+
 Route::get('/register_user', function () {
     return view('register_user');
 });
 
-Route::get('/admin/add-user', function () {
-    return view('admin/addUser');
-});
-
-Route::get('/placement', function () {
-
-    $placement = Placement::all(); // Fetch the first eligibility record
-
-    if (!$placement) {
-        // Handle the case where eligibility data is not found
-    }
-    return view('placement', compact('placement'));
-    
-});
-Route::get('/registration_date', function () {
-    $registration_period = RegistrationPeriod::all(); 
-
-    if (!$registration_period) {
-        
-    }
-    return view('registration_date', compact('registration_period'));
-   
-});
 // Route::get('/students', 'App\Http\Controllers\StudentController@index')->name('students.index');
 // Route::get('/std', function () {
 //     return view('std');
