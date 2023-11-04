@@ -84,9 +84,12 @@ Route::get('/manager/dashboard', function () {
         $endDate = $registrationPeriod->endDate;
         $status = $registrationPeriod->status;
         return view('manager/manager_dashboard', compact('eligibility', 'placement', 'status', 'startDate', 'endDate'));
+    } else {
+        $startDate = null; 
+        $endDate = null;
+        $status = null;
+        return view('manager/manager_dashboard', compact('eligibility', 'placement', 'status', 'startDate', 'endDate'));
     }
-
-    return view('manager/manager_dashboard', compact('eligibility', 'placement'));
 });
 
 Route::get('/manager/rank', function () {
