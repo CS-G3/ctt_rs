@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->date('startDate'); // Add startDate column
             $table->date('endDate');   // Add endDate column
-            $table->string('STATUS');  // Add STATUS column
             $table->timestamps();
         });
     }
@@ -28,3 +27,4 @@ return new class extends Migration
         Schema::dropIfExists('registration_period');
     }
 };
+

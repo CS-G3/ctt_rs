@@ -72,6 +72,17 @@ Route::namespace('App\Http\Controllers')->group(function () {
 Route::get('/manager/dashboard', function () {
     $eligibility = Eligibility::first(); // Fetch the first eligibility record
     $placement = Placement::all();
+    //registrationPeriod
+    $registrationPeriod = RegistrationPeriod::first();
+
+    // Check if there's a valid registration period
+    if ($registrationPeriod) {
+        $startDate = $registrationPeriod->startDate;
+        $endDate = $registrationPeriod->endDate;
+        $status = $registrationPeriod->status;
+        return view('manager/manager_dashboard', compact('eligibility', 'placement', 'status', 'startDate', 'endDate'));
+    }
+
     return view('manager/manager_dashboard', compact('eligibility', 'placement'));
 });
 
@@ -102,7 +113,19 @@ Route::get('/admin/setting', function () {
 // });
 
 Route::get('/ctt-registration', function () {
-    return view('student/std_register');
+      // Fetch the start date, end date, and status from the database
+      $registrationPeriod = RegistrationPeriod::first();
+
+      // Check if there's a valid registration period
+      if ($registrationPeriod) {
+          $startDate = $registrationPeriod->startDate;
+          $endDate = $registrationPeriod->endDate;
+          $status = $registrationPeriod->status;
+  
+          return view('student/std_register', compact('startDate', 'endDate', 'status'));
+      }
+  
+      return view('student/std_register');
 });
 
 Route::get('/forgot-password', function () {

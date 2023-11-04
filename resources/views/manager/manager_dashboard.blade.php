@@ -44,6 +44,18 @@
 
 <div class="bg-light ml-1 p-4 w-100">
 
+    @if(Session::has('success'))
+    <div class="alert alert-success">
+        {{ Session::get('success') }}
+    </div>
+@endif
+
+@if(Session::has('error'))
+    <div class="alert alert-danger">
+        {{ Session::get('error') }}
+    </div>
+@endif
+
 @if ($eligibility)
     <p>Eligibility Information:</p>
 
@@ -150,24 +162,32 @@
     <hr>                                    
     <p>Registration Date</p>
 
-    <div class="p-3" style="background-color: rgba(115, 175, 66, 0.4);">
-    //registration
+    <div class="p-3" style="background-color: rgba(115, 175, 66, 0.4); display:flex;">
+    <form method="POST" action="{{ route('registrationDate.add') }}">
+    @csrf
+    Students can apply from 
+    <input type="date" name="startDate" id="startDate" required style="width: 25%"  value="{{ $startDate }}">
+    to
+    <input type="date" name="endDate" id="endDate" required style="width: 25%"  value="{{ $endDate }}">
+
+    @if ($status)
+        <span style="margin-left: 3rem">Status: Open</span>
+    @else 
+        <span style="margin-left: 3rem">Status: Close</span>
+    @endif
+
+    <button type="submit">Save</button>
+    
+    </form>
+
     </div>
 
-    @else
-        <p>No eligibility data found.</p>
-    @endif
+    
+    <hr>                                    
+    <p>Total intake for CTT</p>
 
-    @if(Session::has('success'))
-        <div class="alert alert-success">
-            {{ Session::get('success') }}
-        </div>
-    @endif
+    <div class="p-3" style="background-color: rgba(115, 175, 66, 0.4);"></div>
 
-    @if(Session::has('error'))
-        <div class="alert alert-danger">
-            {{ Session::get('error') }}
-        </div>
     @endif
     
     @else
@@ -185,6 +205,23 @@
             deleteButton.style.display = 'inline-block';
         } else {
             deleteButton.style.display = 'none';
+        }
+    });
+
+    const startDateInput = document.getElementById('startDate');
+    const endDateInput = document.getElementById('endDate');
+
+    startDateInput.addEventListener('change', function() {
+        const startDate = new Date(startDateInput.value);
+        
+        // Set the minimum date for end date input
+        endDateInput.min = startDateInput.value;
+        
+        const endDate = new Date(endDateInput.value);
+
+        // Check if the current end date is before the new minimum
+        if (endDate < startDate) {
+            endDateInput.value = ''; // Clear the end date value
         }
     });
 </script>

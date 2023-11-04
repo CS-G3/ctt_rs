@@ -3,16 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class RegistrationPeriod extends Model
 {
-    protected $table = 'registration_period';
+    protected $fillable = ['startDate', 'endDate'];
 
-    protected $fillable = [
-        'startDate',
-        'endDate',
-        'STATUS',
-    ];
+    protected $table = 'registration_period'; // Define the table name if it differs from Laravel's default naming conventions
 
-    // Your model methods and relationships can be defined here
+    public function getStatusAttribute()
+    {
+        $now = Carbon::now();
+        $startDate = Carbon::parse($this->startDate);
+        $endDate = Carbon::parse($this->endDate);
+
+        return $now->between($startDate, $endDate);
+    }
 }
