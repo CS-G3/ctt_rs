@@ -166,9 +166,9 @@
     <form method="POST" action="{{ route('registrationDate.add') }}">
     @csrf
     Students can apply from 
-    <input type="date" name="startDate" id="startDate" required style="width: 25%"  value="{{ $startDate }}">
+    <input type="date" name="startDate" id="startDate" required style="width: 25%"  value="{{ $startDate ? $startDate : '' }}">
     to
-    <input type="date" name="endDate" id="endDate" required style="width: 25%"  value="{{ $endDate }}">
+    <input type="date" name="endDate" id="endDate" required style="width: 25%"  value="{{ $endDate ? $endDate : '' }}">
 
     @if ($status)
         <span style="margin-left: 3rem">Status: Open</span>
