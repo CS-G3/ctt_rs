@@ -24,7 +24,7 @@ class CsvImportController extends Controller
     
         // Get the uploaded file
         $file = $request->file('file');
-    
+        try{
         // Check if it's an Excel file and convert to CSV if necessary
         if ($file->getClientOriginalExtension() === 'xlsx' || $file->getClientOriginalExtension() === 'xls') {
             $csvData = Excel::toArray(new CSVImportClass, $file);
@@ -132,8 +132,10 @@ class CsvImportController extends Controller
             // Create a new User instance with the dynamically mapped attributes
             Student::create($attributes);
         }
-    
-        return redirect()->back()->with('success', 'CSV data imported successfully.');
+        return redirect()->back()->with('success', 'Data imported successfully.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Error processing the file: ' . $e->getMessage());
+    }
     }
     
 

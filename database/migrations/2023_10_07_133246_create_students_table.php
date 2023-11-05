@@ -37,7 +37,9 @@ class CreateStudentsTable extends Migration
             $table->integer('bio')->nullable();
             $table->boolean('eligibility_status')->nullable();
             $table->integer('rank')->nullable();
-            $table->integer('total')->nullable();
+            $table->integer('rankSIDD')->nullable();
+            $table->integer('totalSOC')->nullable();
+            $table->integer('totalSIDD')->nullable();
             // $table->boolean('is_applied')->default(false);
             $table->timestamps(); // Created_at and updated_at columns
         });

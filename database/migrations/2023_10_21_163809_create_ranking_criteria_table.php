@@ -31,6 +31,8 @@ return new class extends Migration
             $table->integer('phy')->default(0);
             $table->integer('che')->default(0);
             $table->integer('bio')->default(0);
+            $table->integer('socT')->default(0);
+            $table->integer('siddT')->default(0);
         
             $table->timestamps();
         });
