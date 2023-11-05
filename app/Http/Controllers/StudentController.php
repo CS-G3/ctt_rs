@@ -44,30 +44,27 @@ class StudentController extends Controller
             'index_number' => 'required|string',
             'date_of_birth' => 'required|date',
         ]);
-
+    
         $indexNumber = $request->input('index_number');
         $dateOfBirth = $request->input('date_of_birth');
-
-        // echo $indexNumber;
-        // echo $dateOfBirth;
-
-        // Check if the student exists in the database
-        $student = Student::where('index_number', $indexNumber)
-        ->where('date_of_birth', $dateOfBirth)
-        ->where('eligibility_status', true) //student should be eligible 
-        ->whereNotNull('contact_number') //not null contact num = applied
-        ->first();
-
+    
+        $student = Student::where('index_number', $indexNumber)->first();
+    
         if ($student) {
-            // Student is authenticated, you can store the student's ID in the session
-            // return back()->with('success', 'Login successful.');
-            Session::put('student_id', $student->id);
-            // return redirect('/student/student_id/dashboard');
-            // $redirectURL = route('student.show', ['student_id' => $student->id]);
-            $redirectURL = route('student.show');
-            return redirect($redirectURL);
+            if ($student->date_of_birth !== $dateOfBirth) {
+                return back()->with('error', 'Wrong date of birth. Please check your date of birth.');
+            } elseif (!$student->eligibility_status) {
+                return back()->with('error', 'You are not eligible.');
+            } elseif (is_null($student->program_applied)) {
+                return back()->with('error', 'You have not applied.');
+            } else {
+                // Student is authenticated, store the student's ID in the session
+                Session::put('student_id', $student->id);
+                $redirectURL = route('student.show');
+                return redirect($redirectURL);
+            }
         } else {
-            return back()->with('error', 'No user found.');
+            return back()->with('error', 'Invalid index number. Check your index number.');
         }
     }
 
@@ -137,23 +134,32 @@ class StudentController extends Controller
     public function updatePlacement(Request $request, $id)
     {
         try {
-    
             $student = Student::where('id', $id)->firstOrFail();
-
-            echo $student;
-
-            $validatedData = $request->validate([
-                'placement_id' => 'required',
-            ]);
-
-            if ($validatedData) $student->update(['placement_id'=>$request->placement_id]);
-
-                return back()->with('success', 'Updated successful.');
     
+            $validatedData = $request->validate([
+                'contact_number' => 'sometimes|regex:/^\d{8}$/',
+                'placement_id' => 'sometimes|required',
+            ]);
+    
+            $dataToUpdate = [];
+    
+            if (isset($validatedData['contact_number']) && $validatedData['contact_number'] !== $student->contact_number) {
+                $dataToUpdate['contact_number'] = $validatedData['contact_number'];
+            }
+    
+            if (isset($validatedData['placement_id']) && $validatedData['placement_id'] !== $student->placement_id) {
+                $dataToUpdate['placement_id'] = $validatedData['placement_id'];
+            }
+    
+            if (!empty($dataToUpdate)) {
+                $student->update($dataToUpdate);
+            }
+    
+            return back()->with('success', 'Updated successfully.');
         } catch (\Exception $e) {
             // Handle the exception, such as displaying an error message or logging the error.
             \Log::error($e);
-            return back()->with('error', $e);
+            return back()->with('error', $e->getMessage());
         }
     }
 
