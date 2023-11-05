@@ -134,7 +134,7 @@ class CsvImportController extends Controller
         }
         return redirect()->back()->with('success', 'Data imported successfully.');
     } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Error processing the file: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'Error processing the file: ');
     }
     }
     

@@ -159,7 +159,7 @@ $(document).ready(function () {
             },
             error: function (xhr, status, error) {
                 // Display an error message in the modal
-                $('#messageContainer').html('<div class="alert alert-danger">Error: ' + error + '</div>');
+                $('#messageContainer').html('<div class="alert alert-danger">"File upload failed"</div>');
             }
         });
     });

@@ -1,6 +1,6 @@
 
 
-<div style="max-height: 545px; overflow-y: auto; margin: 40px;">
+<div style="max-height: 545px; overflow-y: auto; margin: 40px; max-width:95%">
     <table class="table  table-striped table-fixed" style="height: 60px ">
       <thead style="position: sticky;
       top: 0;
@@ -9,12 +9,23 @@
           <tr>
               <th>#</th>
               <th>Index Number</th>
-              <th>Subject1</th>
-              <th>Subject2</th>
-              <th>Subject3</th>
-              <th>Subject4</th>
-              <th>Subject5</th>
-              <th>Subject6</th>
+              <th>ENG</th>
+              <th>DZO</th>
+              <th>COM</th>
+              <th>ACC</th>
+              <th>BMT</th>
+              <th>GEO</th>
+              <th>HIS</th>
+              <th>ECO</th>
+              <th>MED</th>
+              <th>BENT</th>
+              <th>EVS</th>
+              <th>RIGE</th>
+              <th>AGFS</th>
+              <th>MAT</th>
+              <th>PHY</th>
+              <th>CHE</th>
+              <th>BIO</th>
               <th>Rank</th>
           </tr>
       </thead>
@@ -26,44 +37,107 @@
               <tr>
                   <td>{{$serialNumber++}}</td>
                   <td>{{ $item->index_number }}</td>
-                
-                @if(isset($item->mat))
-                    <td>MAT: {{ $item->mat }}</td>
+                @if(isset($item->eng))
+                    <td>{{ $item->eng }}</td>
                 @else
-                    <td>BMT: {{ $item->bmt}}</td>
+                    <td>-</td>
                 @endif
                 
-                @if(isset($item->eng))
-                    <td>ENG: {{ $item->eng }}</td>
+                @if(isset($item->dzo))
+                    <td>{{ $item->dzo}}</td>
                 @else
                     <td>-</td>
                 @endif
 
-                @if(isset($item->dzo))
-                    <td>DZO: {{ $item->dzo }}</td>
+                @if(isset($item->com))
+                    <td>{{ $item->com}}</td>
                 @else
                     <td>-</td>
                 @endif
+
                 @if(isset($item->acc))
-                    <td>ACC: {{ $item->acc }}</td>
+                    <td>{{ $item->acc }}</td>
                 @else
-                <td>-</td>
-        @endif
-        @if(isset($item->phy))
-            <td>PHY: {{ $item->phy }}</td>
-        @else
-            <td></td>
-        @endif
-        @if(isset($item->bio))
-            <td>BIO: {{ $item->bio }}</td>
-        @else
-            <td></td>
-        @endif
-        @if(isset($item->che))
-            <td>CHE: {{ $item->che }}</td>
-        @else
-            <td></td>
-        @endif
+                    <td>-</td>
+                @endif
+
+                @if(isset($item->bmt))
+                    <td>{{ $item->bmt}}</td>
+                @else
+                    <td>-</td>
+                @endif
+
+                @if(isset($item->geo))
+                    <td>{{ $item->geo }}</td>
+                @else
+                    <td>-</td>
+                @endif
+
+                @if(isset($item->his))
+                    <td>{{ $item->his }}</td>
+                @else
+                    <td>-</td>
+                @endif
+
+                @if(isset($item->eco))
+                    <td>{{ $item->eco }}</td>
+                @else
+                    <td>-</td>
+                @endif
+
+                @if(isset($item->med))
+                    <td>{{ $item->med }}</td>
+                @else
+                    <td>-</td>
+                @endif
+
+                @if(isset($item->bent))
+                    <td>{{ $item->bent }}</td>
+                @else
+                    <td>-</td>
+                @endif
+
+                @if(isset($item->evs))
+                    <td>{{ $item->evs }}</td>
+                @else
+                    <td>-</td>
+                @endif
+
+                @if(isset($item->rige))
+                    <td>{{ $item->rige }}</td>
+                @else
+                    <td>-</td>
+                @endif
+
+                @if(isset($item->agfs))
+                    <td>{{ $item->agfs }}</td>
+                @else
+                    <td>-</td>
+                @endif
+
+                @if(isset($item->mat))
+                    <td>{{ $item->mat }}</td>
+                @else
+                    <td>-</td>
+                @endif
+
+                @if(isset($item->phy))
+                    <td>{{ $item->phy }}</td>
+                @else
+                    <td>-</td>
+                @endif
+
+                @if(isset($item->che))
+                    <td>{{ $item->che}}</td>
+                @else
+                    <td>-</td>
+                @endif
+
+                @if(isset($item->bio))
+                    <td>{{ $item->bio }}</td>
+                @else
+                    <td>-</td>
+                @endif
                   <td>{{ $item->rankSIDD }}</td>
               </tr>
           @endforeach

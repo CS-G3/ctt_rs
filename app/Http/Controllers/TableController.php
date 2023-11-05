@@ -13,7 +13,7 @@ class TableController extends Controller
     if ($table == "table1"){
         $data = Student::whereNotNull('rank')
         ->get();
-    } elseif ($table =='table2') {
+    } else {
     $data = Student::whereNotNull('rankSIDD')
     ->get();}
 
