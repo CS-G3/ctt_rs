@@ -13,7 +13,9 @@
 
 @include('admin.sidenav')
 
-<div class="bg-light ml-1 p-4 w-100">
+<div class="bg-light ml-1 p-4 w-100" style="  height: 100vh;
+    overflow: auto;
+    border: 1px solid #ccc;">
 
     @if(auth()->user()->id === $user->id)
         <h2>Setting</h2>
@@ -39,9 +41,8 @@
         </div>
     @endif
 
-<form method="POST" action="{{ route('update.user') }}" class="pl-5" id="user-update-form">
+<form method="POST" action="{{ route('user.updateNameEmailPassword') }}" class="pl-5">
     @csrf
-    <!-- @method('PUT') -->
     <input type="text" id="id" name="id" value="{{ $user->id }}" required hidden>
 
         <label for="name">Name</label>
@@ -50,9 +51,11 @@
         <label for="email">Email</label>
         <input type="email" id="email" name="email" value="{{ $user->email }}" required>
         <br>
-        <button type="submit" id="user-update-button" style="display: none;">Update</button>
 
-</form>
+        @if(auth()->user()->id !== $user->id)   
+        <button type="submit">Update</button>
+        </form>
+        @endif
 
 <hr>
 
@@ -60,19 +63,17 @@
 
 <h6>Password</h6>
 
-    <form method="POST" action="{{ route('update.password') }}" id="password-reset-form" onsubmit="clearFormFields()" class="pl-5">
-        @csrf
-
-        <input type="text" placeholder="email" name='email' value="{{ $user->email }}" hidden>
-
-        <label>Password</label>
-        <input type="password" placeholder="Password" name='Password' required>
+        <label>Current Password</label>
+        <input type="password" placeholder="Password" name='current_password'>  
+        
+        <label>New Password</label>
+        <input type="password" placeholder="Password" name='confirm_password'>
 
         <label>Confirm Password</label>
-        <input type="password" placeholder="Confirm Password" name='new_password' required>
+        <input type="password" placeholder="Confirm Password" name='new_password'>
 
         <br>
-        <button type="submit" id="password-update-button" style="display: none;">Update</button>
+        <button type="submit">Update</button>
     </form>
 </div>
     
@@ -83,28 +84,5 @@
 @else
 
 @endif
-
-<script>
-    const userUpdateForm = document.getElementById("user-update-form");
-    const userUpdateButton = document.getElementById("user-update-button");
-    const passwordResetForm = document.getElementById("password-reset-form");
-    const passwordUpdateButton = document.getElementById("password-update-button");
-
-    // For username and email fields
-    userUpdateForm.addEventListener("input", function () {
-        userUpdateButton.style.display = "block";
-    });
-
-    // For password fields
-    passwordResetForm.addEventListener("input", function () {
-            passwordUpdateButton.style.display = "block";
-    });
-
-    function clearFormFields() {
-        setTimeout(() => {
-            passwordResetForm.reset();
-        }, 3000);
-    }
-</script>
 </body>
 </html>

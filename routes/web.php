@@ -47,6 +47,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::post('/validate-otp', 'OtpController@validateOtp')->name('validate.otp');
     Route::post('/update-password', 'UserController@updatePassword')->name('update.password');
     Route::post('/update', 'UserController@update')->name('update.user');
+    Route::post('/updateNameEmailPassword', 'UserController@updateNameEmailPassword')->name('user.updateNameEmailPassword');
     // Route::get('/user/{user}/edit', 'UserController@edit')->name('user.edit');
     Route::get('/user/{id}/edit', 'UserController@editManager')->name('user.edit');
     Route::get('/user/{id}', 'UserController@edit')->name('manager.edit');

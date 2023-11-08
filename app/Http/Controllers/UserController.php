@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -27,6 +28,44 @@ class UserController extends Controller
         return view('/manager/setting', compact('user'));
     }
 
+    public function updateNameEmailPassword(Request $request)
+    {
+        $user = User::find($request->input('id'));
+    
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+    
+        // Validate and update user name and email
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+        ]);
+    
+        $user->name = $validatedData['name'];
+        $user->email = $validatedData['email'];
+    
+        // Validate the password update data if provided
+        if ($request->filled('new_password')) {
+            $request->validate([
+                'new_password' => 'required|string|min:8',
+                'confirm_password' => 'required|string|min:8|same:new_password',
+                'current_password' => 'required|string|min:8',
+            ]);
+    
+            // Verify the current password before updating the new password
+            if (Hash::check($request->input('current_password'), $user->password)) {
+                $user->password = Hash::make($request->input('new_password'));
+            } else {
+                return back()->with('error', 'Current password is incorrect.');
+            }
+        }
+    
+        $user->save();
+    
+        return back()->with('success', 'User info updated.');
+    }
+    
     public function update(Request $request)
     {
         // $user = auth()->user();
@@ -41,7 +80,6 @@ class UserController extends Controller
 
         return back()->with('success', 'User updated successfully');
     }
-
 
      // Function to fetch all users
      public function getAllUsers()
