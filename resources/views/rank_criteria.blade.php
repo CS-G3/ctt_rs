@@ -25,6 +25,8 @@
         <input type="text" name="phy" placeholder="phy"><br>
         <input type="text" name="che" placeholder="che"><br>
         <input type="text" name="bio" placeholder="bio"><br>
+        <input type="text" name="socT" placeholder="Soc total students"><br>
+        <input type="text" name="siddT" placeholder="SIDD total students"><br>
         <input type="submit" value="Submit">
     </form>
 </body>

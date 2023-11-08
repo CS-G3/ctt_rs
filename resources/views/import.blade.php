@@ -37,8 +37,8 @@
             @csrf
             <label for="stream">Select Stream:</label>
             <select name="stream" id="stream" class="form-control">
-                <option value="Science">Science</option>
-                <option value="Arts and Commerce">Arts and Commerce</option>
+                <option value="soc">SOC</option>
+                <option value="sidd">SIDD</option>
             </select>
         <button type="submit" class="btn btn-primary">Rank Students</button>
         </form>

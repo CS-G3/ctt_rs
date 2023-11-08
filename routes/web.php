@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Models\Eligibility;
+use App\Models\Archive;
 use App\Models\Placement;
+use App\Models\RegistrationPeriod;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +36,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::post('/student-logout', 'StudentController@logout')->name('student.logout');
 
     Route::post('/add_student', 'StudentController@register')->name('students.add');
+    Route::post('/add_archive', 'archiveController@add')->name('archive.add');
+    Route::post('/add_registrationDate', 'registrationPeriodController@add')->name('registrationDate.add');
     Route::put('/register-student', 'StudentController@updateByIndex')->name('students.updateByIndex');
     Route::put('/update-student/{id}', 'StudentController@update')->name('student.update'); // update std
     Route::put('/update-student-placement/{id}', 'StudentController@updatePlacement')->name('student.updatePlacement'); // update std
@@ -57,9 +61,11 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/student/dashboard', 'StudentController@show')->name('student.show');
 
     Route::post('/update-eligibility', 'eligibilityController@update')->name('update.eligibility');
+    Route::delete('/archive/{archive}', 'ArchiveController@delete')->name('archive.delete');
     Route::post('/add_placement', 'PlacementController@add')->name('placement.add');
     // Route::delete('/placement/{placement}', 'PlacementController@delete')->name('placement.delete');
     Route::delete('/placement', 'PlacementController@delete')->name('placement.delete');
+    Route::delete('/registrationPeriod/{registrationPeriod}', 'registrationPeriodController@delete')->name('registrationPeriod.delete');
 
 });
 
@@ -70,7 +76,21 @@ Route::namespace('App\Http\Controllers')->group(function () {
 Route::get('/manager/dashboard', function () {
     $eligibility = Eligibility::first(); // Fetch the first eligibility record
     $placement = Placement::all();
-    return view('manager/manager_dashboard', compact('eligibility', 'placement'));
+    //registrationPeriod
+    $registrationPeriod = RegistrationPeriod::first();
+
+    // Check if there's a valid registration period
+    if ($registrationPeriod) {
+        $startDate = $registrationPeriod->startDate;
+        $endDate = $registrationPeriod->endDate;
+        $status = $registrationPeriod->status;
+        return view('manager/manager_dashboard', compact('eligibility', 'placement', 'status', 'startDate', 'endDate'));
+    } else {
+        $startDate = null; 
+        $endDate = null;
+        $status = null;
+        return view('manager/manager_dashboard', compact('eligibility', 'placement', 'status', 'startDate', 'endDate'));
+    }
 });
 
 Route::get('/manager/rank', function () {
@@ -100,7 +120,19 @@ Route::get('/admin/setting', function () {
 // });
 
 Route::get('/ctt-registration', function () {
-    return view('student/std_register');
+      // Fetch the start date, end date, and status from the database
+      $registrationPeriod = RegistrationPeriod::first();
+
+      // Check if there's a valid registration period
+      if ($registrationPeriod) {
+          $startDate = $registrationPeriod->startDate;
+          $endDate = $registrationPeriod->endDate;
+          $status = $registrationPeriod->status;
+  
+          return view('student/std_register', compact('startDate', 'endDate', 'status'));
+      }
+  
+      return view('student/std_register');
 });
 
 Route::get('/forgot-password', function () {
@@ -115,24 +147,19 @@ Route::get('/set-password', function () {
     return view('forgot_password/set_password');
 });
 
+Route::get('/archive', function () {
+    $archives = Archive::all(); // Fetch the first eligibility record
+
+    if (!$archives) {
+        // Handle the case where eligibility data is not found
+    }
+    return view('archive', compact('archives'));
+});
+
 Route::get('/register_user', function () {
     return view('register_user');
 });
 
-Route::get('/admin/add-user', function () {
-    return view('admin/addUser');
-});
-
-Route::get('/placement', function () {
-
-    $placement = Placement::all(); // Fetch the first eligibility record
-
-    if (!$placement) {
-        // Handle the case where eligibility data is not found
-    }
-    return view('placement', compact('placement'));
-    
-});
 // Route::get('/students', 'App\Http\Controllers\StudentController@index')->name('students.index');
 // Route::get('/std', function () {
 //     return view('std');
@@ -148,3 +175,4 @@ Route::get('/show-form', function () {
 
 
 Route::post('/rank-students', 'App\Http\Controllers\RankingController@rank')->name('rankStudents');
+Route::get('/load-table/{table}', 'App\Http\Controllers\TableController@loadTable');

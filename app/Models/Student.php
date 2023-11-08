@@ -32,7 +32,11 @@ class Student extends Model
         'che',
         'bio',
         'eligibility_status',
-        'rank',
+        'rank', 
+        'rankSIDD',
+        'totalSOC',
+        'totalSIDD',      
+        'program_applied',
     ];
 
     public function rankingCriteria() {

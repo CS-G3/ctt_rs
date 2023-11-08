@@ -44,30 +44,27 @@ class StudentController extends Controller
             'index_number' => 'required|string',
             'date_of_birth' => 'required|date',
         ]);
-
+    
         $indexNumber = $request->input('index_number');
         $dateOfBirth = $request->input('date_of_birth');
-
-        // echo $indexNumber;
-        // echo $dateOfBirth;
-
-        // Check if the student exists in the database
-        $student = Student::where('index_number', $indexNumber)
-        ->where('date_of_birth', $dateOfBirth)
-        ->where('eligibility_status', true) //student should be eligible 
-        ->whereNotNull('contact_number') //not null contact num = applied
-        ->first();
-
+    
+        $student = Student::where('index_number', $indexNumber)->first();
+    
         if ($student) {
-            // Student is authenticated, you can store the student's ID in the session
-            // return back()->with('success', 'Login successful.');
-            Session::put('student_id', $student->id);
-            // return redirect('/student/student_id/dashboard');
-            // $redirectURL = route('student.show', ['student_id' => $student->id]);
-            $redirectURL = route('student.show');
-            return redirect($redirectURL);
+            if ($student->date_of_birth !== $dateOfBirth) {
+                return back()->with('error', 'Wrong date of birth. Please check your date of birth.');
+            } elseif (!$student->eligibility_status) {
+                return back()->with('error', 'You are not eligible.');
+            } elseif (is_null($student->program_applied)) {
+                return back()->with('error', 'You have not applied.');
+            } else {
+                // Student is authenticated, store the student's ID in the session
+                Session::put('student_id', $student->id);
+                $redirectURL = route('student.show');
+                return redirect($redirectURL);
+            }
         } else {
-            return back()->with('error', 'No user found.');
+            return back()->with('error', 'Invalid index number. Check your index number.');
         }
     }
 
@@ -137,23 +134,32 @@ class StudentController extends Controller
     public function updatePlacement(Request $request, $id)
     {
         try {
-    
             $student = Student::where('id', $id)->firstOrFail();
-
-            echo $student;
-
-            $validatedData = $request->validate([
-                'placement_id' => 'required',
-            ]);
-
-            if ($validatedData) $student->update(['placement_id'=>$request->placement_id]);
-
-                return back()->with('success', 'Updated successful.');
     
+            $validatedData = $request->validate([
+                'contact_number' => 'sometimes|regex:/^\d{8}$/',
+                'placement_id' => 'sometimes|required',
+            ]);
+    
+            $dataToUpdate = [];
+    
+            if (isset($validatedData['contact_number']) && $validatedData['contact_number'] !== $student->contact_number) {
+                $dataToUpdate['contact_number'] = $validatedData['contact_number'];
+            }
+    
+            if (isset($validatedData['placement_id']) && $validatedData['placement_id'] !== $student->placement_id) {
+                $dataToUpdate['placement_id'] = $validatedData['placement_id'];
+            }
+    
+            if (!empty($dataToUpdate)) {
+                $student->update($dataToUpdate);
+            }
+    
+            return back()->with('success', 'Updated successfully.');
         } catch (\Exception $e) {
             // Handle the exception, such as displaying an error message or logging the error.
             \Log::error($e);
-            return back()->with('error', $e);
+            return back()->with('error', $e->getMessage());
         }
     }
 
@@ -171,86 +177,77 @@ class StudentController extends Controller
         // return redirect('/login'); // Redirect to the student list or another page
     }
 
-    public function updateByIndex(Request $request)//student apply for ctt
+    public function updateByIndex(Request $request)
     {
         $indexNumber = $request->input('index_number');
-    
+        $student = Student::where('index_number', $indexNumber)->first();
+
+        if (!$student) {
+            return back()->with('error', 'Invalid index number. Check your index number.')->with('index_number', $indexNumber);
+        }
+
+        $math = Student::where('index_number', $indexNumber)
+        ->where(function ($query) {
+            $query->whereNotNull('mat') //math
+                ->orWhereNotNull('bmt');//b math
+        })->first();
+
+        if (!$math) {
+            return back()->with('error', 'You are not eligible for GCIT CTT.')->with('index_number', $indexNumber);
+        }
+
         try {
-            // Find the student by index number
-            $student = Student::where('index_number', $indexNumber)->firstOrFail();
-
-            //get colnames without nulll values
-            //then compare the none null col with eligibilty table col
-            //return tru if all greater the min marks
-            //todo
-
-            // Define the list of columns to compare
             $columnsToCompare = ['eng', 'dzo', 'com', 'acc', 'bmt', 'geo', 'his', 'eco', 'med', 'bent', 'evs', 'rige', 'agfs', 'mat', 'phy', 'che', 'bio'];
-
-            // Retrieve the first row of the "eligibility" table
             $eligibilityRow = DB::table('eligibility')->first();
 
             if (!$eligibilityRow) {
-                // Handle the case where there's no data in the "eligibility" table.
-                echo "No eligibility data found in the table.\n";
+                return back()->with('error', 'No eligibility data found. Please try again later.');
             } else {
-                // Retrieve all columns from the "students" table
-                // $studentData = DB::table('students')->select($columnsToCompare)->get();
-               
-                //return $studentData = index_number
                 $studentData = DB::table('students')
-                ->select($columnsToCompare)
-                ->where('index_number', $indexNumber)
-                ->first();
-    
-                // Loop through each row in the "eligibility" table
+                    ->select($columnsToCompare)
+                    ->where('index_number', $indexNumber)
+                    ->first();
+
                 $isEligible = true;
 
                 foreach ($columnsToCompare as $column) {
                     $studentValue = $studentData->$column;
                     $eligibilityValue = $eligibilityRow->$column;
 
-                    echo $studentValue,"+";
-
                     if (!is_null($studentValue) && !is_null($eligibilityValue) && $studentValue < $eligibilityValue) {
-                        // If any column is not greater, the student is not eligible
                         $isEligible = false;
                         break;
                     }
                 }
 
                 if ($isEligible) {
-                    echo "Student is eligible\n";
-                    echo $request->contact_number;
-                    echo $student;
-                    
                     $validatedData = $request->validate([
-                        'contact_number' => 'required|regex:/^\d{8}$/',//required length of contact number is 8
+                        'contact_number' => 'required|regex:/^\d{8}(\d{3})?$/',
+                        'program_applied' => 'required',
                     ]);
 
-                    echo "validate", json_encode($validatedData);
+                    if ($validatedData) {
+                        $student->update([
+                            'contact_number' => $request->contact_number,
+                            'program_applied' => $request->program_applied
+                        ]);
+                    }
 
-                    if ($validatedData) $student->update(['contact_number'=>$request->contact_number]);
+                    $student->update(['eligibility_status' => true]);
 
-                    $student->update(['eligibility_status'=> true]);
-                // // Session::flash('success', 'update successful.'); // Set success message
-                return back()->with('success', 'You have successful applied.')
-                            ->with('index_number', $indexNumber);
-            
+                    return back()->with('success', 'You have successfully applied.')->with('index_number', $indexNumber);
                 } else {
-                    echo "Student is not eligible\n";
-                    $student->update(['eligibility_status'=> false]);
-                    return back()->with('error', 'You are not eligible for GCIT CTT.')
-                            ->with('index_number', $indexNumber);
+                    $student->update(['eligibility_status' => false]);
+                    return back()->with('error', 'You are not eligible for GCIT CTT.')->with('index_number', $indexNumber);
                 }
             }
-
-        } catch (\Exception $e) {
-            // Log the error for debugging
+        } catch (\Illuminate\Database\QueryException $e) {
             \Log::error($e);
-            return back()->with('error', 'Internal error.');
+            return back()->with('error', 'Database error. Please try again.');
+        } catch (\Exception $e) {
+            \Log::error($e);
+            return back()->with('error', 'An unexpected error occurred. Please try again later.');
         }
-
     }
     
     public function destroy($id)
@@ -267,6 +264,7 @@ class StudentController extends Controller
             'index_number' => 'required|integer|unique:students,index_number,' . $id,
             'date_of_birth' => 'required|date',
             'contact_number' => 'nullable|string',
+            'program_applied' => 'nullable',
             'placement_id' => 'nullable|integer',
             'stream' => 'required|string|max:255',
             'supw' => 'required|string|max:1',

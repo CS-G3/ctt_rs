@@ -15,7 +15,7 @@ class RankingController extends Controller
 
 // Define the list of columns that you want to insert
 $columnsToInsert = [
-    'eng', 'dzo', 'com', 'acc', 'bmt', 'geo', 'his', 'eco', 'med', 'bent', 'evs', 'rige', 'agfs', 'mat', 'phy', 'che', 'bio'
+    'eng', 'dzo', 'com', 'acc', 'bmt', 'geo', 'his', 'eco', 'med', 'bent', 'evs', 'rige', 'agfs', 'mat', 'phy', 'che', 'bio', 'socT', 'siddT'
     // Add other columns here
 ];
 
@@ -56,6 +56,7 @@ public function rank(Request $request) {
     ->whereNotNull('contact_number')
     ->get();
         foreach ($students as $student) {
+            //Science 
             if ($student->stream === 'SCIENCE') {
                 // Get the subject multipliers from the RankingCriteria table
                 $subjectMultipliers = RankingCriteria::first()->toArray();
@@ -94,105 +95,173 @@ public function rank(Request $request) {
                     foreach ($otherSubjects as $subject => $marks) {
                         $totalMarks += $marks * $subjectMultipliers[$subject];
                     }
+                    if($student->program_applied === 'soc'){
+                        $student->totalSOC = $totalMarks;
+                        $student->save();
+                    } elseif($student->program_applied === 'sidd') {
+                        $student->totalSIDD = $totalMarks;
+                        $student->save();
+                    } elseif ($student->program_applied === 'both'){
+                        $student->totalSIDD = $totalMarks;
+                        $student->totalSOC = $totalMarks;
+                        $student->save();
+                    }
+                    
 
-                    $student->total = $totalMarks;
-                    $student->save();
-
-                    $rankedStudents = DB::table('students')
-                    ->select('id', 'total')
-                     ->where('stream', 'SCIENCE')
-                     ->whereNotNull('total')
-                    ->orderBy('total', 'desc')
-                    ->get();
-
-        // Assign ranks to the students
-        $rank = 1;
-        foreach ($rankedStudents as $student) {
-            DB::table('students')
-                ->where('id', $student->id)
-                ->update(['rank' => $rank]);
-            $rank++;
+                   
         }
                 }
+                //commerece
+                if ($student->stream === 'COMMERCE') {
+                    // Get the subject multipliers from the RankingCriteria table
+                    $subjectMultipliers = RankingCriteria::first()->toArray();
+                
+                    if ($subjectMultipliers) {
+                        // Compute the rank based on subject multipliers
+                        $scienceSubjects = ['bmt', 'eng', 'dzo', 'med', 'bent', 'eco', 'acc', 'com', 'agfs'];
+                        foreach ($scienceSubjects as $subject) {
+                            if (array_key_exists($subject, $subjectMultipliers)) {
+                                $multipliers[$subject] = $subjectMultipliers[$subject];
+                            } else {
+                                // Handle the case where $subject is not a valid key in $subjectMultipliers.
+                                $multipliers[$subject] = 0; // Set a default value, e.g., 0.
+                            }
+                        }
+                        //$multipliers[] = $subjectMultipliers[$scienceSubjects]; // Use the correct column for the selected stream
+                        $totalMarks = 0;
+                        $studentMarks = [
+                            'eng' => $student->eng,
+                            'acc' => $student->acc,
+                            'bmt' => $student->bmt,
+                            'bent' => $student->bent,
+                            'med' => $student->med ?? 0,
+                            'eco' => $student->eco ?? 0,
+                            'com' => $student->com ?? 0,
+                            'agfs' => $student->agfs ?? 0,
+                            'dzo' => $student->dzo
+                        ];
+    
+                        // Calculate marks for English and Math
+                        $totalMarks += $studentMarks['eng'] * $subjectMultipliers['eng'];
+                        $totalMarks += $studentMarks['bmt'] * $subjectMultipliers['bmt'];
+                        
+                        // Calculate marks for other subjects (excluding English and Math)
+                        $otherSubjects = array_diff_key($studentMarks, ['eng' => 0, 'bmt' => 0]);
+                        arsort($otherSubjects); // Sort other subjects in descending order (highest marks first)
+                        
+                        $otherSubjects = array_slice($otherSubjects, 0, 3); // Select the two highest marks
+                        foreach ($otherSubjects as $subject => $marks) {
+                            $totalMarks += $marks * $subjectMultipliers[$subject];
+                        }
+                        if($student->program_applied === 'soc'){
+                            $student->totalSOC = $totalMarks;
+                            $student->save();
+                        } elseif($student->program_applied === 'sidd') {
+                            $student->totalSIDD = $totalMarks;
+                            $student->save();
+                        } elseif ($student->program_applied === 'both'){
+                            $student->totalSIDD = $totalMarks;
+                            $student->totalSOC = $totalMarks;
+                            $student->save();
+                        }
+                        
+    
+                       
             }
-
-        //     if ($student->stream === 'ARTS' || $student->stream === 'COMMERECE') {
-        //         // Get the subject multipliers from the RankingCriteria table
-        //         $subjectMultipliers = RankingCriteria::first()->toArray();
-            
-        //         if ($subjectMultipliers) {
-        //             // Compute the rank based on subject multipliers
-        //             $artsComSubjects = ['bmt', 'eng', 'dzo', 'phy', 'bio', 'che'];
-        //             foreach ($scienceSubjects as $subject) {
-        //                 if (array_key_exists($subject, $subjectMultipliers)) {
-        //                     $multipliers[$subject] = $subjectMultipliers[$subject];
-        //                 } else {
-        //                     // Handle the case where $subject is not a valid key in $subjectMultipliers.
-        //                     $multipliers[$subject] = 0; // Set a default value, e.g., 0.
-        //                 }
-        //             }
-        //             //$multipliers[] = $subjectMultipliers[$scienceSubjects]; // Use the correct column for the selected stream
-        //             $totalMarks = 0;
-        //             $studentMarks = [
-        //                 'eng' => $student->eng,
-        //                 'mat' => $student->mat,
-        //                 'che' => $student->che,
-        //                 'bio' => $student->bio ?? 0,
-        //                 'phy' => $student->phy,
-        //                 'dzo' => $student->dzo
-        //             ];
-
-        //             // Calculate marks for English and Math
-        //             $totalMarks += $studentMarks['eng'] * $subjectMultipliers['eng'];
-        //             $totalMarks += $studentMarks['mat'] * $subjectMultipliers['mat'];
+                    }
+                    //arts
+                    if ($student->stream === 'ARTS') {
+                        // Get the subject multipliers from the RankingCriteria table
+                        $subjectMultipliers = RankingCriteria::first()->toArray();
                     
-        //             // Calculate marks for other subjects (excluding English and Math)
-        //             $otherSubjects = array_diff_key($studentMarks, ['eng' => 0, 'mat' => 0]);
-        //             arsort($otherSubjects); // Sort other subjects in descending order (highest marks first)
-                    
-        //             $otherSubjects = array_slice($otherSubjects, 0, 3); // Select the two highest marks
-        //             foreach ($otherSubjects as $subject => $marks) {
-        //                 $totalMarks += $marks * $subjectMultipliers[$subject];
-        //             }
+                        if ($subjectMultipliers) {
+                            // Compute the rank based on subject multipliers
+                            $scienceSubjects = ['bmt', 'eng', 'dzo', 'med', 'geo', 'his', 'agfs', 'rige', 'evs','eco'];
+                            foreach ($scienceSubjects as $subject) {
+                                if (array_key_exists($subject, $subjectMultipliers)) {
+                                    $multipliers[$subject] = $subjectMultipliers[$subject];
+                                } else {
+                                    // Handle the case where $subject is not a valid key in $subjectMultipliers.
+                                    $multipliers[$subject] = 0; // Set a default value, e.g., 0.
+                                }
+                            }
+                            //$multipliers[] = $subjectMultipliers[$scienceSubjects]; // Use the correct column for the selected stream
+                            $totalMarks = 0;
+                            $studentMarks = [
+                                'eng' => $student->eng,
+                                'geo' => $student->geo,
+                                'bmt' => $student->bmt ?? 0,
+                                'agfs' => $student->agfs ?? 0,
+                                'rige' => $student->rige ?? 0,
+                                'evs' => $student->evs ?? 0,
+                                'eco' => $student->eco ?? 0,
+                                'his' => $student->his,
+                                'dzo' => $student->dzo,
+                                'med' => $student->med
+                            ];
+        
+                            // Calculate marks for English and Math
+                            $totalMarks += $studentMarks['eng'] * $subjectMultipliers['eng'];
+                            $totalMarks += $studentMarks['bmt'] * $subjectMultipliers['bmt'];
+                            
+                            // Calculate marks for other subjects (excluding English and Math)
+                            $otherSubjects = array_diff_key($studentMarks, ['eng' => 0, 'bmt' => 0]);
+                            arsort($otherSubjects); // Sort other subjects in descending order (highest marks first)
+                            
+                            $otherSubjects = array_slice($otherSubjects, 0, 3); // Select the two highest marks
+                            foreach ($otherSubjects as $subject => $marks) {
+                                $totalMarks += $marks * $subjectMultipliers[$subject];
+                            }
+                            if($student->program_applied === 'soc'){
+                                $student->totalSOC = $totalMarks;
+                                $student->save();
+                            } elseif($student->program_applied === 'sidd') {
+                                $student->totalSIDD = $totalMarks;
+                                $student->save();
+                            } elseif ($student->program_applied === 'both'){
+                                $student->totalSIDD = $totalMarks;
+                                $student->totalSOC = $totalMarks;
+                                $student->save();
+                            }
+                            
+        
+                           
+                }
+                        }
 
-        //             $student->total = $totalMarks;
-        //             $student->save();
+                //soc rank
+                $rankedStudents = DB::table('students')
+                ->select('id', 'totalSOC')
+                ->whereNotNull('totalSOC')
+                ->orderBy('totalSOC', 'desc')
+                ->get();
 
-        //             $rankedStudents = DB::table('students')
-        //             ->select('id', 'total')
-        //              ->where('stream', 'SCIENCE')
-        //              ->whereNotNull('total')
-        //             ->orderBy('total', 'desc')
-        //             ->get();
+                // Assign ranks to the students
+                $rank = 1;
+                foreach ($rankedStudents as $student) {
+                    DB::table('students')
+                    ->where('id', $student->id)
+                    ->update(['rank' => $rank]);
+                    $rank++;
+                }
+                //sidd rank
+                $rankedStudents = DB::table('students')
+                ->select('id', 'totalSIDD')
+                ->whereNotNull('totalSIDD')
+                ->orderBy('totalSIDD', 'desc')
+                ->get();
 
-        // // Assign ranks to the students
-        // $rank = 1;
-        // foreach ($rankedStudents as $student) {
-        //     DB::table('students')
-        //         ->where('id', $student->id)
-        //         ->update(['rank' => $rank]);
-        //     $rank++;
-        // }
-        //         }
-        //     }
+                // Assign ranks to the students
+                $rank = 1;
+                foreach ($rankedStudents as $student) {
+                    DB::table('students')
+                    ->where('id', $student->id)
+                    ->update(['rankSIDD' => $rank]);
+                    $rank++;
+                }
+
         }
-   
 
-    // Calculate the rank for each student based on their subjects and multipliers
-    // foreach ($students as $studentSubject) {
-    //     $multiplier = $studentSubject->subjectMultiplier->$stream; // Use the correct column for the selected stream
-    //     $marks = $studentSubject->marks;
-    //     $rank = $marks * $multiplier;
-
-    //     // Update and save the rank for the student subject
-    //     $studentSubject->rank = $rank;
-    //     $studentSubject->save();
-    // }
-
-    // // Retrieve the ranked students for displaying in the UI
-    // $rankedStudents = $students->groupBy('student_id');
-
-    // return view('rank_students', ['rankedStudents' => $rankedStudents]);
 }
 
 }
