@@ -10,8 +10,8 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id(); // Auto-incremental primary key
+            $table->string('name', 255);
             $table->bigInteger('index_number')->unique();
-
             $table->string('contact_number', 20)->nullable();
             $table->integer('placement_id')->nullable();
             $table->date('date_of_birth')->nullable();

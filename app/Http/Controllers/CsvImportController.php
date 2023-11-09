@@ -61,6 +61,7 @@ class CsvImportController extends Controller
     
             // Map the fixed columns to attributes
             $attributes['index_number'] = $data[0];
+            $attributes['name'] = $data[1];
             $attributes['date_of_birth'] = $data[3];
             $attributes['stream'] = $data[5];
             $attributes['supw'] = $data[22];
