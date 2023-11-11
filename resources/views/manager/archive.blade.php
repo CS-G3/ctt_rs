@@ -31,6 +31,40 @@
         <p>You are not logged in.</p>
     @endif
 
+    <h1>Archive Contents</h1>
+
+    @if ($archives->isEmpty())
+        <p>No records found in the archive.</p>
+    @else
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>File URL</th>
+                    <th>Archived Date</th>
+                    <th>Archived By</th>
+                    <th>Action</th> {{-- Add a new column for the action button --}}
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($archives as $archive)
+                    <tr>
+                        <td>{{ $archive->fileURL }}</td>
+                        <td>{{ $archive->archivedDate }}</td>
+                        <td>{{ $archive->archivedBy }}</td>
+                        <td>
+                            {{-- Add a button to trigger the delete action --}}
+                            <form action="{{ route('archive.delete', $archive->id) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endif
+
 </div>
 </body>
 </html>

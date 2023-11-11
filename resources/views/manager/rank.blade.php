@@ -10,6 +10,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body class="d-flex bg-secondary">
 
@@ -106,13 +111,65 @@
     </div>
 </div>
 
+<div id="archiveModal" style="display: none;">
+    <form id="archiveForm" action="{{ route('archive.save') }}" method="POST">
+        @csrf
+        <label for="file_name">File Name:</label>
+        <input type="text" name="file_name" id="file_name">
+        <button type="submit">Save CSV</button>
+    </form>
+</div>
     <div id="tableContainer" class="table-container "></div>
     <div>
         <button id="addNew">Add new row data</button>
     </div>
 
+    <div>
+        <button id="mainButton" onclick="toggleButtons()">Save</button>
+
+        <div id="additionalButtons" class="hidden">
+            <button onclick="buttonOneAction()">Download</button>
+            <button id="showModalButton">Archive</button>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+function toggleButtons() {
+    var additionalButtons = document.getElementById('additionalButtons');
+
+    // Toggle the 'hidden' class to show/hide the additional buttons
+    if (additionalButtons.style.display === 'none' || additionalButtons.style.display === '') {
+        additionalButtons.style.display = 'block';
+    } else {
+        additionalButtons.style.display = 'none';
+    }
+}
+
+function buttonOneAction() {
+    $.ajax({
+            url: '/download', // Adjust the URL based on your route
+            type: 'GET',
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+}
+
+document.getElementById('showModalButton').addEventListener('click', function() {
+    document.getElementById('archiveModal').style.display = 'block';
+});
+
+// Optional: You might want to close the modal after form submission
+document.getElementById('archiveForm').addEventListener('submit', function() {
+    document.getElementById('archiveModal').style.display = 'none';
+});
+
+
+
+
+
+
     //Table selector 
     $(document).ready(function () {
     $('#tableSelector').on('change', function () {

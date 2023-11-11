@@ -2,37 +2,63 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Archive;
+use App\Models\Student;
+use Illuminate\Http\Request;
 
 class ArchiveController extends Controller
 {
     public function add(Request $request)
     {
-        // Validate the input data
-        $request->validate([
-            'fileURL' => 'required',
-            'archivedDate' => 'required|date',
-            'archivedBy' => 'required',
+        $fileName = $request->input('file_name', 'default_file_name');
+        $archives = Student::all();
+    
+        // Convert the data to CSV format
+        $csvContent = implode(',', array_keys($archives->first()->toArray())) . PHP_EOL; // Header
+    
+        foreach ($archives as $row) {
+            $csvContent .= implode(',', $row->toArray()) . PHP_EOL;
+        }
+    
+        // Save the CSV file to the local machine
+        $folderName = 'archive';
+
+        // Save the CSV file to the local machine inside the "archive" folder
+        $csvFilePath = storage_path("app/public/{$folderName}/{$fileName}.csv");
+        
+        file_put_contents($csvFilePath, $csvContent);
+
+        $archive = new Archive([
+            'fileURL' => $csvFilePath,
+            'archivedDate' => now(), // Assuming you want to store the current date and time
+            'archivedBy' => auth()->user()->name, // Assuming you are using Laravel's built-in authentication
         ]);
-
-        // Create a new Archive model and save it to the database
-        $archive = new Archive;
-        $archive->fileURL = $request->input('fileURL');
-        $archive->archivedDate = $request->input('archivedDate');
-        $archive->archivedBy = $request->input('archivedBy');
         $archive->save();
-
-        // Optionally, you can redirect to a view or return a response
-        // return redirect('/archives')->with('success', 'Record added successfully');
-        return back();
+    
+        // Provide a download link or any other response as needed
+        return response()->json(['message' => "CSV file saved as {$fileName}.csv"]);
     }
 
-    public function delete(Archive $archive )
-    {
-        $archive ->delete();
+    public function showArchive()
+{
+    // Fetch all records from the Archive model
+    $archives = Archive::all();
 
-        // Redirect or return a response after deletion
-        return back();
+    // Return the view with the archive data
+    return view('manager/archive', compact('archives'));
+}
+
+public function deleteArchive($id)
+{
+    $archive = Archive::find($id);
+
+    if ($archive) {
+        unlink($archive->fileURL);
+
+        $archive->delete();
+        return redirect()->route('archive.view')->with('success', 'Archive record deleted successfully.');
+    } else {
+        return redirect()->route('archive.view')->with('error', 'Archive record not found.');
     }
+}
 }
