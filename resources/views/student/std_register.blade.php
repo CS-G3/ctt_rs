@@ -13,7 +13,7 @@
     </style>
 </head>
 <body  style="display:flex; flex-direction:column; justify-content:start; height:auto;">
-    @if ($status)
+    @if ($status !== null)
     <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; width:100%; text-align: center;">
         <span>End Date: {{ $endDate }} | </span>
         <span>Time Remaining: <span id="timeRemaining"></span></span>

@@ -123,19 +123,24 @@ Route::get('/admin/setting', function () {
 // });
 
 Route::get('/ctt-registration', function () {
-      // Fetch the start date, end date, and status from the database
-      $registrationPeriod = RegistrationPeriod::first();
+    // Fetch the start date, end date, and status from the database
+    $registrationPeriod = RegistrationPeriod::first();
 
-      // Check if there's a valid registration period
-      if ($registrationPeriod) {
-          $startDate = $registrationPeriod->startDate;
-          $endDate = $registrationPeriod->endDate;
-          $status = $registrationPeriod->status;
-  
-          return view('student/std_register', compact('startDate', 'endDate', 'status'));
-      }
-  
-      return view('student/std_register');
+    // Check if there's a valid registration period
+    if ($registrationPeriod) {
+        $startDate = $registrationPeriod->startDate;
+        $endDate = $registrationPeriod->endDate;
+        $status = $registrationPeriod->status;
+
+        return view('student/std_register', compact('startDate', 'endDate', 'status'));
+    }
+
+    // If there's no valid registration period, send null values
+    return view('student/std_register', [
+        'startDate' => null,
+        'endDate' => null,
+        'status' => null,
+    ]);
 });
 
 Route::get('/forgot-password', function () {
