@@ -8,6 +8,7 @@ class Student extends Model
 {
     protected $fillable = [
         'index_number',
+        'name',
         'date_of_birth',
         'contact_number',
         'placement_id',

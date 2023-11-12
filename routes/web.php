@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Models\User;
-use App\Models\Eligibility;
 use App\Models\Archive;
 use App\Models\Placement;
+use App\Models\Eligibility;
 use App\Models\RegistrationPeriod;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RankingController;
 /*
 |--------------------------------------------------------------------------
@@ -100,9 +100,8 @@ Route::get('/manager/rank', function () {
     return view('manager/rank');
 });
 
-Route::get('/manager/archive', function () {
-    return view('manager/archive');
-});
+Route::get('/manager/archive', 'App\Http\Controllers\ArchiveController@showArchive')->name('archive.view');
+Route::delete('manager/archive/{id}', 'App\Http\Controllers\ArchiveController@deleteArchive')->name('archive.delete');
 
 Route::get('/manager/setting', function () {
     return view('manager/setting');
@@ -155,14 +154,12 @@ Route::get('/set-password', function () {
     return view('forgot_password/set_password');
 });
 
-Route::get('/archive', function () {
-    $archives = Archive::all(); // Fetch the first eligibility record
 
-    if (!$archives) {
-        // Handle the case where eligibility data is not found
-    }
-    return view('archive', compact('archives'));
-});
+
+//download feature
+
+Route::get('/download', 'App\Http\Controllers\DownloadController@download');
+Route::post('/archiveP', 'App\Http\Controllers\ArchiveController@add')->name('archive.save');
 
 Route::get('/register_user', function () {
     return view('register_user');
