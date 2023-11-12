@@ -42,7 +42,7 @@
 
 @include('manager.sidenav')
 
-<div class="bg-light ml-1 p-4 w-100">
+<div class="bg-light ml-1 p-4 w-100" style=" overflow-x: auto;">
 
     @if(Session::has('success'))
     <div class="alert alert-success">
@@ -59,7 +59,7 @@
 @if ($eligibility)
     <p>Eligibility Information:</p>
 
-    <div class="p-3" style="background-color: rgba(115, 175, 66, 0.4);">
+    <div class="p-2" style="background-color: rgba(115, 175, 66, 0.4);">
     
     <form method="POST" action="{{ route('update.eligibility') }}">
     @csrf
@@ -186,7 +186,18 @@
     <hr>                                    
     <p>Total intake for CTT</p>
 
-    <div class="p-3" style="background-color: rgba(115, 175, 66, 0.4);"></div>
+    <div class="p-3" style="background-color: rgba(115, 175, 66, 0.4);">
+
+        <form method="post" action="{{ route('add.total_intake') }}">
+            @csrf
+            <label for="total_intake">Total Intake:</label>
+            <input type="text" name="total_intake" placeholder="Enter total intake" 
+            title="Enter number with max 3 digits."
+             pattern="\d{3}" required>
+
+            <button type="submit">Save</button>
+        </form>
+    </div>
 
     @endif
     

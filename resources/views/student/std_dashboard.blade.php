@@ -17,6 +17,11 @@
     <span style="padding-left: 10px;">
         <img src="{{ asset('images/gcit_logo.png') }}" alt="GCIT logo" style="width: 50%; height:auto;">
     </span>
+    <span style="font-weight: bold;
+            font-size: 24px; margin-right:3rem;
+            color: #333;">
+        CTTRS Student Dashboard
+    </span>
     <form id="logout-form" action="{{ route('student.logout') }}" method="POST">
         @csrf
         <button type="submit" style="border: none; background-color: transparent; color: rgba(220, 20, 60, 0.8); 
@@ -30,10 +35,13 @@
 </div>
 
     @if(session('student_id')) 
-    {{-- <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom: 20px; width:100%;">
-        //registration date timer
-    </div> --}}
         <div class="dashboard-container"> 
+
+        <div style="font-weight: bold;
+            font-size: 18px;
+            color: #333; margin-bottom: 1rem;">
+            Student Information
+        </div>
             
         @if(Session::has('success')) 
             <div class="alert
@@ -59,34 +67,41 @@
     <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom:20px; display:flex;
     flex-direction:column; justify-content:flex-start; align-items:start;"
     >
-    <div style="display: flex; align-items: end;">
+    <div style="display: flex; align-items: end; margin-left:1rem;">
     <span class="material-symbols-outlined">person</span>
     <span style="font-size: 16px; margin-left: 15px;"> Name: {{ $student->name }}</span>
 
     </div>
-    <div style="margin: 15px 0px 15px 0px; display: flex; align-items: end;">
+    <div style="margin: 15px 0px 15px 0px; display: flex; align-items: end; margin-left:1rem;">
     <span class="material-symbols-outlined">numbers</span>
     <span style="font-size: 16px; margin-left: 15px;">
     Index Number: {{ $student->index_number }}
     </span>
     </div>
 
-    <div style="margin: 0px 0px 15px 0px; display: flex; align-items: end;">
+    <div style="margin: 0px 0px 15px 0px; display: flex; align-items: end; margin-left:1rem;">
         <span class="material-symbols-outlined">trophy</span>
-        <span style="font-size: 16px; margin-left: 15px;">Rank {{ $student->rank }} / 12345</span>
+        <span style="font-size: 16px; margin-left: 15px;">Rank: {{ $student->rank }}</span>
     </div>
 
-    <div style=" display: flex; align-items: end;">
+    <div style=" display: flex; align-items: end; margin-left:1rem;">
         <span class="material-symbols-outlined">priority</span>
-        <span style="font-size: 16px; margin-left: 15px;">Status: you are shortlisted </span>
+        <span style="font-size: 16px; margin-left: 15px;">Status:  
+        @if ($student->rank < $total_intake)
+            shortlisted
+        @else
+            not shortlisted
+        @endif
+        </span>
     </div>
 
     </div>
 
-    <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom:20px; display:flex; justify-content: space-around; align-items: center;">
-    <span class="material-symbols-outlined"> description </span> 
+    <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom:20px;
+     display:flex; justify-content: space-between; align-items: center;">
+    <!-- <span class="material-symbols-outlined"> description </span>  -->
 
-    <div>
+    <div style=" margin-left: 1rem">
         <p>Stream</p> 
         <p>{{ strtoupper($student->stream) }}</p> 
     </div>
@@ -122,7 +137,7 @@
     @endforeach
 
     @if ($student->supw !== null)
-    <div>
+    <div  style=" margin-right: 1rem">
         <p>SUPW</p>
         <p>{{ strtoupper($student->supw) }}</p>
     </div>
@@ -130,30 +145,27 @@
 
     </div>
 
-    <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom: 20px; display: flex;
-        justify-content: space-around; align-items: center;"> 
-        <span class="material-symbols-outlined">
-        info
-        </span>
-        <label style="font-size: 16px; margin-left: 5px;">Contact Number:</label>
+    <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom: 20px; 
+    display: flex;
+         align-items: center;  justify-content: space-between;"> 
 
-        <form method="POST" action="{{ route('student.updatePlacement', ['id' => $student->id])}}" style="display: flex;
-        flex-direction: row; align-items: center;">
+        <form method="POST" action="{{ route('student.updatePlacement', ['id' => $student->id])}}"
+         style="display: flex; margin-left:1rem;
+        flex-direction: row; align-items: center; justify-content: space-between;">
         @csrf
         @method('PUT')
 
-        <!-- Input fields for updating the contact number -->
+        <label style="font-size: 16px; margin-right:0.5rem">Contact Number:</label>
+
         <input type="text" name="contact_number" value="{{ old('contact_number', $student->contact_number) }}"
         pattern="^\d{8}$" title="Enter a valid phone number. Ex. 17123456 or 77123456"
-        style="width: 60%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 3px;"
+        style=" padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 3px;"
         id="contactNumberInput">
 
 
-        <label style="font-size: 16px; margin-left: 5px;">Placement:</label>
+        <label style="font-size: 16px; margin-left:1rem; margin-right:0.5rem">Placement:</label>
 
         <div style="display: flex; flex-direction: row; align-items: center;">
-        @csrf
-        @method('PUT')
 
         <select name="placement_id" id="placementSelect"
             style="padding: 10px 0px 10px 0px; border: 1px solid #ccc; border-radius: 3px;"
@@ -191,12 +203,19 @@
         <div style="margin-left: 1rem; margin-top: 1rem;">
             All the best for GCIT Computational Thinking Test (CTT).
         </div>
+        
     </div>
+
+    <div style="font-size: 16px;
+            color: #333; margin-bottom: 1rem;">
+            &copy GCIT CTTRS {{ now()->format('Y') }}
+        </div>
     @endif
     
     @else
     <p>You are not logged in.</p>
     @endif
+
 
 </body>
 

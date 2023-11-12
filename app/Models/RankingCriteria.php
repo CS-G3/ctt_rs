@@ -27,6 +27,7 @@ class RankingCriteria extends Model
         'mat',
         'phy',
         'che',
-        'bio'
+        'bio',
+        'total_intake'
     ];
 }

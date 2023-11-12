@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\RankingCriteria;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Placement;
@@ -33,8 +34,9 @@ class StudentController extends Controller
         $student_id = Session::get('student_id');
         $student = Student::findOrFail($student_id);
         $placement = Placement::all(); // Fetch the first eligibility record
+        $total_intake = RankingCriteria::first()->total_intake; //fetch thte total intake number
 
-        return view('student/std_dashboard', compact('student', 'placement'));
+        return view('student/std_dashboard', compact('student', 'placement', 'total_intake'));
     }
 
     public function login(Request $request)

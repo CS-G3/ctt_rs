@@ -14,18 +14,18 @@
 </head>
 <body  style="display:flex; flex-direction:column; justify-content:start; height:auto;">
     @if ($status)
-    <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom: 20px; width:100%; text-align: center;">
+    <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; width:100%; text-align: center;">
         <span>End Date: {{ $endDate }} | </span>
         <span>Time Remaining: <span id="timeRemaining"></span></span>
     </div>
     @else
-    <div style="background-color: rgba(169, 68, 66, 0.4); padding: 20px; margin-bottom: 20px; width:100%; text-align: center;">
+    <div style="background-color: rgba(169, 68, 66, 0.4); padding: 20px; width:100%; text-align: center;">
         <span>End Date: {{ $endDate }} | </span>
         <span>Registation Closed</span>
     </div>
     @endif
 
-    <div class="login-container" style="margin-top: 5rem">
+    <div class="login-container" style="margin-top: 3rem">
         <img src="{{ asset('images/gcit_logo.png') }}" alt="User Image">
 
         <form method="POST" action="{{ route('students.updateByIndex') }}">

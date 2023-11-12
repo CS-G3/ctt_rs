@@ -6,7 +6,7 @@ use App\Models\Eligibility;
 use App\Models\Archive;
 use App\Models\Placement;
 use App\Models\RegistrationPeriod;
-
+use App\Http\Controllers\RankingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,9 +18,10 @@ use App\Models\RegistrationPeriod;
 |
 */
 
-// Route::get('/login', function () {
-//     return view('login');
-// });
+Route::get('/', function () {
+    return view('index');
+});
+
 Route::namespace('App\Http\Controllers\Auth')->group(function () {
     // Authentication routes
     Route::get('/login', 'LoginController@show')->name('login');
@@ -72,6 +73,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
 // Route::get('/admin/edit', function () {
 //     return view('admin/edit');
 // });
+
+Route::post('/add-total-intake', [RankingController::class, 'addTotalIntake'])->name('add.total_intake');
 
 Route::get('/manager/dashboard', function () {
     $eligibility = Eligibility::first(); // Fetch the first eligibility record
