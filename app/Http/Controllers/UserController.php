@@ -19,13 +19,28 @@ class UserController extends Controller
     public function editManager($id)
     {
         $user = User::find($id); // Retrieve the user by ID
-        return view('/admin/edit', compact('user'));
+        return view('/admin/setting', compact('user'));
     }
 
     public function edit($id)//user self
     {
         $user = User::find($id); // Retrieve the user by ID
         return view('/manager/setting', compact('user'));
+    }
+
+    // In your controller method
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        
+        $users = User::where('role', 'manager')
+            ->where(function($query) use ($search) {
+                $query->where('name', 'like', "%$search%")
+                      ->orWhere('email', 'like', "%$search%");
+            })
+            ->get();
+    
+        return view('admin/admin_dashboard', ['users' => $users]);
     }
 
     public function updateNameEmailPassword(Request $request)

@@ -7,6 +7,8 @@ use App\Models\Eligibility;
 use App\Models\RegistrationPeriod;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RankingController;
+use App\Http\Controllers\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -66,13 +68,14 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::post('/add_placement', 'PlacementController@add')->name('placement.add');
     // Route::delete('/placement/{placement}', 'PlacementController@delete')->name('placement.delete');
     Route::delete('/placement', 'PlacementController@delete')->name('placement.delete');
-    Route::delete('/registrationPeriod/{registrationPeriod}', 'registrationPeriodController@delete')->name('registrationPeriod.delete');
+    // Route::delete('/registrationPeriod/{registrationPeriod}', 'registrationPeriodController@delete')->name('registrationPeriod.delete');
 
+    Route::get('/admin/search', [UserController::class, 'search'])->name('admin.search');
 });
 
-// Route::get('/admin/edit', function () {
-//     return view('admin/edit');
-// });
+Route::get('/admin/add-user', function () {
+    return view('admin/addUser');
+});
 
 Route::post('/add-total-intake', [RankingController::class, 'addTotalIntake'])->name('add.total_intake');
 
@@ -100,21 +103,22 @@ Route::get('/manager/rank', function () {
     return view('manager/rank');
 });
 
+Route::get('/manager/add-student', function () {
+    return view('manager/addStudent');
+});
+
+
 Route::get('/manager/archive', 'App\Http\Controllers\ArchiveController@showArchive')->name('archive.view');
 Route::delete('manager/archive/{id}', 'App\Http\Controllers\ArchiveController@deleteArchive')->name('archive.delete');
 
-Route::get('/manager/setting', function () {
-    return view('manager/setting');
-});
+// Route::get('/manager/setting', function () {
+//     return view('manager/setting');
+// });
 
 Route::get('/admin/dashboard', function () {
     $authUser = User::all();
     $users = User::where('role', 'manager')->get();
     return view('admin/admin_dashboard', compact('users', 'authUser'));
-});
-
-Route::get('/admin/setting', function () {
-    return view('setting');
 });
 
 // Route::get('/student/dashboard', function () {

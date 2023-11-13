@@ -20,9 +20,7 @@
 
 @include('manager.sidenav')
 
-<div class="bg-light ml-1 p-4 w-100">
-
-    
+<div class="bg-light ml-1 p-4 w-100" style="overflow:auto">
     
     @if(Session::has('success'))
         <div class="alert alert-success">
@@ -36,9 +34,6 @@
         </div>
     @endif
     
-    @else
-        <p>You are not logged in.</p>
-    @endif
     <div class="container">
         <div class="row">
             <div class="col-md-2">
@@ -66,9 +61,7 @@
             </div>
         </div>
     </div>
-    
 
-            <!-- Modal -->
 <div class="modal fade" id="criteriaModal" tabindex="-1" role="dialog" aria-labelledby="criteriaModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -121,6 +114,7 @@
 </div>
     <div id="tableContainer" class="table-container "></div>
     <div>
+        <a href="{{ ('/manager/add-student') }}"> Add Student</a>
         <button id="addNew">Add new row data</button>
     </div>
 
@@ -164,11 +158,6 @@ document.getElementById('showModalButton').addEventListener('click', function() 
 document.getElementById('archiveForm').addEventListener('submit', function() {
     document.getElementById('archiveModal').style.display = 'none';
 });
-
-
-
-
-
 
     //Table selector 
     $(document).ready(function () {
@@ -244,8 +233,10 @@ $(document).ready(function () {
     });
 });
 
-
 </script>
 </body>
 
+@else
+    <p>You are not logged in.</p>
+@endif
 </html>

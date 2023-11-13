@@ -81,14 +81,21 @@
 
     <div style="margin: 0px 0px 15px 0px; display: flex; align-items: end; margin-left:1rem;">
         <span class="material-symbols-outlined">trophy</span>
-        <span style="font-size: 16px; margin-left: 15px;">Rank: {{ $student->rank }}</span>
+        <span style="font-size: 16px; margin-left: 15px;">
+            Rank: 
+            {{ $student->rank !== null && $student->rank !== '' &&
+            $student->rank !== 0 ? $student->rank : '-' }}
+        </span>
+
     </div>
 
     <div style=" display: flex; align-items: end; margin-left:1rem;">
         <span class="material-symbols-outlined">priority</span>
         <span style="font-size: 16px; margin-left: 15px;">Status:  
-        @if ($student->rank < $total_intake)
+        @if ($student->rank != null && ($student->rank < $total_intake))
             shortlisted
+        @elseif (!$student->rank)
+         not ranked
         @else
             not shortlisted
         @endif
@@ -158,7 +165,7 @@
         <label style="font-size: 16px; margin-right:0.5rem">Contact Number:</label>
 
         <input type="text" name="contact_number" value="{{ old('contact_number', $student->contact_number) }}"
-        pattern="^\d{8}$" title="Enter a valid phone number. Ex. 17123456 or 77123456"
+        pattern="(975\d{8}|(17|77)\d{6})" title="Enter a valid phone number. Ex. 17123456 or 77123456"
         style=" padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 3px;"
         id="contactNumberInput">
 
@@ -197,8 +204,10 @@
             @endforeach
         </div>
         <div style="margin-left: 1rem; margin-top: 1rem;">
-            Date:
-            {{ $item->time }}
+        Date: {{ \Carbon\Carbon::parse($item->time)->format('Y-m-d') }}
+        </div>
+        <div style="margin-left: 1rem; margin-top: 1rem;">
+        Time: {{ \Carbon\Carbon::parse($item->time)->format('h:i A') }}
         </div>
         <div style="margin-left: 1rem; margin-top: 1rem;">
             All the best for GCIT Computational Thinking Test (CTT).

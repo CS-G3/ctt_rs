@@ -139,7 +139,7 @@ class StudentController extends Controller
             $student = Student::where('id', $id)->firstOrFail();
     
             $validatedData = $request->validate([
-                'contact_number' => 'sometimes|regex:/^\d{8}$/',
+                'contact_number' => 'required|regex:/^\d{8}(\d{3})?$/',
                 'placement_id' => 'sometimes|required',
             ]);
     
@@ -179,7 +179,7 @@ class StudentController extends Controller
         // return redirect('/login'); // Redirect to the student list or another page
     }
 
-    public function updateByIndex(Request $request)
+    public function updateByIndex(Request $request)//apply
     {
         $indexNumber = $request->input('index_number');
         $student = Student::where('index_number', $indexNumber)->first();

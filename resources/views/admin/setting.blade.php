@@ -11,10 +11,10 @@
 </head>
 <body class="d-flex bg-secondary">
 
-@include('manager.sidenav')
+@include('admin.sidenav')
 
     @include('components.edit')
-    
+
 @else
 
 @endif

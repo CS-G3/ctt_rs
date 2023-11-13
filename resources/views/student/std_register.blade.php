@@ -13,15 +13,19 @@
     </style>
 </head>
 <body  style="display:flex; flex-direction:column; justify-content:start; height:auto;">
-    @if ($status !== null)
+    @if ($status != null)
     <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; width:100%; text-align: center;">
         <span>End Date: {{ $endDate }} | </span>
         <span>Time Remaining: <span id="timeRemaining"></span></span>
     </div>
     @else
     <div style="background-color: rgba(169, 68, 66, 0.4); padding: 20px; width:100%; text-align: center;">
+        @if ($endDate != null)
         <span>End Date: {{ $endDate }} | </span>
         <span>Registation Closed</span>
+        @else
+        <span>Registation Closed</span>
+        @endif
     </div>
     @endif
 
@@ -57,7 +61,7 @@
             @endif
 
             <label>Index Number</label>
-            <input type="text" placeholder="Index Number" pattern="[0-9]{12}" name="index_number"
+            <input type="text" placeholder="Index Number" pattern="[0-9]{11}" name="index_number"
              title="Enter a valid index number." required>
 
             <label>Program</label>

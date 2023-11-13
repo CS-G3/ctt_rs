@@ -18,6 +18,19 @@
     <hr>
     <h3>Add User</h3>
     <div style="padding: 0 20% 0 20%">
+    
+    @if(Session::has('success'))
+        <div class="alert alert-success">
+            {{ Session::get('success') }}
+        </div>
+    @endif
+
+    @if(Session::has('error'))
+        <div class="alert alert-danger">
+            {{ Session::get('error') }}
+        </div>
+    @endif
+    
     <form method="POST" action="{{ route('register') }}">
         @csrf
         <label for="name">Name:</label>

@@ -45,7 +45,7 @@
             @endif
             
             <label>Index Number</label>
-            <input type="text" placeholder="Index Number" name="index_number" pattern="[0-9]{12}" required>
+            <input type="text" placeholder="Index Number" name="index_number" pattern="[0-9]{11}" required>
 
             <label >Date of Birth</label>
             <input type="date" placeholder="Date of Birth" name="date_of_birth" required>
