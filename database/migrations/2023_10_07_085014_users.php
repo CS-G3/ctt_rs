@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id(); // Auto-incremental primary key
+            $table->uuid('id')->primary(); // UUID primary key
             $table->string('name'); // String column
             $table->string('email')->unique(); // Unique email column
             $table->string('password'); // String column for password
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('users');
     }
 };
