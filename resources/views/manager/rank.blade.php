@@ -11,6 +11,17 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <style>
+        button {
+            background-color: #73AF42;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+    </style>
+    <style>
         .hidden {
             display: none;
         }
@@ -20,7 +31,9 @@
 
 @include('manager.sidenav')
 
-<div class="bg-light ml-1 p-4 w-100" style="overflow:auto">
+<div class="bg-light ml-1 p-4 w-100">
+
+    
     
     @if(Session::has('success'))
         <div class="alert alert-success">
@@ -44,21 +57,34 @@
                 </select>
             </div>
             <div class="col-md-2">
-                <button id="setupCriteria" class="btn btn-primary" data-toggle="modal" data-target="#criteriaModal">Setup Criteria</button>
+                <button id="setupCriteria" data-toggle="modal" data-target="#criteriaModal" style="display: flex; justify-content: center; align-items: center; background-color: #73AF42; color: #fff; border: none; border-radius: 3px; padding: 10px 20px; cursor: pointer;">
+                    <i class='bx bx-cog' style="font-size: 20px; margin-right: 5px;"></i>
+                    <span style="font-size: 14px;">Setup Criteria</span>
+                </button>
             </div>
             <div class="col-md-4">
-                <input type="number" id="searchInput" class="form-control" placeholder="Enter your search query">
-            </div>
+                <div style="display: flex;">
+                    <input type="text" id="searchInput" placeholder="Enter your search query" style="margin-right: 10px;">
+                    <button id="searchButton" style="background-color: #73AF42; color: #fff; border: none; border-radius: 3px; padding: 10px 20px; cursor: pointer;">
+                        Search
+                    </button>
+                </div>
+             </div>
             <div class="col-md-1"></div>
             <div class="col-md-2">
                 <form id="uploadForm" action="{{ route('import.csv') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <input type="file" name="file" accept=".csv, .xls, .xlsx" required>
+                    <input type="file" name="file" id="fileInput" accept=".csv, .xls, .xlsx" required style="display: none;">
+                    <button id="fileButton" style="display: flex; justify-content: center; align-items: center; background-color: #73AF42; color: #fff; border: none; border-radius: 3px; padding: 10px 20px; cursor: pointer;">
+                        <i class='bx bx-upload' style="font-size: 20px; margin-right: 5px;"></i>
+                        <span style="font-size: 14px; margin-left:0.2rem;">Upload a File</span>
+                    </button>
                 </form>
                 <form id="rankStudentsForm" action="{{ route('rankStudents') }}" method="POST" style="display: none;">
                     @csrf
                 </form>
             </div>
+            
         </div>
     </div>
 
@@ -128,6 +154,24 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    {{-- handle file upload --}}
+    <script>
+        document.getElementById('fileButton').addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+    
+        // Optional: If you want to display the chosen file's name after selection
+        document.getElementById('fileInput').addEventListener('change', function() {
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length > 0) {
+                const fileName = fileInput.files[0].name;
+                // Display the selected file name or perform any other actions
+                console.log('Selected file:', fileName);
+            }
+        });
+    </script>
+
 <script>
 function toggleButtons() {
     var additionalButtons = document.getElementById('additionalButtons');
