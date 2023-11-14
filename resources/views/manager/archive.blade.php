@@ -39,16 +39,17 @@
         <table border="1">
             <thead>
                 <tr>
-                    <th>File URL</th>
+                    <th>File Name</th>
                     <th>Archived Date</th>
                     <th>Archived By</th>
-                    <th>Action</th> {{-- Add a new column for the action button --}}
+                    <th>Action</th> 
+                    <th>Download</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($archives as $archive)
                     <tr>
-                        <td>{{ $archive->fileURL }}</td>
+                        <td>{{ $archive->name }}</td>
                         <td>{{ $archive->archivedDate }}</td>
                         <td>{{ $archive->archivedBy }}</td>
                         <td>
@@ -58,6 +59,11 @@
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                             </form>
+                        </td>
+
+                        <td>
+                            {{-- Download button --}}
+                            <a href="{{ route('archive.butDownload', $archive->id) }}" class="btn btn-primary btn-sm">Download</a>
                         </td>
                     </tr>
                 @endforeach

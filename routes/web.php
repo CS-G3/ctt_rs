@@ -162,8 +162,10 @@ Route::get('/set-password', function () {
 
 //download feature
 
-Route::get('/download', 'App\Http\Controllers\DownloadController@download');
+Route::get('/download', 'App\Http\Controllers\DownloadController@download')->name('archive.download');
 Route::post('/archiveP', 'App\Http\Controllers\ArchiveController@add')->name('archive.save');
+Route::get('/archive/download/{id}', 'App\Http\Controllers\ArchiveController@download')->name('archive.butDownload');
+
 
 Route::get('/register_user', function () {
     return view('register_user');

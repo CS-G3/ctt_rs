@@ -12,6 +12,7 @@ return new class extends Migration
     {
         Schema::create('archive', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('fileURL'); // Add fileURL column
             $table->timestamp('archivedDate'); // Add archivedDate column
             $table->string('archivedBy'); // Add archivedBy column

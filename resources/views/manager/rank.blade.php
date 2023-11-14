@@ -148,7 +148,10 @@
         <button id="mainButton" onclick="toggleButtons()">Save</button>
 
         <div id="additionalButtons" class="hidden">
+            <form action="{{ route('archive.download') }}" method="GET">
+                @csrf
             <button onclick="buttonOneAction()">Download</button>
+            </form>
             <button id="showModalButton">Archive</button>
         </div>
     </div>
@@ -183,17 +186,6 @@ function toggleButtons() {
         additionalButtons.style.display = 'none';
     }
 }
-
-function buttonOneAction() {
-    $.ajax({
-            url: '/download', // Adjust the URL based on your route
-            type: 'GET',
-            error: function(error) {
-                console.error('Error:', error);
-            }
-        });
-}
-
 document.getElementById('showModalButton').addEventListener('click', function() {
     document.getElementById('archiveModal').style.display = 'block';
 });

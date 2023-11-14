@@ -17,7 +17,6 @@ class CreateStudentsTable extends Migration
             $table->date('date_of_birth')->nullable();
             $table->string('stream', 255);
             $table->char('supw', 1);
-            $table->integer('eligibility_criteria_id')->nullable();
             $table->integer('eng')->nullable();
             $table->integer('dzo')->nullable();
             $table->integer('com')->nullable();

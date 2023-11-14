@@ -8,7 +8,7 @@ class Archive extends Model
 {
     protected $table = 'archive';
 
-    protected $fillable = ['fileURL', 'archivedDate', 'archivedBy'];
+    protected $fillable = ['name','fileURL', 'archivedDate', 'archivedBy'];
 
     // Add any additional properties, relationships, or methods as needed
 }
