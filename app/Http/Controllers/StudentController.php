@@ -174,6 +174,7 @@ class StudentController extends Controller
 
         // Create and save a new student record using the Student model
         $student = Student::create($request->all());
+        return back()->with('success', 'Student data added.');
 
         // Redirect or perform any other action after student registration
         // return redirect('/login'); // Redirect to the student list or another page

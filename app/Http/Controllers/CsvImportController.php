@@ -44,7 +44,10 @@ class CsvImportController extends Controller
             
         } else {
             $csvData = file($file);
-        }
+        } 
+
+        Student::truncate();
+
         // error_log(print_r($csvData, true));
         // error_log(print_r($csvData, true));
         // Process and store data in the database

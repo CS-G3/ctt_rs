@@ -20,8 +20,7 @@
             cursor: pointer;
             font-size: 12px;
         }
-    </style>
-    <style>
+
         .hidden {
             display: none;
         }
@@ -31,10 +30,8 @@
 
 @include('manager.sidenav')
 
-<div class="bg-light ml-1 p-4 w-100">
+<div class="bg-light ml-1 p-4 w-100"  style="overflow:auto; height:100vh;">
 
-    
-    
     @if(Session::has('success'))
         <div class="alert alert-success">
             {{ Session::get('success') }}
@@ -49,40 +46,42 @@
     
     <div class="container">
         <div class="row">
+
             <div class="col-md-2">
                 <select id="tableSelector" class="form-control">
                     <option value="table1" selected>SOC</option>
                     <option value="table2">SIDD</option>
-                    <!-- Add more options for each table -->
                 </select>
             </div>
-            <div class="col-md-2">
-                <button id="setupCriteria" data-toggle="modal" data-target="#criteriaModal" style="display: flex; justify-content: center; align-items: center; background-color: #73AF42; color: #fff; border: none; border-radius: 3px; padding: 10px 20px; cursor: pointer;">
-                    <i class='bx bx-cog' style="font-size: 20px; margin-right: 5px;"></i>
+
+            <div class="col-md-3">
+                <button id="setupCriteria" data-toggle="modal" data-target="#criteriaModal" 
+                style="display: flex; justify-content: center; align-items: center;">
+                    <i class='bx bx-cog' style="font-size: 18px; margin-right: 5px;"></i>
                     <span style="font-size: 14px;">Setup Criteria</span>
                 </button>
             </div>
-            <div class="col-md-4">
-                <div style="display: flex;">
-                    <input type="text" id="searchInput" placeholder="Enter your search query" style="margin-right: 10px;">
+
+            <div class="col-md-4" style="display: flex;">
+                    <input type="text" id="searchInput" placeholder="Enter your search query" 
+                    style="margin-right: 10px; border-radius:5px; border:none; background-color:lightgrey; padding: 5px;">
                     <button id="searchButton" style="background-color: #73AF42; color: #fff; border: none; border-radius: 3px; padding: 10px 20px; cursor: pointer;">
                         Search
                     </button>
-                </div>
              </div>
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
+
+            <div class="col-md-3">
                 <form id="uploadForm" action="{{ route('import.csv') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <input type="file" name="file" id="fileInput" accept=".csv, .xls, .xlsx" required style="display: none;">
-                    <button id="fileButton" style="display: flex; justify-content: center; align-items: center; background-color: #73AF42; color: #fff; border: none; border-radius: 3px; padding: 10px 20px; cursor: pointer;">
+                    <button id="fileButton" style="display: flex; justify-content: center; align-items: center;">
                         <i class='bx bx-upload' style="font-size: 20px; margin-right: 5px;"></i>
                         <span style="font-size: 14px; margin-left:0.2rem;">Upload a File</span>
                     </button>
                 </form>
-                <form id="rankStudentsForm" action="{{ route('rankStudents') }}" method="POST" style="display: none;">
+                <!-- <form id="rankStudentsForm" action="{{ route('rankStudents') }}" method="POST" style="display: none;">
                     @csrf
-                </form>
+                </form> -->
             </div>
             
         </div>
@@ -92,15 +91,26 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="criteriaModalLabel">Subject Weightage</h5>
+                <h5 class="modal-title" id="criteriaModalLabel">Subject Multiplier</h5>
             </div>
             <div class="modal-body">
-                
+               
                 <form action="{{ route('update-ranking-criteria') }}" id="criteriaForm" method="post">
                     @csrf
                     <div id="messageContainer" class="text-center"></div>
-                    {{-- <input type="text" name="ranking_criteria_id" placeholder="Year"><br> --}}
-                    <input type="text" name="eng" placeholder="eng"><br>
+
+                    <div class="col-md-3">
+                        <input type="text" name="eng" placeholder="eng"><br>
+                    </div>
+
+                    <div class="col-md-3">
+                        <input type="text" name="eng" placeholder="eng"><br>
+                    </div>
+
+                    <div class="col-md-3">
+                        <input type="text" name="eng" placeholder="eng"><br>
+                    </div>
+                    
                     <input type="text" name="dzo" placeholder="dzo"><br>
                     <input type="text" name="com" placeholder="com"><br>
                     <input type="text" name="acc" placeholder="acc"><br>
@@ -123,9 +133,6 @@
                     <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
-            <div class="modal-footer">
-                
-            </div>
         </div>
     </div>
 </div>
@@ -138,23 +145,55 @@
         <button type="submit">Save CSV</button>
     </form>
 </div>
-    <div id="tableContainer" class="table-container "></div>
-    <div>
-        <a href="{{ ('/manager/add-student') }}"> Add Student</a>
-        <button id="addNew">Add new row data</button>
-    </div>
 
-    <div>
+    <div id="tableContainer" class="" style="height:70vh"></div>
+
+    
+    <button><a href="{{ ('/manager/add-student') }}" style="color:#fff"> Add Student</a></button>
+
+    <!-- Button to open the dialog box -->
+    <button onclick="openDialog()">Save</button>
+
+    <!-- The dialog box -->
+    <dialog id="saveDialog">
+        <p>This is a simple dialog box.</p>
+        <form action="{{ route('archive.download') }}" method="GET">
+                @csrf
+            <button onclick="buttonOneAction()">Download</button>
+        </form>
+        
+        <button id="showModalButton">Archive</button>
+
+        <button onclick="closeDialog()">Close</button>
+    </dialog>
+
+    <!-- <div>
         <button id="mainButton" onclick="toggleButtons()">Save</button>
 
         <div id="additionalButtons" class="hidden">
-            <form action="{{ route('archive.download') }}" method="GET">
-                @csrf
-            <button onclick="buttonOneAction()">Download</button>
-            </form>
-            <button id="showModalButton">Archive</button>
-        </div>
+           
+        </div> -->
     </div>
+
+    <script>
+    // Function to open the dialog box
+    function openDialog() {
+            // Get the dialog element
+            var dialog = document.getElementById('saveDialog');
+
+            // Open the dialog box
+            dialog.showModal();
+        }
+
+        // Function to close the dialog box
+        function closeDialog() {
+            // Get the dialog element
+            var dialog = document.getElementById('saveDialog');
+
+            // Close the dialog box
+            dialog.close();
+        }
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -176,19 +215,19 @@
     </script>
 
 <script>
-function toggleButtons() {
-    var additionalButtons = document.getElementById('additionalButtons');
+// function toggleButtons() {
+//     var additionalButtons = document.getElementById('additionalButtons');
 
-    // Toggle the 'hidden' class to show/hide the additional buttons
-    if (additionalButtons.style.display === 'none' || additionalButtons.style.display === '') {
-        additionalButtons.style.display = 'block';
-    } else {
-        additionalButtons.style.display = 'none';
-    }
-}
-document.getElementById('showModalButton').addEventListener('click', function() {
-    document.getElementById('archiveModal').style.display = 'block';
-});
+//     // Toggle the 'hidden' class to show/hide the additional buttons
+//     if (additionalButtons.style.display === 'none' || additionalButtons.style.display === '') {
+//         additionalButtons.style.display = 'block';
+//     } else {
+//         additionalButtons.style.display = 'none';
+//     }
+// }
+// document.getElementById('showModalButton').addEventListener('click', function() {
+//     document.getElementById('archiveModal').style.display = 'block';
+// });
 
 // Optional: You might want to close the modal after form submission
 document.getElementById('archiveForm').addEventListener('submit', function() {
