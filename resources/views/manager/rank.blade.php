@@ -10,6 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="{{ asset('css/components.css') }}"> -->
     <style>
         button {
             background-color: #73AF42;
@@ -24,6 +25,19 @@
         .hidden {
             display: none;
         }
+
+        input {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .large-modal .modal-dialog {
+            max-width: 80%;
+            margin-top: 10rem;
+        }
+
     </style>
 </head>
 <body class="d-flex bg-secondary">
@@ -63,7 +77,7 @@
             </div>
 
             <div class="col-md-4" style="display: flex;">
-                    <input type="text" id="searchInput" placeholder="Enter your search query" 
+                    <input type="text" id="searchInput" placeholder="Search" 
                     style="margin-right: 10px; border-radius:5px; border:none; background-color:lightgrey; padding: 5px;">
                     <button id="searchButton" style="background-color: #73AF42; color: #fff; border: none; border-radius: 3px; padding: 10px 20px; cursor: pointer;">
                         Search
@@ -87,51 +101,64 @@
         </div>
     </div>
 
-<div class="modal fade" id="criteriaModal" tabindex="-1" role="dialog" aria-labelledby="criteriaModalLabel" aria-hidden="true">
+<div class="modal fade large-modal" id="criteriaModal" tabindex="-1" role="dialog" aria-labelledby="criteriaModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="criteriaModalLabel">Subject Multiplier</h5>
             </div>
             <div class="modal-body">
-               
-                <form action="{{ route('update-ranking-criteria') }}" id="criteriaForm" method="post">
-                    @csrf
-                    <div id="messageContainer" class="text-center"></div>
 
-                    <div class="col-md-3">
-                        <input type="text" name="eng" placeholder="eng"><br>
-                    </div>
+            @php
+                // Assuming $criteria is an associative array with column names as keys
+                $criteria = [
+                    'mat' => 'Mathematics',
+                    'bmt' => 'Business Mathematics',
+                    'eng' => 'English',
+                    'phy' => 'Physics',
+                    'che' => 'Chemistry',
+                    'bio' => 'Biology',
+                    'dzo' => 'Dzongkha',
+                    'com' => 'Commerce',
+                    'acc' => 'Accounting',
+                    'geo' => 'Geography',
+                    'his' => 'History',
+                    'eco' => 'Economics',
+                    'med' => 'Media',
+                    'bent' => '',
+                    'evs' => 'Environmental Science',
+                    'rige' => 'Rigzhung',
+                    'agfs' => 'Agricultural Science',
+                ];
+            @endphp
 
-                    <div class="col-md-3">
-                        <input type="text" name="eng" placeholder="eng"><br>
-                    </div>
+            <form action="{{ route('update-ranking-criteria') }}" id="criteriaForm" method="post">
+            @csrf
+            <div id="messageContainer" class="text-center"></div>
 
-                    <div class="col-md-3">
-                        <input type="text" name="eng" placeholder="eng"><br>
-                    </div>
-                    
-                    <input type="text" name="dzo" placeholder="dzo"><br>
-                    <input type="text" name="com" placeholder="com"><br>
-                    <input type="text" name="acc" placeholder="acc"><br>
-                    <input type="text" name="bmt" placeholder="bmt"><br>
-                    <input type="text" name="geo" placeholder="geo"><br>
-                    <input type="text" name="his" placeholder="his"><br>
-                    <input type="text" name="eco" placeholder="eco"><br>
-                    <input type="text" name="med" placeholder="med"><br>
-                    <input type="text" name="bent" placeholder="bent"><br>
-                    <input type="text" name="evs" placeholder="evs"><br>
-                    <input type="text" name="rige" placeholder="rige"><br>
-                    <input type="text" name="agfs" placeholder="agfs"><br>
-                    <input type="text" name="mat" placeholder="mat"><br>
-                    <input type="text" name="phy" placeholder="phy"><br>
-                    <input type="text" name="che" placeholder="che"><br>
-                    <input type="text" name="bio" placeholder="bio"><br>
-                    <input type="text" name="socT" placeholder="Soc total students"><br>
-                    <input type="text" name="siddT" placeholder="SIDD total students"><br>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" value="Submit" class="btn btn-primary">Submit</button>
-                </form>
+            <table>
+                <tr style="background-color:#fff">
+                    <td style="padding:5px; font-weight:500">Subject</td>
+                    @foreach ($criteria as $column => $subject)
+                        <td style="padding:5px;">{{ strtoupper($column) }}</td>
+                    @endforeach
+                </tr>
+                <tr style="background-color:#EDEDED;">
+                    <td style="padding:5px; font-weight:500">Multiplier</td>
+                    @foreach ($criteria as $column => $subject)
+                        <td style="padding:5px;">
+                            <input id="{{ $column }}" name="{{ $column }}" value="{{ $rankingCriteria->{$column} }}">
+                        </td>
+                    @endforeach
+                </tr>
+            </table>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="submit" value="Submit">Submit</button>
+            </div>
+        </form>
+
             </div>
         </div>
     </div>
@@ -276,7 +303,7 @@ $(document).ready(function () {
             data: formData,
             success: function (response) {
                 // Display a success message in the modal
-                $('#messageContainer').html('<div class="alert alert-success">Data updated or inserted successfully</div>');
+                $('#messageContainer').html('<div class="alert alert-success">Multiplier updated successfully.</div>');
             },
             error: function (xhr, status, error) {
                 // Display an error message in the modal

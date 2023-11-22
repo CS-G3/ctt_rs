@@ -8,7 +8,7 @@ use App\Models\RegistrationPeriod;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\UserController;
-
+use App\Models\RankingCriteria;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -100,8 +100,12 @@ Route::get('/manager/dashboard', function () {
 });
 
 Route::get('/manager/rank', function () {
-    return view('manager/rank');
+    $rankingCriteria = RankingCriteria::first(); // Retrieve the first row from the table
+
+    // Pass the data to the view
+    return view('manager/rank', ['rankingCriteria' => $rankingCriteria]);
 });
+
 
 Route::get('/manager/add-student', function () {
     return view('manager/addStudent');

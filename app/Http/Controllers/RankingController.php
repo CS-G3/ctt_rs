@@ -30,7 +30,8 @@ class RankingController extends Controller
     }
 
     // Find the record based on a unique identifier (e.g., ranking_criteria_id)
-    $uniqueIdentifier = ['ranking_criteria_id' => 1];
+    // $uniqueIdentifier = ['ranking_criteria_id' => 1];
+    $uniqueIdentifier = ['id' => 1];
 
     try {
         $record = RankingCriteria::updateOrInsert($uniqueIdentifier, $filteredData);
@@ -39,7 +40,7 @@ class RankingController extends Controller
     }
 
     // Optionally, return a response indicating success or the updated/inserted record
-    return response()->json(['message' => 'Data updated or inserted successfully']);
+    return response()->json(['message' => 'Multiplier updated successfully']);
 
     }
 
@@ -276,7 +277,7 @@ public function addTotalIntake(Request $request)
         // If a record exists, update total_intake
         $existingRecord->update(['total_intake' => $request->input('total_intake')]);
         $message = 'Total intake updated successfully';
-    } else {
+    } else {                
         // If no record exists, create a new one
         $rankingCriteria = new RankingCriteria();
         $rankingCriteria->total_intake = $request->input('total_intake');
