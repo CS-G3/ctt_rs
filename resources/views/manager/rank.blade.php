@@ -11,6 +11,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- <link rel="stylesheet" href="{{ asset('css/components.css') }}"> -->
+     <!-- google symbols -->
+     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <style>
         button {
             background-color: #73AF42;
@@ -38,6 +40,13 @@
             margin-top: 10rem;
         }
 
+        table tr td input {
+            width:50px;
+            text-align:center;
+            border:none;
+            color: grey;
+        }
+
     </style>
 </head>
 <body class="d-flex bg-secondary">
@@ -46,17 +55,23 @@
 
 <div class="bg-light ml-1 p-4 w-100"  style="overflow:auto; height:100vh;">
 
-    @if(Session::has('success'))
-        <div class="alert alert-success">
-            {{ Session::get('success') }}
-        </div>
-    @endif
+@if(Session::has('success'))
+    <div class="alert alert-success alert-dismissible fade show">
+        {{ Session::get('success') }}
+        <span class="close" style="cursor: pointer;" onclick="this.parentElement.style.display='none';" aria-label="Close">
+            <span class="material-symbols-outlined" style="font-size: 1.25rem;">close</span>
+        </span>
+    </div>
+@endif
 
-    @if(Session::has('error'))
-        <div class="alert alert-danger">
-            {{ Session::get('error') }}
-        </div>
-    @endif
+@if(Session::has('error'))
+    <div class="alert alert-danger alert-dismissible fade show">
+        {{ Session::get('error') }}
+        <span class="close" style="cursor: pointer;" onclick="this.parentElement.style.display='none';" aria-label="Close">
+            <span class="material-symbols-outlined" style="font-size: 1.25rem;">close</span>
+        </span>
+    </div>
+@endif
     
     <div class="container">
         <div class="row">
@@ -78,8 +93,10 @@
 
             <div class="col-md-4" style="display: flex;">
                     <input type="text" id="searchInput" placeholder="Search" 
-                    style="margin-right: 10px; border-radius:5px; border:none; background-color:lightgrey; padding: 5px;">
-                    <button id="searchButton" style="background-color: #73AF42; color: #fff; border: none; border-radius: 3px; padding: 10px 20px; cursor: pointer;">
+                    style="margin-right: 10px; border-radius:5px; border:none; background-color:lightgrey; padding: 5px 10px;">
+                    <button id="searchButton" 
+                    style="background-color: #73AF42; color: #fff; border: none; border-radius: 3px; padding: 10px 20px; cursor: pointer;"
+                    >
                         Search
                     </button>
              </div>
@@ -138,13 +155,13 @@
 
             <table>
                 <tr style="background-color:#fff">
-                    <td style="padding:5px; font-weight:500">Subject</td>
+                    <!-- <td style="padding:5px; font-weight:500">Subject</td> -->
                     @foreach ($criteria as $column => $subject)
                         <td style="padding:5px;">{{ strtoupper($column) }}</td>
                     @endforeach
                 </tr>
                 <tr style="background-color:#EDEDED;">
-                    <td style="padding:5px; font-weight:500">Multiplier</td>
+                    <!-- <td style="padding:5px; font-weight:500">Multiplier</td> -->
                     @foreach ($criteria as $column => $subject)
                         <td style="padding:5px;">
                             <input id="{{ $column }}" name="{{ $column }}" value="{{ $rankingCriteria->{$column} }}">
@@ -154,8 +171,10 @@
             </table>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                <button type="submit" value="Submit">Submit</button>
+                <button type="button" 
+                style="background-color: #ddd; color: #333; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
+                 data-dismiss="modal">Close</button>
+                <button type="submit">Update</button>
             </div>
         </form>
 
@@ -164,34 +183,56 @@
     </div>
 </div>
 
-<div id="archiveModal" style="display: none;">
-    <form id="archiveForm" action="{{ route('archive.save') }}" method="POST">
-        @csrf
-        <label for="file_name">File Name:</label>
-        <input type="text" name="file_name" id="file_name">
-        <button type="submit">Save CSV</button>
-    </form>
-</div>
-
-    <div id="tableContainer" class="" style="height:70vh"></div>
-
+    <!-- <div id="tableContainer" class="" style="height:70vh"></div> -->
+    <div id="tableContainer" class="" style="height:70vh">
+        @if(empty($data))
+            <div class="alert alert-info mt-5">No data available. Please upload a file to continue.</div>
+        @else
+            <!-- {!! $dataFromServer !!} -->
+        @endif
+    </div>
     
-    <button><a href="{{ ('/manager/add-student') }}" style="color:#fff"> Add Student</a></button>
+   <a href="{{ ('/manager/add-student') }}" style="color:#fff"> 
+        <button> Add Student</button>
+    </a>
 
     <!-- Button to open the dialog box -->
     <button onclick="openDialog()">Save</button>
 
     <!-- The dialog box -->
-    <dialog id="saveDialog">
-        <p>This is a simple dialog box.</p>
-        <form action="{{ route('archive.download') }}" method="GET">
-                @csrf
-            <button onclick="buttonOneAction()">Download</button>
-        </form>
-        
-        <button id="showModalButton">Archive</button>
+    <dialog id="saveDialog" style="border-radius: 10px; padding: 1rem;
+    border: 1px solid #ddd; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
 
-        <button onclick="closeDialog()">Close</button>
+        <div id="saveOptions">
+            <p>Choose either to download or archive the result.</p>
+
+            <div style="display:flex; justify-content: space-between;">
+            <form action="{{ route('archive.download') }}" method="GET">
+                    @csrf
+                <button onclick="buttonOneAction()">Download</button>
+            </form>       
+                                
+            <button id="showModalButton">Archive</button>
+            <button onclick="closeDialog()"
+            style="background-color: #ddd; color: #333; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Cancel</button>
+            </div>
+        </div>
+    
+        <div id="archiveModal" style="display: none;">
+            <form id="archiveForm" action="{{ route('archive.save') }}" method="POST">
+                @csrf
+                <label for="file_name">File Name:</label>
+                <input type="text" name="file_name" id="file_name" class="form-control" placeholder="Enter a file name"
+                style="margin-right: 10px; border-radius:5px; border:none; background-color:lightgrey; padding: 5px 10px; margin-bottom:1rem;">
+
+                <div style="display:flex; justify-content: space-between;">
+                    <button type="submit">Archive</button>
+                    <button onclick="closeDialog()" type="button"
+                    style="background-color: #ddd; color: #333; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Cancel</button>
+                </div>
+            </form>
+        </div>
+
     </dialog>
 
     <!-- <div>
@@ -252,9 +293,11 @@
 //         additionalButtons.style.display = 'none';
 //     }
 // }
-// document.getElementById('showModalButton').addEventListener('click', function() {
-//     document.getElementById('archiveModal').style.display = 'block';
-// });
+
+document.getElementById('showModalButton').addEventListener('click', function() {
+    document.getElementById('archiveModal').style.display = 'block';
+    document.getElementById('saveOptions').style.display = 'none';
+});
 
 // Optional: You might want to close the modal after form submission
 document.getElementById('archiveForm').addEventListener('submit', function() {
@@ -278,6 +321,7 @@ document.getElementById('archiveForm').addEventListener('submit', function() {
     // Trigger the change event to load the default table
     $('#tableSelector').trigger('change');
 });
+
 //File uploader and ranker
 $(document).ready(function () {
         $('input[type="file"]').change(function () {

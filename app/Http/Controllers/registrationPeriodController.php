@@ -23,7 +23,7 @@ class RegistrationPeriodController extends Controller
         // Save the record to the database
         $existingRecord->save();
     
-        return back()->with('success', 'Date updated successfully');
+        return back()->with('success', 'Registration date updated.');
     }
 
     public function delete(RegistrationPeriod $registrationPeriod )

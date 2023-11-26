@@ -270,7 +270,6 @@ public function addTotalIntake(Request $request)
         'total_intake' => 'required|numeric',
     ]);
 
-
     $existingRecord = RankingCriteria::first();
 
     if ($existingRecord) {
@@ -282,7 +281,7 @@ public function addTotalIntake(Request $request)
         $rankingCriteria = new RankingCriteria();
         $rankingCriteria->total_intake = $request->input('total_intake');
         $rankingCriteria->save();
-        $message = 'Total intake added successfully';
+        $message = 'Total intake updated.';
     }
 
     return back()->with('success', $message);

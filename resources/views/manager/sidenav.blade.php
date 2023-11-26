@@ -47,7 +47,8 @@
           <span class="tooltip">Setting</span>
         </li>
         <li style=" position: absolute;
-            bottom: 0; margin-left:1rem;s">
+            bottom: 0;">
+
         <form id="logout-form" action="{{ route('logout') }}" method="POST">
             @csrf
             <a href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();">
@@ -56,6 +57,7 @@
             </a>
             <span class="tooltip">Logout</span>
         </form>
+
     </li>
 
       </ul>

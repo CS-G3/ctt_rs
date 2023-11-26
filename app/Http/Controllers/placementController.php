@@ -27,7 +27,8 @@ class PlacementController extends Controller
 
         // Redirect or return a response as needed
         // For example, you can redirect to a success page or return a JSON response
-        return back();
+        // return back();
+        return back()->with('success', 'Placement added.');
     }
 
     // public function delete(Placement $placement)

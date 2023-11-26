@@ -72,7 +72,7 @@ class LoginController extends Controller
         Session::flush(); // Flush the session
         Auth::logout(); // Log the user out
 
-        return Redirect('login');
+        return redirect()->route('login');
 
         // // Set cache control headers to prevent caching
         // $response = response()->view('login'); // Replace 'logout' with the actual view or route for logout

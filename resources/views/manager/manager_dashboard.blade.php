@@ -7,8 +7,6 @@
     <title>Manager | Dashboard</title>
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <!-- google symbols -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <style>
         table tr td input {
             width:50px;
@@ -44,20 +42,26 @@
 
 <div class="bg-light ml-1 p-4 w-100" style=" overflow-x: auto;">
 
-    @if(Session::has('success'))
-    <div class="alert alert-success">
+@if(Session::has('success'))
+    <div class="alert alert-success alert-dismissible fade show">
         {{ Session::get('success') }}
+        <span class="close" style="cursor: pointer;" onclick="this.parentElement.style.display='none';" aria-label="Close">
+            <span class="material-symbols-outlined" style="font-size: 1.25rem;">close</span>
+        </span>
     </div>
 @endif
 
 @if(Session::has('error'))
-    <div class="alert alert-danger">
+    <div class="alert alert-danger alert-dismissible fade show">
         {{ Session::get('error') }}
+        <span class="close" style="cursor: pointer;" onclick="this.parentElement.style.display='none';" aria-label="Close">
+            <span class="material-symbols-outlined" style="font-size: 1.25rem;">close</span>
+        </span>
     </div>
 @endif
 
 @if ($eligibility)
-    <p>Eligibility Information:</p>
+    <p style="font-weight:bold;">Eligibility Information:</p>
 
     <div class="p-2" style="background-color: rgba(115, 175, 66, 0.4);">
     
@@ -87,26 +91,28 @@
     </tr>
     <tr style="background-color:#EDEDED;">
         <td style="padding:5px; font-weight:500">Min</td>
-        <td style="padding:5px;"><input id="eng" name="eng" value="{{ $eligibility->eng }}" pattern="[0-9]{1,2}"/></td>
-        <td style="padding:5px;"><input id="dzo" name="dzo" value="{{ $eligibility->dzo }}" pattern="[0-9]{1,2}" /></td>
-        <td style="padding:5px;"><input id="phy" name="phy" value="{{ $eligibility->phy }}" pattern="[0-9]{1,2}" /></td>
-        <td style="padding:5px;"><input id="che" name="che" value="{{ $eligibility->che }}" pattern="[0-9]{1,2}" /></td>
-        <td style="padding:5px;"><input id="bio" name="bio" value="{{ $eligibility->bio }}" pattern="[0-9]{1,2}" /></td>
-        <td style="padding:5px;"><input id="mat" name="mat" value="{{ $eligibility->mat }}" pattern="[0-9]{1,2}" /></td>
-        <td style="padding:5px;"><input id="com" name="com" value="{{ $eligibility->com }}" pattern="[0-9]{1,2}" /></td>
-        <td style="padding:5px;"><input id="acc" name="acc" value="{{ $eligibility->acc }}" pattern="[0-9]{1,2}" /></td>
-        <td style="padding:5px;"><input id="geo" name="geo" value="{{ $eligibility->geo }}" pattern="[0-9]{1,2}" /></td>
-        <td style="padding:5px;"><input id="his" name="his" value="{{ $eligibility->his }}" pattern="[0-9]{1,2}" /></td>
-        <td style="padding:5px;"><input id="eco" name="eco" value="{{ $eligibility->eco }}" pattern="[0-9]{1,2}" /></td>
-        <td style="padding:5px;"><input id="med" name="med" value="{{ $eligibility->med }}" pattern="[0-9]{1,2}" /></td>
-        <td style="padding:5px;"><input id="bent" name="bent" value="{{ $eligibility->bent }}" pattern="[0-9]{1,2}" /></td>
-        <td style="padding:5px;"><input id="evs" name="evs" value="{{ $eligibility->evs }}" pattern="[0-9]{1,2}" /></td>
-        <td style="padding:5px;"><input id="rige" name="rige" value="{{ $eligibility->rige }}" pattern="[0-9]{1,2}" /></td>
-        <td style="padding:5px;"><input id="agfs" name="agfs" value="{{ $eligibility->agfs }}" pattern="[0-9]{1,2}" /></td>
+        <td style="padding:5px;"><input id="eng" name="eng" value="{{ $eligibility->eng }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="dzo" name="dzo" value="{{ $eligibility->dzo }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="phy" name="phy" value="{{ $eligibility->phy }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="che" name="che" value="{{ $eligibility->che }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="bio" name="bio" value="{{ $eligibility->bio }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="mat" name="mat" value="{{ $eligibility->mat }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="com" name="com" value="{{ $eligibility->com }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="acc" name="acc" value="{{ $eligibility->acc }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="geo" name="geo" value="{{ $eligibility->geo }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="his" name="his" value="{{ $eligibility->his }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="eco" name="eco" value="{{ $eligibility->eco }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="med" name="med" value="{{ $eligibility->med }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="bent" name="bent" value="{{ $eligibility->bent }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="evs" name="evs" value="{{ $eligibility->evs }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="rige" name="rige" value="{{ $eligibility->rige }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="agfs" name="agfs" value="{{ $eligibility->agfs }}" pattern="[0-9]{1,2}" required/></td>
     </tr>
 </table>
 
-    <button type="submit">Update</button>
+    <div style="text-align: right;">
+        <button type="submit">Update</button>
+    </div>
 
     </form>
 
@@ -114,7 +120,7 @@
 
     <hr>
 
-    <p>Add Placement</p>
+    <p style="font-weight:bold;">Add Placement</p>
 
     <div class="p-3" style="background-color: rgba(115, 175, 66, 0.4);">
 
@@ -160,43 +166,55 @@
     </div>
 
     <hr>                                    
-    <p>Registration Date</p>
+    <p style="font-weight:bold;">Registration Date</p>
 
     <div class="p-3" style="background-color: rgba(115, 175, 66, 0.4); display:flex;">
-    <form method="POST" action="{{ route('registrationDate.add') }}">
+
+    <form method="POST" action="{{ route('registrationDate.add') }}" class="w-100">
     @csrf
-    Students can apply from 
-    <input type="date" name="startDate" id="startDate" required style="width: 25%"  value="{{ $startDate ? $startDate : '' }}">
-    to
-    <input type="date" name="endDate" id="endDate" required style="width: 25%"  value="{{ $endDate ? $endDate : '' }}">
+    <div>
+    <label>Start Date:</label>
+    <input type="date" name="startDate" id="startDate" required  value="{{ $startDate ? $startDate : '' }}">
 
+    <label style="margin-top:1.5rem;">End Date:</label>
+    <input type="date" name="endDate" id="endDate" required value="{{ $endDate ? $endDate : '' }}">
+
+    </div>
+
+    <div style="margin-top:1.5rem;">
+    <span style="font-weight:bold;">
+        Status:
+    </span>
     @if ($status)
-        <span style="margin-left: 3rem">Status: Open</span>
+        Open
     @else 
-        <span style="margin-left: 3rem">Status: Close</span>
+        Close
     @endif
+    </div>
 
-    <button type="submit">Save</button>
-    
+    <button type="submit" style="margin-top:1.5rem; float: right;">Save</button>
+
     </form>
 
     </div>
 
     
     <hr>                                    
-    <p>Total intake for CTT</p>
+    <p style="font-weight:bold;">Total intake for CTT</p>
 
-    <div class="p-3" style="background-color: rgba(115, 175, 66, 0.4);">
+    <div class="p-3" style="background-color: rgba(115, 175, 66, 0.4); display: flex; flex-direction: column;">
 
-        <form method="post" action="{{ route('add.total_intake') }}">
-            @csrf
-            <label for="total_intake">Total Intake:</label>
-            <input type="text" name="total_intake" placeholder="Enter total intake" 
-            title="Enter number with max 3 digits."
-             pattern="\d{3}" required>
+    <form method="post" action="{{ route('add.total_intake') }}" style="flex-grow: 1; display: flex; flex-direction: column;">
+        @csrf
+        <label for="total_intake">Total Intake:</label>
+        <input type="text" name="total_intake" placeholder="Enter total intake" value="{{ $total_intake }}"
+            title="Enter number with max 3 digits." pattern="\d{3}" required>
 
-            <button type="submit">Save</button>
-        </form>
+        <!-- Add an empty div to push the button to the bottom -->
+        <div style="flex-grow: 1;"></div>
+        <button type="submit" style="align-self: flex-end;">Save</button>
+    </form>
+
     </div>
 
     @endif

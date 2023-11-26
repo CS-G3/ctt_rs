@@ -11,10 +11,16 @@ use Illuminate\Support\Facades\Storage;
 
 class CsvImportController extends Controller
 {
+//     public function showUploadForm()
+// {
+//     return view('import'); // Replace 'upload' with the name of your Blade view file
+// }
+
     public function showUploadForm()
-{
-    return view('import'); // Replace 'upload' with the name of your Blade view file
-}
+    {
+        return view('import', ['progress' => 0]);
+    }
+
     public function import(Request $request)
     {
         // Validate the uploaded file
@@ -138,7 +144,7 @@ class CsvImportController extends Controller
         }
         return redirect()->back()->with('success', 'Data imported successfully.');
     } catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Error processing the file: ');
+        return redirect()->back()->with('error', $e);
     }
     }
     

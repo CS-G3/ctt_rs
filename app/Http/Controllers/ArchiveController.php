@@ -47,7 +47,9 @@ class ArchiveController extends Controller
         $archive->save();
     
         // Provide a download link or any other response as needed
-        return response()->json(['message' => "CSV file saved as {$fileName}.csv"]);
+        // return response()->json(['message' => "CSV file saved as {$fileName}.csv"]);
+        return back()->with('success', 'Data archived.');
+
     }
 
     public function showArchive()

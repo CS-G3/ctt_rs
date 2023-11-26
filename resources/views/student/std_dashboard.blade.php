@@ -17,11 +17,20 @@
     <span style="padding-left: 10px;">
         <img src="{{ asset('images/gcit_logo.png') }}" alt="GCIT logo" style="width: 50%; height:auto;">
     </span>
-    <span style="font-weight: bold;
-            font-size: 24px; margin-right:3rem;
-            color: #333;">
-        CTTRS Student Dashboard
-    </span>
+
+    <div style="display:flex; flex-direction:column;">
+        <div style="font-weight: bold; text-align:center;
+                font-size: 24px; margin-right:3rem;
+                color: #333;">
+            CTT RS Student Dashboard
+        </div>
+        <div style="font-weight: normal; text-align:center;
+                font-size: 16px; margin-right:3rem;
+                color: #333;">
+            (Computational Thinking Test Ranking System)
+        </div>
+    </div>
+
     <form id="logout-form" action="{{ route('student.logout') }}" method="POST">
         @csrf
         <button type="submit" style="border: none; background-color: transparent; color: rgba(220, 20, 60, 0.8); 
@@ -69,20 +78,20 @@
     >
     <div style="display: flex; align-items: end; margin-left:1rem;">
     <span class="material-symbols-outlined">person</span>
-    <span style="font-size: 16px; margin-left: 15px;"> Name: {{ $student->name }}</span>
+    <span style="font-size: 16px; margin-left: 15px;"> <span style="font-weight:bold;">Name:</span> {{ $student->name }}</span>
 
     </div>
     <div style="margin: 15px 0px 15px 0px; display: flex; align-items: end; margin-left:1rem;">
     <span class="material-symbols-outlined">numbers</span>
     <span style="font-size: 16px; margin-left: 15px;">
-    Index Number: {{ $student->index_number }}
+    <span style="font-weight:bold;">Index Number:</span> {{ $student->index_number }}
     </span>
     </div>
 
     <div style="margin: 0px 0px 15px 0px; display: flex; align-items: end; margin-left:1rem;">
         <span class="material-symbols-outlined">trophy</span>
         <span style="font-size: 16px; margin-left: 15px;">
-            Rank: 
+            <span style="font-weight:bold;">Rank:</span>
             {{ $student->rank !== null && $student->rank !== '' &&
             $student->rank !== 0 ? $student->rank : '-' }}
         </span>
@@ -91,13 +100,14 @@
 
     <div style=" display: flex; align-items: end; margin-left:1rem;">
         <span class="material-symbols-outlined">priority</span>
-        <span style="font-size: 16px; margin-left: 15px;">Status:  
+        <span style="font-size: 16px; margin-left: 15px;">
+        <span style="font-weight:bold;">Status:</span>
         @if ($student->rank != null && ($student->rank < $total_intake))
-            shortlisted
+            Shortlisted
         @elseif (!$student->rank)
-         not ranked
+            Not ranked
         @else
-            not shortlisted
+            Not shortlisted
         @endif
         </span>
     </div>
@@ -109,7 +119,7 @@
     <!-- <span class="material-symbols-outlined"> description </span>  -->
 
     <div style=" margin-left: 1rem">
-        <p>Stream</p> 
+        <p style="font-weight:bold;">Stream</p> 
         <p>{{ strtoupper($student->stream) }}</p> 
     </div>
 
@@ -137,7 +147,7 @@
     @foreach ($studentData as $subjectCode => $subjectValue)
         @if ($subjectValue !== null)
         <div>
-            <p>{{ strtoupper($subjectCode) }}</p>
+            <p style="font-weight:bold;">{{ strtoupper($subjectCode) }}</p>
             <p>{{ $subjectValue }}</p>
         </div>
         @endif
@@ -145,7 +155,7 @@
 
     @if ($student->supw !== null)
     <div  style=" margin-right: 1rem">
-        <p>SUPW</p>
+        <p style="font-weight:bold;">SUPW</p>
         <p>{{ strtoupper($student->supw) }}</p>
     </div>
     @endif
@@ -162,7 +172,7 @@
         @csrf
         @method('PUT')
 
-        <label style="font-size: 16px; margin-right:0.5rem">Contact Number:</label>
+        <label style="font-size: 16px; margin-right:0.5rem; font-weight:bold;">Contact Number:</label>
 
         <input type="text" name="contact_number" value="{{ old('contact_number', $student->contact_number) }}"
         pattern="(975\d{8}|(17|77)\d{6})" title="Enter a valid phone number. Ex. 17123456 or 77123456"
@@ -170,7 +180,7 @@
         id="contactNumberInput">
 
 
-        <label style="font-size: 16px; margin-left:1rem; margin-right:0.5rem">Placement:</label>
+        <label style="font-size: 16px; margin-left:1rem; margin-right:0.5rem; font-weight:bold;">Placement:</label>
 
         <div style="display: flex; flex-direction: row; align-items: center;">
 
@@ -214,12 +224,12 @@
         </div>
         
     </div>
+    @endif
 
     <div style="font-size: 16px;
-            color: #333; margin-bottom: 1rem;">
-            &copy GCIT CTTRS {{ now()->format('Y') }}
-        </div>
-    @endif
+        color: #333; margin-bottom: 1rem;">
+        &copy GCIT CTTRS {{ now()->format('Y') }}
+    </div>
     
     @else
     <p>You are not logged in.</p>

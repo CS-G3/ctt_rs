@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class RankingCriteria extends Model
 {
     protected $table = 'ranking_criteria'; 
-    protected $primaryKey = 'ranking_criteria_id';
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'eng',
