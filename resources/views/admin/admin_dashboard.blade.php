@@ -16,8 +16,20 @@
 <div class="bg-light ml-1 p-4 w-100">
 
 @if(Session::has('success'))
-    <div class="alert alert-success">
+    <div class="alert alert-success alert-dismissible fade show">
         {{ Session::get('success') }}
+        <span class="close" style="cursor: pointer;" onclick="this.parentElement.style.display='none';" aria-label="Close">
+            <span class="material-symbols-outlined" style="font-size: 1.25rem;">close</span>
+        </span>
+    </div>
+@endif
+
+@if(Session::has('error'))
+    <div class="alert alert-danger alert-dismissible fade show">
+        {{ Session::get('error') }}
+        <span class="close" style="cursor: pointer;" onclick="this.parentElement.style.display='none';" aria-label="Close">
+            <span class="material-symbols-outlined" style="font-size: 1.25rem;">close</span>
+        </span>
     </div>
 @endif
 

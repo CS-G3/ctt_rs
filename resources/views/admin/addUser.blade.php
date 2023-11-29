@@ -20,17 +20,23 @@
     <div style="padding: 0 20% 0 20%">
     
     @if(Session::has('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success alert-dismissible fade show">
             {{ Session::get('success') }}
+            <span class="close" style="cursor: pointer;" onclick="this.parentElement.style.display='none';" aria-label="Close">
+                <span class="material-symbols-outlined" style="font-size: 1.25rem;">close</span>
+            </span>
         </div>
     @endif
 
     @if(Session::has('error'))
-        <div class="alert alert-danger">
+        <div class="alert alert-danger alert-dismissible fade show">
             {{ Session::get('error') }}
+            <span class="close" style="cursor: pointer;" onclick="this.parentElement.style.display='none';" aria-label="Close">
+                <span class="material-symbols-outlined" style="font-size: 1.25rem;">close</span>
+            </span>
         </div>
     @endif
-    
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
         <label for="name">Name:</label>
