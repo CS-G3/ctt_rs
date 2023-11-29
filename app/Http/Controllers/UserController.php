@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use Illuminate\Validation\ValidationException;
+use App\Mail\RegistrationWithPassword;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -122,6 +123,10 @@ class UserController extends Controller
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
         ]);
+
+            // Send the registration details email with password
+        Mail::to($request->input('email'))
+            ->send(new RegistrationWithPassword($request->input('name'), $request->input('email'), $request->input('password')));
 
         // Redirect or perform any other action after registration
         // return redirect('/login'); // Redirect to the dashboard or another page
