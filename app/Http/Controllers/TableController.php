@@ -13,6 +13,7 @@ class TableController extends Controller
     if ($table == "table1"){
         $data = Student::whereNotNull('rank')
         ->get();
+        $data = $data->sortBy('rank');
     } else {
     $data = Student::whereNotNull('rankSIDD')
     ->get();}
