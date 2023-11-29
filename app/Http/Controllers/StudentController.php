@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\RankingController;
 use App\Models\RankingCriteria;
 use Illuminate\Http\Request;
 use App\Models\Student;
@@ -237,6 +238,9 @@ class StudentController extends Controller
                     }
 
                     $student->update(['eligibility_status' => true]);
+
+                    $rankController = new RankingController();
+                    $rankController->rank($request);
 
                     return back()->with('success', 'You have successfully applied.')->with('index_number', $indexNumber);
                 } else {
