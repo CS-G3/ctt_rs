@@ -3,12 +3,13 @@
 use App\Models\User;
 use App\Models\Archive;
 use App\Models\Placement;
+use Illuminate\View\View;
 use App\Models\Eligibility;
 use App\Models\RegistrationPeriod;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RankingController;
 use App\Http\Controllers\UserController;
-use App\Models\RankingCriteria;
+use App\Http\Controllers\RankingController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -84,29 +85,24 @@ Route::get('/manager/dashboard', function () {
     $placement = Placement::all();
     //registrationPeriod
     $registrationPeriod = RegistrationPeriod::first();
-    $total_intake = RankingCriteria::first()->total_intake;
 
     // Check if there's a valid registration period
     if ($registrationPeriod) {
         $startDate = $registrationPeriod->startDate;
         $endDate = $registrationPeriod->endDate;
         $status = $registrationPeriod->status;
-        return view('manager/manager_dashboard', compact('eligibility', 'placement', 'status', 'startDate', 'endDate', 'total_intake'));
+        return view('manager/manager_dashboard', compact('eligibility', 'placement', 'status', 'startDate', 'endDate'));
     } else {
         $startDate = null; 
         $endDate = null;
         $status = null;
-        return view('manager/manager_dashboard', compact('eligibility', 'placement', 'status', 'startDate', 'endDate', 'total_intake'));
+        return view('manager/manager_dashboard', compact('eligibility', 'placement', 'status', 'startDate', 'endDate'));
     }
 });
 
 Route::get('/manager/rank', function () {
-    $rankingCriteria = RankingCriteria::first(); // Retrieve the first row from the table
-
-    // Pass the data to the view
-    return view('manager/rank', ['rankingCriteria' => $rankingCriteria]);
+    return view('manager/rank');
 });
-
 
 Route::get('/manager/add-student', function () {
     return view('manager/addStudent');
@@ -170,6 +166,7 @@ Route::get('/set-password', function () {
 Route::get('/download', 'App\Http\Controllers\DownloadController@download')->name('archive.download');
 Route::post('/archiveP', 'App\Http\Controllers\ArchiveController@add')->name('archive.save');
 Route::get('/archive/download/{id}', 'App\Http\Controllers\ArchiveController@download')->name('archive.butDownload');
+
 
 
 Route::get('/register_user', function () {

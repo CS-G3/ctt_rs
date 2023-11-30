@@ -120,6 +120,56 @@ public function download($id)
     }
 }
 
+public function addRank(Request $request)
+{
+    $fileName = $request->input('file_name', 'default_file_name');
+
+    // Fetch only students with a rank
+    $archives = Student::whereNotNull('rank')
+    ->orWhereNotNull('rankSIDD')
+    ->get()->map(function ($item) {
+        // Exclude 'created_at' and 'updated_at'
+        $item = $item->makeHidden(['created_at', 'updated_at']);
+
+        // Replace null values with '-'
+        foreach ($item->getAttributes() as $key => $value) {
+            $item->$key = $value ?? '-';
+        }
+
+        return $item;
+    });
+
+    // Check if there are any students with a rank
+    if ($archives->isEmpty()) {
+        return back()->with('error', 'No students with rank found.');
+    }
+
+    // Convert the data to CSV format
+    $csvContent = implode(',', array_keys($archives->first()->toArray())) . PHP_EOL; // Header
+
+    foreach ($archives as $row) {
+        $csvContent .= implode(',', $row->toArray()) . PHP_EOL;
+    }
+
+    // Save the CSV file to the local machine
+    $folderName = 'archive';
+
+    // Save the CSV file to the local machine inside the "archive" folder
+    $csvFilePath = storage_path("app/public/{$folderName}/{$fileName}.csv");
+
+    file_put_contents($csvFilePath, $csvContent);
+
+    $archive = new Archive([
+        'name' => $fileName,
+        'fileURL' => $csvFilePath,
+        'archivedDate' => now(), // Assuming you want to store the current date and time
+        'archivedBy' => auth()->user()->name, // Assuming you are using Laravel's built-in authentication
+    ]);
+    $archive->save();
+
+    return back()->with('success', 'Data archived.');
+}
+
 
 
 }

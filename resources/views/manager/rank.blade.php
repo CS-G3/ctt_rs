@@ -209,8 +209,13 @@
             <div style="display:flex; justify-content: space-between;">
             <form action="{{ route('archive.download') }}" method="GET">
                     @csrf
-                <button onclick="buttonOneAction()">Download</button>
-            </form>       
+                <button onclick="buttonOneAction()">Download All Records</button>
+            </form>
+            
+            <form action="{{ route('archive.downloadRankOnly') }}" method="GET">
+                @csrf
+            <button onclick="buttonOneAction()">Download Result Only</button>
+        </form> 
                                 
             <button id="showModalButton">Archive</button>
             <button onclick="closeDialog()"
