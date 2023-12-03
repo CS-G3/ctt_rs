@@ -38,6 +38,8 @@
 </head>
 <body class="d-flex bg-secondary">
 
+@include('components.responsive')
+
 @include('manager.sidenav')
 
 <div class="bg-light ml-1 p-4 w-100" style=" overflow-x: auto;">
@@ -61,7 +63,7 @@
 @endif
 
 @if ($eligibility)
-    <p style="font-weight:bold;">Eligibility Information:</p>
+    <p style="font-weight:bold;">Eligibility Information</p>
 
     <div class="p-2" style="background-color: rgba(115, 175, 66, 0.4);">
     

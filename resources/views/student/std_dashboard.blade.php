@@ -91,9 +91,15 @@
     <div style="margin: 0px 0px 15px 0px; display: flex; align-items: end; margin-left:1rem;">
         <span class="material-symbols-outlined">trophy</span>
         <span style="font-size: 16px; margin-left: 15px;">
-            <span style="font-weight:bold;">Rank:</span>
+            <span style="font-weight:bold;">SOC Rank:</span>
             {{ $student->rank !== null && $student->rank !== '' &&
             $student->rank !== 0 ? $student->rank : '-' }}
+        </span>
+        
+        <span style="font-size: 16px; margin-left: 15px;">
+            <span style="font-weight:bold;">SIDD Rank:</span>
+            {{ $student->rankSIDD !== null && $student->rankSIDD !== '' &&
+            $student->rankSIDD !== 0 ? $student->rankSIDD : '-' }}
         </span>
 
     </div>
@@ -101,10 +107,21 @@
     <div style=" display: flex; align-items: end; margin-left:1rem;">
         <span class="material-symbols-outlined">priority</span>
         <span style="font-size: 16px; margin-left: 15px;">
-        <span style="font-weight:bold;">Status:</span>
+        <span style="font-weight:bold;">SOC Status:</span>
         @if ($student->rank != null && ($student->rank < $total_intake))
             Shortlisted
         @elseif (!$student->rank)
+            Not ranked
+        @else
+            Not shortlisted
+        @endif
+        </span>
+
+        <span style="font-size: 16px; margin-left: 15px;">
+        <span style="font-weight:bold;">SIDD Status:</span>
+        @if ($student->rankSIDD != null && ($student->rankSIDD < $total_intake))
+            Shortlisted
+        @elseif (!$student->rankSIDD)
             Not ranked
         @else
             Not shortlisted
@@ -190,7 +207,7 @@
             <option value="" @if($student->placement_id === null) selected @endif>Choose your placement</option>
             @foreach($placement as $item)
             <option value="{{ $item->id }}" @if($student->placement_id == $item->id) selected @endif>
-                {{ $item->location }} (ID: {{ $item->id }})
+                {{ $item->location }}
             </option>
             @endforeach
         </select>

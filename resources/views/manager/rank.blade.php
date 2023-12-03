@@ -51,6 +51,8 @@
 </head>
 <body class="d-flex bg-secondary">
 
+@include('components.responsive')
+
 @include('manager.sidenav')
 
 <div class="bg-light ml-1 p-4 w-100"  style="overflow:auto; height:100vh;">
@@ -212,11 +214,6 @@
                 <button onclick="buttonOneAction()">Download All Records</button>
             </form>
             
-            <form action="{{ route('archive.downloadRankOnly') }}" method="GET">
-                @csrf
-            <button onclick="buttonOneAction()">Download Result Only</button>
-        </form> 
-                                
             <button id="showModalButton">Archive</button>
             <button onclick="closeDialog()"
             style="background-color: #ddd; color: #333; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Cancel</button>
