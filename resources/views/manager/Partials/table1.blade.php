@@ -1,11 +1,11 @@
-<div style="max-height: 545px; overflow-y: auto; margin: 2rem 0; max-width:100%">
-    <table class="table table-bordered table-striped table-fixed" style="height: 60px">
+<div style="max-height: 80vh; overflow-y: auto; margin: 2rem 0; max-width:100%">
+    <table class="table table-bordered table-striped table-fixed table-hover" style="height: 60px">
       <thead style="position: sticky;
       top: 0;
       z-index: 1;" class="thead-dark">
-          <tr>
+          <tr style="font-size:12px;">
               <th>#</th>
-              <th>Index #</th>
+              <th>Index Number</th>
               <th>ENG</th>
               <th>DZO</th>
               <th>COM</th>
@@ -26,7 +26,7 @@
               <th>Rank</th>
           </tr>
       </thead>
-      <tbody class="overflow">
+      <tbody class="overflow" style="font-size:12px">
           @php
               $serialNumber = 1; // Initialize the serial number
           @endphp
@@ -135,10 +135,11 @@
                 @else
                     <td>-</td>
                 @endif
-                  <td>{{ $item->rank }}</td>
+                  <td style="text-align:center;">{{ $item->rank }}</td>
               </tr>
           @endforeach
       </tbody>
     </table>
+    {{$data -> links()}}
   </div>
   

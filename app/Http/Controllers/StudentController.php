@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\RankingController;
+use App\Models\RegistrationPeriod;
 use App\Models\RankingCriteria;
 use Illuminate\Http\Request;
 use App\Models\Student;
@@ -36,6 +37,17 @@ class StudentController extends Controller
         $student = Student::findOrFail($student_id);
         $placement = Placement::all(); // Fetch the first eligibility record
         $total_intake = RankingCriteria::first()->total_intake; //fetch thte total intake number
+
+        $registrationPeriod = RegistrationPeriod::first();
+        
+        // Check if there's a valid registration period
+        if ($registrationPeriod) {
+            $startDate = $registrationPeriod->startDate;
+            $endDate = $registrationPeriod->endDate;
+            $status = $registrationPeriod->status;
+    
+            return view('student/std_dashboard', compact('student', 'placement', 'total_intake', 'startDate', 'endDate', 'status'));
+        }
 
         return view('student/std_dashboard', compact('student', 'placement', 'total_intake'));
     }

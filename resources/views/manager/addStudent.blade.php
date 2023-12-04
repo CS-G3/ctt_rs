@@ -16,7 +16,7 @@
 @include('manager.sidenav')
 
 <div class="bg-light ml-1 p-4 w-100" style="overflow:auto; height:100vh;">
-    <a href="/manager/rank">Back</a>
+    <a href="/manager/rank/soc">Back</a>
     <hr>
     <h3 style="text-align:center;">Add New Student</h3>
     <div style="padding: 0 20% 0 20%;">

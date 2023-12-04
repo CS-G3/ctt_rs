@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\User;
-use App\Models\Archive;
+use App\Models\Student;
 use App\Models\Placement;
 use App\Models\RankingCriteria;
 use Illuminate\View\View;
@@ -104,13 +104,29 @@ Route::get('/manager/dashboard', function () {
     }
 });
 
-Route::get('/manager/rank', function () {
-    $rankingCriteria = RankingCriteria::first(); // Retrieve the first row from the table
+// Route::get('/manager/rank', function () {
+//     $rankingCriteria = RankingCriteria::first(); // Retrieve the first row from the table
+//     // Load data for the selected table from the database
+//     $soc = Student::whereNotNull('rank')->orderBy('rank')->paginate(8); // Sort by 'rank'
+//     $sidd = Student::whereNotNull('rankSIDD')->orderBy('rankSIDD')->paginate(8); // Adjust the number based on your preference
 
-    // Pass the data to the view
-    return view('manager/rank', ['rankingCriteria' => $rankingCriteria]);
+//     // Return the HTML view for the table
+//     // return view('manager/rank', compact('data'));
+//     // Pass the data to the view
+//     return view('manager/rank', ['rankingCriteria' => $rankingCriteria, 'soc' => $soc, 'sidd' => $sidd]);
+// });
+
+Route::get('/manager/rank/soc', function () {
+    $rankingCriteria = RankingCriteria::first(); // Retrieve the first row from the table
+    $soc = Student::whereNotNull('rank')->orderBy('rank')->paginate(8); // Sort by 'rank'
+    return view('manager/rank/ranksoc', ['rankingCriteria' => $rankingCriteria, 'soc' => $soc]);
 });
 
+Route::get('/manager/rank/sidd', function () {
+    $rankingCriteria = RankingCriteria::first(); // Retrieve the first row from the table
+    $sidd = Student::whereNotNull('rankSIDD')->orderBy('rankSIDD')->paginate(8); // Adjust the number based on your preference
+    return view('manager/rank/ranksidd', ['rankingCriteria' => $rankingCriteria, 'sidd' => $sidd]);
+});
 
 Route::get('/manager/add-student', function () {
     return view('manager/addStudent');

@@ -43,6 +43,15 @@
     </form>
 </div>
 
+@if ($status != null)
+    <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; width:100%; text-align: center;">
+        <span>End Date: {{ $endDate }} | </span>
+        <span>Time Remaining: <span id="timeRemaining"></span></span>
+    </div>
+    @else
+   
+    @endif
+
     @if(session('student_id')) 
         <div class="dashboard-container"> 
 
@@ -73,7 +82,7 @@
     </div>
     @endif
 
-    <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom:20px; display:flex;
+    <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom:5px; display:flex;
     flex-direction:column; justify-content:flex-start; align-items:start;"
     >
     <div style="display: flex; align-items: end; margin-left:1rem;">
@@ -88,7 +97,7 @@
     </span>
     </div>
 
-    <div style="margin: 0px 0px 15px 0px; display: flex; align-items: end; margin-left:1rem;">
+    <div style="margin: 0 0 15px 0; display: flex; align-items: end; margin-left:1rem;">
         <span class="material-symbols-outlined">trophy</span>
         <span style="font-size: 16px; margin-left: 15px;">
             <span style="font-weight:bold;">SOC Rank:</span>
@@ -129,6 +138,10 @@
         </span>
     </div>
 
+    </div>
+
+    <div style="margin-bottom:15px; color:grey; font-size:12px; text-align:start;">
+        *the rank and status may be subject to change while the registration period is open.
     </div>
 
     <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom:20px;
@@ -223,7 +236,7 @@
     @if($student->placement_id !== null)
     <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom: 20px; text-align: left;">
         <div style="margin-left: 1rem">
-            Placement: 
+            <strong>Placement:</strong>
             @foreach($placement as $item)
                 @if($student->placement_id == $item->id)
                 {{ $item->location }}
@@ -231,10 +244,12 @@
             @endforeach
         </div>
         <div style="margin-left: 1rem; margin-top: 1rem;">
-        Date: {{ \Carbon\Carbon::parse($item->time)->format('Y-m-d') }}
+        <strong>Date:</strong>
+        {{ \Carbon\Carbon::parse($item->time)->format('Y-m-d') }}
         </div>
         <div style="margin-left: 1rem; margin-top: 1rem;">
-        Time: {{ \Carbon\Carbon::parse($item->time)->format('h:i A') }}
+        <strong>Time:</strong>
+        {{ \Carbon\Carbon::parse($item->time)->format('h:i A') }}
         </div>
         <div style="margin-left: 1rem; margin-top: 1rem;">
             All the best for GCIT Computational Thinking Test (CTT).
@@ -252,7 +267,34 @@
     <p>You are not logged in.</p>
     @endif
 
+    <script>
+        const startDate = new Date("{{ $startDate }}");
+        const endDate = new Date("{{ $endDate }}");
+        const timeRemainingElement = document.getElementById('timeRemaining');
 
+        function updateTimeRemaining() {
+            const timeDiff = endDate - Date.now();
+
+            if (timeDiff <= 0) {
+                timeRemainingElement.textContent = 'Registration closed'; // If end date is past current time
+                return;
+            }
+
+            let seconds = Math.floor((timeDiff / 1000) % 60);
+            let minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
+            let hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
+            let days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+
+            const timeRemaining = `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+            timeRemainingElement.textContent = timeRemaining;
+        }
+
+        // Calculate and update time remaining initially
+        updateTimeRemaining();
+
+        // Update time remaining every second (1000ms)
+        setInterval(updateTimeRemaining, 1000);
+    </script>
 </body>
 
 </html>

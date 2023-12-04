@@ -1,11 +1,9 @@
-
-
-<div style="max-height: 545px; overflow-y: auto; margin: 2rem 0; max-width:100%">
-    <table class="table table-bordered table-striped table-fixed" style="height: 60px ">
+<div style="max-height: 70vh; overflow-y: auto; margin: 2rem 0; max-width:100%">
+    <table class="table table-bordered table-striped table-fixed table-hover" style="height: 60px ">
       <thead style="position: sticky;
       top: 0;
       z-index: 1;" class="thead-dark">
-          <tr>
+          <tr style="font-size:12px;">
               <th>#</th>
               <th>Index Number</th>
               <th>ENG</th>
@@ -137,10 +135,11 @@
                 @else
                     <td>-</td>
                 @endif
-                  <td>{{ $item->rankSIDD }}</td>
+                <td style="text-align:center;">{{ $item->rankSIDD }}</td>
               </tr>
           @endforeach
       </tbody>
     </table>
+    {{ $data->links()}}
   </div>
   

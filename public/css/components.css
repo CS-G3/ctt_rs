@@ -7,7 +7,8 @@ input {
 }
 
 button {
-    background-color: #73AF42;
+    /* background-color: #73AF42; */
+    background-color: #4CAF50;
     color: #fff;
     border: none;
     border-radius: 3px;
@@ -15,6 +16,10 @@ button {
     cursor: pointer;
     font-size: 12px;
     margin-top: 10px;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
 }
 
 label {

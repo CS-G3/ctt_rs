@@ -51,6 +51,15 @@
             color: grey;
         }
 
+        .page-item.active .page-link {
+            background-color: #45a049;
+            border-color: #000; 
+        }
+
+        .page-link {
+            color: #4CAF50; 
+        }
+
     </style>
 </head>
 <body class="d-flex bg-secondary">
@@ -108,32 +117,46 @@
         /* text-decoration: underline; */
         border: 2px solid black;
     }
+    
 </style>
 
 <div>
-    <button onclick="toggleVisibility('socDiv')" class="mb-4 toggle-button selected">Show SOC</button>
-    <button onclick="toggleVisibility('siddDiv')" class="mb-4 toggle-button">Show SIDD</button>
+    <button onclick="toggleVisibility('socDiv', '/manager/rank/soc')" id="socButton" class="mb-4 toggle-button selected">Show SOC</button>
+    <button onclick="toggleVisibility('siddDiv', '/manager/rank/sidd')" id="siddButton" class="mb-4 toggle-button">Show SIDD</button>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
-    function toggleVisibility(divId) {
-        var socDiv = document.getElementById("socDiv");
-        var siddDiv = document.getElementById("siddDiv");
+    document.addEventListener("DOMContentLoaded", function () {
+        // Check the current URL and update the selected button
+        var currentUrl = window.location.pathname;
+        if (currentUrl.includes("/manager/rank/soc")) {
+            $("#socButton").addClass('selected');
+            $("#siddButton").removeClass('selected');
+        } else if (currentUrl.includes("/manager/rank/sidd")) {
+            $("#socButton").removeClass('selected');
+            $("#siddButton").addClass('selected');
+        }
+    });
+
+    function toggleVisibility(divId, redirectUrl) {
+        var socDiv = $("#socDiv");
+        var siddDiv = $("#siddDiv");
 
         if (divId === "socDiv") {
-            socDiv.style.display = "none";
-            siddDiv.style.display = "block";
+            socDiv.hide();
+            siddDiv.show();
         } else if (divId === "siddDiv") {
-            socDiv.style.display = "block";
-            siddDiv.style.display = "none";
+            socDiv.show();
+            siddDiv.hide();
         }
 
         // Update button styles based on selection
-        document.querySelectorAll('.toggle-button').forEach(button => {
-            button.classList.remove('selected');
-        });
+        $('.toggle-button').removeClass('selected');
+        $(`#socButton, #siddButton`).addClass('selected');
 
-        document.querySelector(`[onclick="toggleVisibility('${divId}')"]`).classList.add('selected');
+        // Redirect to the specified URL using jQuery
+        window.location.href = redirectUrl;
     }
 </script>
 
@@ -215,14 +238,13 @@
     </div>
 </div>
 
-<div id="siddDiv" >
 <table class="table table-bordered table-striped table-fixed table-hover" style="height: 70vh">
     <!-- Thead and other common table structure -->
     <thead style="position: sticky;
       top: 0;
       z-index: 1;" class="thead-dark">
           <tr style="font-size:12px;">
-              <th>#</th>
+              <!-- <th>#</th> -->
               <th>Index Number</th>
               <th>ENG</th>
               <th>DZO</th>
@@ -250,7 +272,7 @@
     <tbody class="overflow" style="font-size: 12px">
         @foreach($soc as $item)
             <tr>
-                <td>{{ $serialNumber++ }}</td>
+                <!-- <td>{{ $serialNumber++ }}</td> -->
                 <td>{{ $item->index_number }}</td>
                 @foreach(['eng', 'dzo', 'com', 'acc', 'bmt', 'geo', 'his', 'eco', 'med', 'bent', 'evs', 'rige', 'agfs', 'mat', 'phy', 'che', 'bio'] as $subject)
                     <td>{{ $item->$subject ?? '-' }}</td>
@@ -260,60 +282,9 @@
         @endforeach
     </tbody>
 </table>
-{{ $soc->links() }}
-</div>
+{{ $soc->links('pagination::bootstrap-5') }}
 
-<div id="socDiv" style="display:none;">
-@php
-    $serialNumber = 1;
-@endphp
-
-<table class="table table-bordered table-striped table-fixed table-hover" style="height: 70vh">
-    <thead style="position: sticky;
-      top: 0;
-      z-index: 1;" class="thead-dark">
-          <tr style="font-size:12px;">
-              <th>#</th>
-              <th>Index Number</th>
-              <th>ENG</th>
-              <th>DZO</th>
-              <th>COM</th>
-              <th>ACC</th>
-              <th>BMT</th>
-              <th>GEO</th>
-              <th>HIS</th>
-              <th>ECO</th>
-              <th>MED</th>
-              <th>BENT</th>
-              <th>EVS</th>
-              <th>RIGE</th>
-              <th>AGFS</th>
-              <th>MAT</th>
-              <th>PHY</th>
-              <th>CHE</th>
-              <th>BIO</th>
-              <th>Rank</th>
-          </tr>
-      </thead>
-
-    <tbody class="overflow" style="font-size: 12px">
-        @foreach($sidd as $item)
-            <tr>
-                <td>{{ $serialNumber++ }}</td>
-                <td>{{ $item->index_number }}</td>
-                <!-- Use Blade directives for conditional rendering -->
-                @foreach(['eng', 'dzo', 'com', 'acc', 'bmt', 'geo', 'his', 'eco', 'med', 'bent', 'evs', 'rige', 'agfs', 'mat', 'phy', 'che', 'bio'] as $subject)
-                    <td>{{ $item->$subject ?? '-' }}</td>
-                @endforeach
-                <td style="text-align: center;">{{ $item->rankSIDD ?? '-' }}</td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
-{{ $sidd->links() }}
-</div>
-
-    <hr>
+    <!-- <hr> -->
     
    <a href="{{ ('/manager/add-student') }}" style="color:#fff"> 
         <button> Add Student</button>

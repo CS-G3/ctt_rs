@@ -19,7 +19,7 @@
             text-align:center;
         }
         button {
-            background-color: #73AF42;
+            background-color: #4CAF50;
             color: #fff;
             border: none;
             border-radius: 3px;
@@ -27,6 +27,9 @@
             cursor: pointer;
             font-size: 12px;
             margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
         }
         input {
             width: 100%;
@@ -245,20 +248,20 @@
             @endphp
     <p style="font-weight:bold;">Subject Multiplier - Ranking Purpose</p>
 
-    <div class="p-3" style="background-color: rgba(115, 175, 66, 0.4); display:flex;">
+    <div class="p-2" style="background-color: rgba(115, 175, 66, 0.4); display:flex;">
     <form action="{{ route('update-ranking-criteria') }}" method="post">
             @csrf
             <table>
                 <tr style="background-color:#fff">
-                    <td style="padding:5px; font-weight:500">Subject</td>
+                    <!-- <td style="padding:5px; font-weight:500">Subject</td> -->
                     @foreach ($criteria as $column => $subject)
-                        <td style="padding:6.7px;">{{ strtoupper($column) }}</td>
+                        <td style="padding:5px;">{{ strtoupper($column) }}</td>
                     @endforeach
                 </tr>
                 <tr style="background-color:#EDEDED;">
-                    <td style="padding:5px; font-weight:500">Multiplier</td>
+                    <!-- <td style="padding:5px; font-weight:500">Mul.</td> -->
                     @foreach ($criteria as $column => $subject)
-                        <td style="padding:6.7px;">
+                        <td style="padding:5px;">
                             <input id="{{ $column }}" name="{{ $column }}" value="{{ $rankingCriteria->{$column} }}" type="number" max="9" required>
                         </td>
                     @endforeach

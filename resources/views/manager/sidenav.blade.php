@@ -25,7 +25,7 @@
           <span class="tooltip">Home</span>
         </li>
         <li>
-          <a href="{{ ('/manager/rank') }}">
+          <a href="{{ ('/manager/rank/soc') }}">
             <i class="bx bx-trophy"></i>
             <span class="nav-item">Rank</span>
           </a>
