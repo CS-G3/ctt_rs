@@ -10,7 +10,7 @@ use App\Models\RegistrationPeriod;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RankingController;
-
+use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -136,9 +136,49 @@ Route::get('/manager/add-student', function () {
 Route::get('/manager/archive', 'App\Http\Controllers\ArchiveController@showArchive')->name('archive.view');
 Route::delete('manager/archive/{id}', 'App\Http\Controllers\ArchiveController@deleteArchive')->name('archive.delete');
 
-// Route::get('/manager/setting', function () {
-//     return view('manager/setting');
-// });
+Route::get('/manager/insights', function () {
+    // Retrieve data for placements and student count
+    $placements = Placement::withCount('students')->get();
+    $studentCount = Student::count();
+
+    // Create a new Chart instance
+    $chart = new Chart();
+
+    // Set the chart type to 'doughnut' (donut chart)
+    $chart->type('doughnut');
+
+    // Labels for each section (replace these with your own labels)
+    $labels = $placements->pluck('location')->toArray();
+
+    // Data for each section (replace these with your own data)
+    $data = $placements->pluck('students_count')->toArray();
+
+    // Add data to the chart
+    $chart->dataset('Number of students', 'doughnut', $data)->backgroundColor([
+        'rgba(255, 99, 132, 0.6)',
+        'rgba(54, 162, 235, 0.6)',
+        'rgba(255, 206, 86, 0.6)',
+        'rgba(75, 192, 192, 0.6)',
+        'rgba(153, 102, 255, 0.6)',
+    ]);
+
+    // Set chart labels
+    $chart->labels($labels);
+
+    // Set chart options (optional)
+    $chart->options([
+        'responsive' => true,
+        'maintainAspectRatio' => false,
+    ]);
+
+    // Pass data to the view
+    return view('manager.insights', [
+        'placements' => $placements,
+        'studentCount' => $studentCount,
+        'chart' => $chart,
+    ]);
+});
+
 
 Route::get('/admin/dashboard', function () {
     $authUser = User::all();

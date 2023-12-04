@@ -47,7 +47,7 @@
     </form>
 
   <button id="addUserButton" style="
-    background-color: #73AF42;
+    background-color: #4CAF50;
     color: #fff;
     border: none;
     border-radius: 3px;

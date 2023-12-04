@@ -8,7 +8,7 @@
     width: 80px;
     height: auto;
     padding: 10px;
-    background-color: #fff;
+    /* background-color: #fff; */
     transition: all 0.5s ease; /* Add transition for smooth animation */
   }
   
@@ -24,7 +24,7 @@
     width: 250px; /* You can adjust the width as needed */
     height: 120px; /* You can adjust the height as needed */
     padding: 20px 80px 20px 80px;
-    background-color: #fff;
+    /* background-color: #fff; */
   }
   
   .sidebar.active ~ .main-content {

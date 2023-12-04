@@ -14,7 +14,7 @@
     
         @include('manager.sidenav')
     
-        <div class="bg-light ml-1 p-4 w-100">
+        <div class="bg-light ml-1 p-4 w-100" style=" overflow-x: auto;">
     
             <h1>Archive Contents</h1>
     
@@ -44,30 +44,32 @@
                 <table class="table table-bordered">
                     <thead class="thead-dark">
                         <tr>
-                            <th>File Name</th>
-                            <th>Archived Date</th>
-                            <th>Archived By</th>
+                            <th style="text-align:center;">#</th>
+                            <th style="text-align:center;">File Name</th>
+                            <th style="text-align:center;">Archived Date</th>
+                            <th style="text-align:center;">Archived By</th>
                             <th style="text-align:center;">Action</th> 
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($archives as $archive)
+                        @foreach ($archives as $index => $archive)
                             <tr>
-                                <td>{{ $archive->name }}</td>
-                                <td>{{ $archive->archivedDate }}</td>
-                                <td>{{ $archive->archivedBy }}</td>
+                                <td style="text-align:center;">{{ $index + 1 }}</td>
+                                <td style="text-align:center;">{{ $archive->name }}</td>
+                                <td style="text-align:center;">{{ $archive->archivedDate }}</td>
+                                <td style="text-align:center;">{{ $archive->archivedBy }}</td>
                                 <td style="display:flex; justify-content:center;">
                                     {{-- Add a button to trigger the delete action --}}
                                     <form id="deleteForm{{ $archive->id }}" action="{{ route('archive.delete', $archive->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm delete-button" data-archive-id="{{ $archive->id }}">
-                                            <span class="material-symbols-outlined">delete</span>
+                                        <button type="button" class="btn btn-sm delete-button" data-archive-id="{{ $archive->id }}">
+                                            <span class="material-symbols-outlined" style="color: darkred;">delete</span>
                                         </button>
                                     </form>
     
                                     {{-- Download button --}}
-                                    <a href="{{ route('archive.butDownload', $archive->id) }}" class="btn btn-primary btn-sm ml-3">
+                                    <a href="{{ route('archive.butDownload', $archive->id) }}" class="btn btn-sm ml-3">
                                         <span class="material-symbols-outlined">download</span>
                                     </a>
                                 </td>
