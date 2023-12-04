@@ -88,18 +88,19 @@ Route::get('/manager/dashboard', function () {
     $registrationPeriod = RegistrationPeriod::first();
 
     $total_intake = RankingCriteria::first()->total_intake;
+    $rankingCriteria = RankingCriteria::first(); // Retrieve the first row from the table
 
     // Check if there's a valid registration period
     if ($registrationPeriod) {
         $startDate = $registrationPeriod->startDate;
         $endDate = $registrationPeriod->endDate;
         $status = $registrationPeriod->status;
-        return view('manager/manager_dashboard', compact('eligibility', 'placement', 'status', 'startDate', 'endDate', 'total_intake'));
+        return view('manager/manager_dashboard', compact('eligibility', 'placement', 'status', 'startDate', 'endDate', 'total_intake', 'rankingCriteria'));
     } else {
         $startDate = null; 
         $endDate = null;
         $status = null;
-        return view('manager/manager_dashboard', compact('eligibility', 'placement', 'status', 'startDate', 'endDate', 'total_intake'));
+        return view('manager/manager_dashboard', compact('eligibility', 'placement', 'status', 'startDate', 'endDate', 'total_intake', 'rankingCriteria'));
     }
 });
 

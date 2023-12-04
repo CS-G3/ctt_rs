@@ -76,24 +76,24 @@
 @endif
     
     <div class="container">
-        <div class="row">
+        <div class="row"  style="display:flex; justify-content:space-between;">
 
-            <div class="col-md-2">
-                <select id="tableSelector" class="form-control">
-                    <option value="table1" selected>SOC</option>
-                    <option value="table2">SIDD</option>
-                </select>
-            </div>
+        <div class="col-md-3">
+            <button id="setupCriteria" data-toggle="modal" data-target="#criteriaModal" 
+            style="display: flex; justify-content: center; align-items: center;">
+                <i class='bx bx-cog' style="font-size: 18px; margin-right: 5px;"></i>
+                <span style="font-size: 14px;">Setup Criteria</span>
+            </button>
+        </div>
 
-            <div class="col-md-3">
-                <button id="setupCriteria" data-toggle="modal" data-target="#criteriaModal" 
-                style="display: flex; justify-content: center; align-items: center;">
-                    <i class='bx bx-cog' style="font-size: 18px; margin-right: 5px;"></i>
-                    <span style="font-size: 14px;">Setup Criteria</span>
-                </button>
-            </div>
+        <div class="col-md-3">
+            <select id="tableSelector" class="form-control">
+                <option value="table1" selected>SOC</option>
+                <option value="table2">SIDD</option>
+            </select>
+        </div>
 
-            <div class="col-md-4" style="display: flex;">
+            <!-- <div class="col-md-4" style="display: flex;">
                     <input type="text" id="searchInput" placeholder="Search" 
                     style="margin-right: 10px; border-radius:5px; border:none; background-color:lightgrey; padding: 5px 10px;">
                     <button id="searchButton" 
@@ -101,7 +101,7 @@
                     >
                         Search
                     </button>
-             </div>
+             </div> -->
 
             <div class="col-md-3">
                 <form id="uploadForm" action="{{ route('import.csv') }}" method="POST" enctype="multipart/form-data">
@@ -157,22 +157,22 @@
 
             <table>
                 <tr style="background-color:#fff">
-                    <!-- <td style="padding:5px; font-weight:500">Subject</td> -->
+                    <td style="padding:5px; font-weight:500">Subject</td>
                     @foreach ($criteria as $column => $subject)
                         <td style="padding:5px;">{{ strtoupper($column) }}</td>
                     @endforeach
                 </tr>
                 <tr style="background-color:#EDEDED;">
-                    <!-- <td style="padding:5px; font-weight:500">Multiplier</td> -->
+                    <td style="padding:5px; font-weight:500">Multiplier</td>
                     @foreach ($criteria as $column => $subject)
                         <td style="padding:5px;">
-                            <input id="{{ $column }}" name="{{ $column }}" value="{{ $rankingCriteria->{$column} }}">
+                            <input id="{{ $column }}" name="{{ $column }}" value="{{ $rankingCriteria->{$column} }}" type="number" max="9" required>
                         </td>
                     @endforeach
                 </tr>
             </table>
 
-            <div class="modal-footer">
+            <div class="modal-footer mt-3">
                 <button type="button" 
                 style="background-color: #ddd; color: #333; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
                  data-dismiss="modal">Close</button>
@@ -314,6 +314,7 @@ document.getElementById('archiveForm').addEventListener('submit', function() {
             // Use AJAX to load the selected table
             $.get('/load-table/' + selectedTable, function (data) {
                 $('#tableContainer').html(data);
+                console.log(data)
             });
         } else {
             $('#tableContainer').empty();

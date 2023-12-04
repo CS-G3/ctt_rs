@@ -16,7 +16,8 @@ class TableController extends Controller
         $data = $data->sortBy('rank');
     } else {
     $data = Student::whereNotNull('rankSIDD')
-    ->get();}
+    ->get();
+    }
 
     // Return the HTML view for the table
     return view('manager.Partials.'.$table, ['data' => $data]);

@@ -93,22 +93,22 @@
     </tr>
     <tr style="background-color:#EDEDED;">
         <td style="padding:5px; font-weight:500">Min</td>
-        <td style="padding:5px;"><input id="eng" name="eng" value="{{ $eligibility->eng }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="dzo" name="dzo" value="{{ $eligibility->dzo }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="phy" name="phy" value="{{ $eligibility->phy }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="che" name="che" value="{{ $eligibility->che }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="bio" name="bio" value="{{ $eligibility->bio }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="mat" name="mat" value="{{ $eligibility->mat }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="com" name="com" value="{{ $eligibility->com }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="acc" name="acc" value="{{ $eligibility->acc }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="geo" name="geo" value="{{ $eligibility->geo }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="his" name="his" value="{{ $eligibility->his }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="eco" name="eco" value="{{ $eligibility->eco }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="med" name="med" value="{{ $eligibility->med }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="bent" name="bent" value="{{ $eligibility->bent }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="evs" name="evs" value="{{ $eligibility->evs }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="rige" name="rige" value="{{ $eligibility->rige }}" pattern="[0-9]{1,2}" required/></td>
-        <td style="padding:5px;"><input id="agfs" name="agfs" value="{{ $eligibility->agfs }}" pattern="[0-9]{1,2}" required/></td>
+        <td style="padding:5px;"><input id="eng" name="eng" value="{{ $eligibility->eng }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="dzo" name="dzo" value="{{ $eligibility->dzo }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="phy" name="phy" value="{{ $eligibility->phy }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="che" name="che" value="{{ $eligibility->che }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="bio" name="bio" value="{{ $eligibility->bio }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="mat" name="mat" value="{{ $eligibility->mat }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="com" name="com" value="{{ $eligibility->com }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="acc" name="acc" value="{{ $eligibility->acc }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="geo" name="geo" value="{{ $eligibility->geo }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="his" name="his" value="{{ $eligibility->his }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="eco" name="eco" value="{{ $eligibility->eco }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="med" name="med" value="{{ $eligibility->med }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="bent" name="bent" value="{{ $eligibility->bent }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="evs" name="evs" value="{{ $eligibility->evs }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="rige" name="rige" value="{{ $eligibility->rige }}" type="number" max="99" required/></td>
+        <td style="padding:5px;"><input id="agfs" name="agfs" value="{{ $eligibility->agfs }}" type="number" max="99" required/></td>
     </tr>
 </table>
 
@@ -217,6 +217,58 @@
         <button type="submit" style="align-self: flex-end;">Save</button>
     </form>
 
+    </div>
+
+    <hr>
+    
+    @php
+                // Assuming $criteria is an associative array with column names as keys
+                $criteria = [
+                    'mat' => 'Mathematics',
+                    'bmt' => 'Business Mathematics',
+                    'eng' => 'English',
+                    'phy' => 'Physics',
+                    'che' => 'Chemistry',
+                    'bio' => 'Biology',
+                    'dzo' => 'Dzongkha',
+                    'com' => 'Commerce',
+                    'acc' => 'Accounting',
+                    'geo' => 'Geography',
+                    'his' => 'History',
+                    'eco' => 'Economics',
+                    'med' => 'Media',
+                    'bent' => '',
+                    'evs' => 'Environmental Science',
+                    'rige' => 'Rigzhung',
+                    'agfs' => 'Agricultural Science',
+                ];
+            @endphp
+    <p style="font-weight:bold;">Subject Multiplier - Ranking Purpose</p>
+
+    <div class="p-3" style="background-color: rgba(115, 175, 66, 0.4); display:flex;">
+    <form action="{{ route('update-ranking-criteria') }}" method="post">
+            @csrf
+            <table>
+                <tr style="background-color:#fff">
+                    <td style="padding:5px; font-weight:500">Subject</td>
+                    @foreach ($criteria as $column => $subject)
+                        <td style="padding:6.7px;">{{ strtoupper($column) }}</td>
+                    @endforeach
+                </tr>
+                <tr style="background-color:#EDEDED;">
+                    <td style="padding:5px; font-weight:500">Multiplier</td>
+                    @foreach ($criteria as $column => $subject)
+                        <td style="padding:6.7px;">
+                            <input id="{{ $column }}" name="{{ $column }}" value="{{ $rankingCriteria->{$column} }}" type="number" max="9" required>
+                        </td>
+                    @endforeach
+                </tr>
+            </table>
+
+        <div style="text-align: right;">
+            <button type="submit">Update</button>
+        </div>
+        </form>
     </div>
 
     @endif

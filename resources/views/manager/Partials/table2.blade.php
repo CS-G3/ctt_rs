@@ -1,11 +1,10 @@
 
 
-<div style="max-height: 545px; overflow-y: auto; margin: 40px; max-width:95%">
-    <table class="table  table-striped table-fixed" style="height: 60px ">
+<div style="max-height: 545px; overflow-y: auto; margin: 2rem 0; max-width:100%">
+    <table class="table table-bordered table-striped table-fixed" style="height: 60px ">
       <thead style="position: sticky;
       top: 0;
-      background-color: #fff; /* Add your preferred background color */
-      z-index: 1;">
+      z-index: 1;" class="thead-dark">
           <tr>
               <th>#</th>
               <th>Index Number</th>

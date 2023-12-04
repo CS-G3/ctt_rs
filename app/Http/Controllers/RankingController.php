@@ -40,8 +40,12 @@ class RankingController extends Controller
     }
 
     // Optionally, return a response indicating success or the updated/inserted record
-    return response()->json(['message' => 'Multiplier updated successfully']);
-
+    // return response()->json(['message' => 'Multiplier updated successfully']);
+    
+      // Call the rank function
+      $this->rank($request);
+      
+    return back()->with('success', 'Multiplier updated.');
     }
 
 
