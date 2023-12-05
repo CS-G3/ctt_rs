@@ -253,3 +253,5 @@ Route::get('/show-form', function () {
 
 Route::post('/rank-students', 'App\Http\Controllers\RankingController@rank')->name('rankStudents');
 Route::get('/load-table/{table}', 'App\Http\Controllers\TableController@loadTable');
+
+Route::get('/downloadRankOnly', 'App\Http\Controllers\DownloadController@downloadResultOnly')->name('archive.downloadResultOnly');

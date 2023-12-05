@@ -46,7 +46,7 @@
 
 @include('manager.sidenav')
 
-<div class="bg-light ml-1 p-4 w-100" style=" overflow-x: auto;">
+<div class="bg-light ml-1 p-4 w-100" style="overflow-x: auto;">
 
 @if(Session::has('success'))
     <div class="alert alert-success alert-dismissible fade show">

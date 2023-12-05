@@ -277,16 +277,21 @@
     <dialog id="saveDialog" style="border-radius: 10px; padding: 1rem;
     border: 1px solid #ddd; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
 
-        <div id="saveOptions">
+<div id="saveOptions">
             <p>Choose either to download or archive the result.</p>
 
             <div style="display:flex; justify-content: space-between;">
             <form action="{{ route('archive.download') }}" method="GET">
                     @csrf
-                <button onclick="buttonOneAction()">Download All Records</button>
+                <button onclick="buttonOneAction()" style="margin: 0 1rem 0 0">Download All Records</button>
+            </form>
+
+            <form action="{{ route('archive.downloadResultOnly') }}" method="GET">
+                @csrf
+                <button onclick="buttonOneAction()" style="margin: 0 1rem 0 0">Download Result Only</button>
             </form>
             
-            <button id="showModalButton">Archive</button>
+            <button id="showModalButton" style="margin: 0 1rem 0 0">Archive</button>
             <button onclick="closeDialog()"
             style="background-color: #ddd; color: #333; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Cancel</button>
             </div>

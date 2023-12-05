@@ -6,19 +6,30 @@ use League\Csv\Writer;
 use App\Models\Student;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Placement;
 
 class DownloadController extends Controller
 {
     public function download(){
-        $myModel = Student::all()->map(function ($item) {
+        $myModel = Student::all()
+        ->map(function ($item) {
+            // Rename 'placement_id' to 'placement' and retrieve placement name
+            // $item->placement = $item->placement_id;
+            $item->placement_name = Placement::find($item->placement_id)->location ?? '-';
+           // Rename 'rank' to 'rankSOC'
+           $item->SOC_rank = $item->rank;
+           unset($item->rank);
+
+           $item->SIDD_rank = $item->rankSIDD;
+           unset($item->rankSIDD);
             // Exclude 'created_at' and 'updated_at'
-            $item = $item->makeHidden(['created_at', 'updated_at']);
-        
+            $item = $item->makeHidden(['created_at', 'updated_at', 'placement_id', 'eligibility_status', 'totalSOC', 'totalSIDD']);
+    
             // Replace null values with '-'
             foreach ($item->getAttributes() as $key => $value) {
                 $item->$key = $value ?? '-';
             }
-        
+    
             return $item;
         });
         
@@ -64,14 +75,22 @@ class DownloadController extends Controller
         ->orWhereNotNull('rankSIDD')
         ->get()
         ->map(function ($item) {
+            // Rename 'placement_id' to 'placement' and retrieve placement name
+            // $item->placement = $item->placement_id;
+            $item->placement_name = Placement::find($item->placement_id)->location ?? '-';
+           // Rename 'rank' to 'rankSOC'
+           $item->SOC_rank = $item->rank;
+           unset($item->rank);
+            $item->SIDD_rank = $item->rankSIDD;
+            unset($item->rankSIDD);
             // Exclude 'created_at' and 'updated_at'
-            $item = $item->makeHidden(['created_at', 'updated_at']);
-        
+            $item = $item->makeHidden(['id', 'created_at', 'updated_at', 'placement_id', 'eligibility_status', 'totalSOC', 'totalSIDD']);
+    
             // Replace null values with '-'
             foreach ($item->getAttributes() as $key => $value) {
                 $item->$key = $value ?? '-';
             }
-        
+    
             return $item;
         });
         
@@ -92,7 +111,7 @@ class DownloadController extends Controller
             // Set the headers to force a download
             $headers = [
                 'Content-Type' => 'text/csv',
-                'Content-Disposition' => 'attachment; filename="GCIT_RANK_ARCHIVE.csv"',
+                'Content-Disposition' => 'attachment; filename="GCIT_RANK.csv"',
             ];
 
             $headers['Content-Length'] = strlen($csvContent);
