@@ -120,45 +120,14 @@
     
 </style>
 
-<div>
-    <button onclick="toggleVisibility('socDiv', '/manager/rank/soc')" id="socButton" class="mb-2 toggle-button selected">Show SOC</button>
-    <button onclick="toggleVisibility('siddDiv', '/manager/rank/sidd')" id="siddButton" class="mb-2 toggle-button">Show SIDD</button>
+<div class="mb-2">
+    <button onclick="toggleVisibility('socDiv', '/manager/rank/soc')" id="socButton" class="toggle-button selected">Show SOC</button>
+    <button onclick="toggleVisibility('siddDiv', '/manager/rank/sidd')" id="siddButton" class="toggle-button">Show SIDD</button>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Check the current URL and update the selected button
-        var currentUrl = window.location.pathname;
-        if (currentUrl.includes("/manager/rank/soc")) {
-            $("#socButton").addClass('selected');
-            $("#siddButton").removeClass('selected');
-        } else if (currentUrl.includes("/manager/rank/sidd")) {
-            $("#socButton").removeClass('selected');
-            $("#siddButton").addClass('selected');
-        }
-    });
 
-    function toggleVisibility(divId, redirectUrl) {
-        var socDiv = $("#socDiv");
-        var siddDiv = $("#siddDiv");
-
-        if (divId === "socDiv") {
-            socDiv.hide();
-            siddDiv.show();
-        } else if (divId === "siddDiv") {
-            socDiv.show();
-            siddDiv.hide();
-        }
-
-        // Update button styles based on selection
-        $('.toggle-button').removeClass('selected');
-        $(`#socButton, #siddButton`).addClass('selected');
-
-        // Redirect to the specified URL using jQuery
-        window.location.href = redirectUrl;
-    }
-</script>
+<script src="{{ asset('js/socsiddtoggle.js') }}"></script>
 
             <div class="col-md-3">
                 <form id="uploadForm" action="{{ route('import.csv') }}" method="POST" enctype="multipart/form-data">
@@ -240,7 +209,15 @@
 
 <hr>
 
-<table class="table table-bordered table-striped table-fixed table-hover" style="height: 70vh">
+<dialog id="infoDialog" class="dialog" style="padding: 1rem;
+    border: 1px solid #ddd; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+  <div class="dialog-content mb-5">
+  </div>
+</dialog>
+
+<script src="{{ asset('js/stddetails.js') }}"></script>
+
+<table class="table table-bordered table-fixed table-hover" style="height: 70vh">
     <!-- Thead and other common table structure -->
     <thead style="position: sticky;
       top: 0;
@@ -273,7 +250,7 @@
 @endphp
     <tbody class="overflow" style="font-size: 12px">
         @foreach($soc as $item)
-            <tr>
+            <tr onclick="openDialog123({{ json_encode($item) }})">
                 <!-- <td>{{ $serialNumber++ }}</td> -->
                 <td>{{ $item->index_number }}</td>
                 @foreach(['eng', 'dzo', 'com', 'acc', 'bmt', 'geo', 'his', 'eco', 'med', 'bent', 'evs', 'rige', 'agfs', 'mat', 'phy', 'che', 'bio'] as $subject)
