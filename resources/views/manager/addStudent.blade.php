@@ -69,9 +69,15 @@
         </div>
 
         <div class="form-group col-md-4">
-            <label for="stream">Stream:</label>
-            <input type="text" name="stream" class="form-control" placeholder="Stream" required>
-        </div>
+    <label for="stream">Stream:</label>
+    <select name="stream" class="form-control" required>
+        <option value="" disabled selected>Select Stream</option>
+        <option value="SCIENCE">SCIENCE</option>
+        <option value="COMMERCE">COMMERCE</option>
+        <option value="ARTS">ARTS</option>
+    </select>
+</div>
+
 
         <div class="form-group col-md-4">
             <label for="supw">SUPW:</label>
