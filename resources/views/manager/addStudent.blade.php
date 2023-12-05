@@ -69,20 +69,26 @@
         </div>
 
         <div class="form-group col-md-4">
-    <label for="stream">Stream:</label>
-    <select name="stream" class="form-control" required>
-        <option value="" disabled selected>Select Stream</option>
-        <option value="SCIENCE">SCIENCE</option>
-        <option value="COMMERCE">COMMERCE</option>
-        <option value="ARTS">ARTS</option>
-    </select>
-</div>
+            <label for="stream">Stream:</label>
+            <select name="stream" class="form-control" required>
+                <option value="" disabled selected>Select Stream</option>
+                <option value="SCIENCE">SCIENCE</option>
+                <option value="COMMERCE">COMMERCE</option>
+                <option value="ARTS">ARTS</option>
+            </select>
+        </div>
 
 
         <div class="form-group col-md-4">
             <label for="supw">SUPW:</label>
-            <input type="text" name="supw" class="form-control" placeholder="SUPW" maxlength="1" required>
+            <select name="supw" class="form-control" required>
+                <option value="" disabled selected>SUPW</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+            </select>
         </div>
+
     </div>
 
     <hr/>

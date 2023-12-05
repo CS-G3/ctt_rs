@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StudentController;
 use App\Models\User;
 use App\Models\Student;
 use App\Models\Placement;
@@ -255,3 +256,4 @@ Route::post('/rank-students', 'App\Http\Controllers\RankingController@rank')->na
 Route::get('/load-table/{table}', 'App\Http\Controllers\TableController@loadTable');
 
 Route::get('/downloadRankOnly', 'App\Http\Controllers\DownloadController@downloadResultOnly')->name('archive.downloadResultOnly');
+Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');

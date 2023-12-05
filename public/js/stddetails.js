@@ -60,6 +60,22 @@ function openDialog123(item) {
 
   content.append(closeButton);
 
+    var deleteButton = $('<button></button>')
+    .attr('onclick', `deleteStd('${item.id}')`)
+    .css({
+        'background-color': '#ddd',
+        'color': 'darkred',
+        'border': 'none',
+        'padding': '10px 20px',
+        'border-radius': '5px',
+        'cursor': 'pointer',
+        'float': 'left',
+      })
+    .text('Delete')
+    console.log(item.id);
+
+  content.append(deleteButton);
+  
   // Show the dialog
   $('#infoDialog')[0].showModal();
 }
@@ -68,3 +84,36 @@ function closeDialog123() {
     // Close the dialog
     $('#infoDialog')[0].close();
   }
+
+  function deleteStd(studentId) {
+    console.log(studentId);
+  
+    $('#deleteDialog123').show();
+    closeDialog123();
+  
+    // Add the studentId to the confirmation dialog
+    $('#confirmDelete123').click(function () {
+      $.ajax({
+        url: '/students/' + studentId,
+        type: 'DELETE',
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        },
+        success: function (response) {
+            console.log('Delete successful:', response);
+            $('#deleteDialog123').hide();
+          // Handle the success response here
+          window.location.href = window.location.href; // This captures the current URL
+        },
+        error: function (error) {
+          console.error('Delete failed:', error);
+          // Handle the error response here
+        },
+      });
+    });
+  }
+  $(document).ready(function () {
+    $('#cancelDelete123').click(function () {
+        $('#deleteDialog123').hide();
+    })
+  });

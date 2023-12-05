@@ -11,6 +11,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <!-- <link rel="stylesheet" href="{{ asset('css/components.css') }}"> -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
      <!-- google symbols -->
      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <style>
@@ -216,6 +217,12 @@
 </dialog>
 
 <script src="{{ asset('js/stddetails.js') }}"></script>
+
+<dialog id="deleteDialog123" class="bg-light p-4" style="margin-top:5rem; border-radius: 10px; border: 1px solid #ddd; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+    <p style="font-size: 16px; margin-bottom: 20px;">Are you sure you want to delete this student?</p>
+    <button id="confirmDelete123" style="background-color: #dc3545; color: #fff; border: none; padding: 8px 16px; margin-right: 10px; border-radius: 5px; cursor: pointer;">Yes, delete</button>
+    <button id="cancelDelete123" style="background-color: #ddd; color: #333; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer;">Cancel</button>
+</dialog>
 
 <table class="table table-bordered table-fixed table-hover" style="height: 70vh">
     <!-- Thead and other common table structure -->

@@ -52,16 +52,23 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'User not found.');
         }
     
-        // Validate and update user name and email
+        // Validate and update user name and email if provided
         $validatedData = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
+            'name' => 'nullable|required_if:email,null',
+            'email' => 'nullable|required_if:name,null|email',
         ]);
     
-        $user->name = $validatedData['name'];
-        $user->email = $validatedData['email'];
+        // Check if the new data is different from the old data
+        if (($validatedData['name'] && $validatedData['name'] !== $user->name) || 
+            ($validatedData['email'] && $validatedData['email'] !== $user->email)) {
     
-        // Validate the password update data if provided
+            $user->name = $validatedData['name'];
+            $user->email = $validatedData['email'];
+            $user->save();
+            return back()->with('success', 'User info updated.');
+        }
+    
+        // Validate and update the password if provided
         if ($request->filled('new_password')) {
             $request->validate([
                 'new_password' => 'required|string|min:8',
@@ -72,14 +79,15 @@ class UserController extends Controller
             // Verify the current password before updating the new password
             if (Hash::check($request->input('current_password'), $user->password)) {
                 $user->password = Hash::make($request->input('new_password'));
+                $user->save();
+                return back()->with('success', 'User info updated.');
             } else {
                 return back()->with('error', 'Current password is incorrect.');
             }
         }
     
-        $user->save();
-    
-        return back()->with('success', 'User info updated.');
+        // If no changes were made and no password update, return with a message
+        return back()->with('info', 'No changes made.');
     }
     
     public function update(Request $request)

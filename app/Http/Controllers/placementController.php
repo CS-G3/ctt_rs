@@ -46,7 +46,7 @@ class PlacementController extends Controller
         $placement = Placement::find($selectedPlacementId);
         $placement->delete();
 
-        return back();
+        return back()->with('success', 'Placement deleted.');
     }
 
 }
