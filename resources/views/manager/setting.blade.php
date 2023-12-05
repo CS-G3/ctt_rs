@@ -11,7 +11,7 @@
 </head>
 <body class="d-flex bg-secondary">
 
-@include('components.responsive')
+<!-- @include('components.responsive') -->
 
 @include('manager.sidenav')
 

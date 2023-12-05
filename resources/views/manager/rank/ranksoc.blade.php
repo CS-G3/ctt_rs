@@ -64,7 +64,7 @@
 </head>
 <body class="d-flex bg-secondary">
 
-@include('components.responsive')
+<!-- @include('components.responsive') -->
 
 @include('manager.sidenav')
 
@@ -121,8 +121,8 @@
 </style>
 
 <div>
-    <button onclick="toggleVisibility('socDiv', '/manager/rank/soc')" id="socButton" class="mb-4 toggle-button selected">Show SOC</button>
-    <button onclick="toggleVisibility('siddDiv', '/manager/rank/sidd')" id="siddButton" class="mb-4 toggle-button">Show SIDD</button>
+    <button onclick="toggleVisibility('socDiv', '/manager/rank/soc')" id="socButton" class="mb-2 toggle-button selected">Show SOC</button>
+    <button onclick="toggleVisibility('siddDiv', '/manager/rank/sidd')" id="siddButton" class="mb-2 toggle-button">Show SIDD</button>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -237,6 +237,8 @@
         </div>
     </div>
 </div>
+
+<hr>
 
 <table class="table table-bordered table-striped table-fixed table-hover" style="height: 70vh">
     <!-- Thead and other common table structure -->

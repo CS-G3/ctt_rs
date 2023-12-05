@@ -16,8 +16,8 @@
 <div class="bg-light ml-1 p-4 w-100">
     <a href="/admin/dashboard">Back</a>
     <hr>
-    <h3 style="margin-left:13rem; margin-top:2rem; margin-bottom:2rem;">Add a New Manager</h3>
-    <div style="padding: 0 20% 0 20%">
+    <h3 style="text-align:center; margin-top:2rem; margin-bottom:2rem;">Add a New Manager</h3>
+    <div style="margin-left:25%">
     
     @if(Session::has('success'))
         <div class="alert alert-success alert-dismissible fade show">

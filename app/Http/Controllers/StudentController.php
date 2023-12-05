@@ -137,7 +137,7 @@ class StudentController extends Controller
 
             if ($validatedData) $student->update(['contact_number'=>$request->contact_number]);
 
-                return back()->with('success', 'Updated successful.');
+                return back()->with('success', 'Contact number updated.');
     
         } catch (\Exception $e) {
             // Handle the exception, such as displaying an error message or logging the error.
@@ -170,7 +170,7 @@ class StudentController extends Controller
                 $student->update($dataToUpdate);
             }
     
-            return back()->with('success', 'Updated successfully.');
+            return back()->with('success', 'Infomation updated.');
         } catch (\Exception $e) {
             // Handle the exception, such as displaying an error message or logging the error.
             \Log::error($e);

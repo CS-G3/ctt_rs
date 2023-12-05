@@ -76,16 +76,18 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->created_at }}</td>
                     <td class="d-flex justify-content-around">
-                        <a href="{{ route('user.edit', ['id' => $user->id]) }}" class="btn btn-secondary btn-sm">
-                            <span class="material-symbols-outlined">edit</span>
+                        <a href="{{ route('user.edit', ['id' => $user->id]) }}" class="btn btn-light btn-sm">
+                        <span class="material-symbols-outlined">
+                        edit_square
+                        </span>
                         </a>
 
                         <form id="deleteForm{{ $user->id }}" action="{{ route('user.delete', $user) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="button" class="btn btn-danger btn-sm delete-button"
+                            <button type="button" class="btn btn-sm delete-button btn-light"
                                     data-user-id="{{ $user->id }}">
-                                <span class="material-symbols-outlined">delete</span>
+                                <span class="material-symbols-outlined" style="color:darkred;">delete</span>
                             </button>
                         </form>
                     </td>

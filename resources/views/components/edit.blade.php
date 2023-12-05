@@ -3,16 +3,13 @@
     border: 1px solid #ccc;">
 
     @if(auth()->user()->id === $user->id)
-        <h2>Setting</h2>
+        <h2 style="text-align:center;">Setting</h2>
+        <hr>
     @else
         <a href="/admin/dashboard">Back</a>
         <hr>
-        <h2>Edit User</h2>
+        <h2 style="text-align:center;">Edit User</h2>
     @endif
-
-<hr>
-
-<h6>Username & Email</h6>
 
 @if(Session::has('success'))
     <div class="alert alert-success alert-dismissible fade show">
@@ -32,7 +29,7 @@
     </div>
 @endif
 
-<form method="POST" action="{{ route('user.updateNameEmailPassword') }}" class="pl-5">
+<form method="POST" action="{{ route('user.updateNameEmailPassword') }}" class="pl-5 mt-4" style="margin-left:25%">
     @csrf
     <input type="text" id="id" name="id" value="{{ $user->id }}" required hidden>
 
@@ -45,14 +42,11 @@
 
         @if(auth()->user()->id !== $user->id)   
         <button type="submit">Update</button>
-        </form>
         @endif
-
-<hr>
 
 @if(auth()->user()->id === $user->id)   
 
-<h6>Password</h6>
+<h6 class="mt-5">Password</h6>
 
         <label>Current Password</label>
         <input type="password" placeholder="Current Password" name='current_password'>  

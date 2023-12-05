@@ -13,9 +13,39 @@
 
 <body style="display:flex; flex-direction:column; justify-content:start; height:auto;">  
 
-<div style="background:#fff; padding:10px 0px 10px 2rem; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-    <span style="padding-left: 10px;">
-        <img src="{{ asset('images/gcit_logo.png') }}" alt="GCIT logo" style="width: 50%; height:auto;">
+<style>
+    @media only screen and (max-width: 600px) {
+        /* Adjustments for smaller screens */
+        #myContainer {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 10px;
+        }
+
+        #mySpan {
+            padding-left: 0;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        #myImg {
+            width: 100%;
+            height: auto;
+        }
+
+        #myForm {
+            margin-top: 10px;
+        }
+
+        #myButton {
+            margin-right: 0;
+        }
+    }
+</style>
+
+<div id="myContainer" style="background:#fff; padding:10px 0px 10px 2rem; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+    <span id="mySpan" style="padding-left: 10px;">
+        <img id="myImg" src="{{ asset('images/gcit_logo.png') }}" alt="GCIT logo" style="width: 50%; height:auto;">
     </span>
 
     <div style="display:flex; flex-direction:column;">
@@ -31,9 +61,9 @@
         </div>
     </div>
 
-    <form id="logout-form" action="{{ route('student.logout') }}" method="POST">
+    <form id="myForm" action="{{ route('student.logout') }}" method="POST">
         @csrf
-        <button type="submit" style="border: none; background-color: transparent; color: rgba(220, 20, 60, 0.8); 
+        <button id="myButton" type="submit" style="border: none; background-color: transparent; color: rgba(220, 20, 60, 0.8); 
         cursor: pointer; margin-right: 20px;  display: flex; align-items: center;">
             <span class="material-symbols-outlined">
                 logout
@@ -44,7 +74,7 @@
 </div>
 
 @if ($status != null)
-    <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; width:100%; text-align: center;">
+    <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; width:100%; text-align: center; font-size:12px;">
         <span>End Date: {{ $endDate }} | </span>
         <span>Time Remaining: <span id="timeRemaining"></span></span>
     </div>
@@ -61,26 +91,26 @@
             Student Information
         </div>
             
-        @if(Session::has('success')) 
-            <div class="alert
-            alert-success"> {{ Session::get('success') }} 
-            @if(session('index_number')) 
-            <div style="margin-top: 20px"> Index
-            Number: {{ session('index_number') }} </div>
-            @endif
+        @if(Session::has('success'))
+        <div class="alert alert-success alert-dismissible fade show" style="display: flex; justify-content: space-between; align-items: center;">
+        <div></div>    
+        <div>
+            {{ Session::get('success') }}
         </div>
-    @endif
-
-    @if(Session::has('error'))
-    <div class="alert alert-danger">
-        {{ Session::get('error') }}
-        @if(session('index_number'))
-        <div style="margin-top: 20px">
-        Index Number: {{ session('index_number') }}
-        </div>
-        @endif
+        <span class="close" style="cursor: pointer;" onclick="this.parentElement.style.display='none';" aria-label="Close">
+            <span class="material-symbols-outlined" style="font-size: 1.25rem;">close</span>
+        </span>
     </div>
-    @endif
+@endif
+
+@if(Session::has('error'))
+    <div class="alert alert-danger alert-dismissible fade show">
+        {{ Session::get('error') }}
+        <span class="close" style="cursor: pointer;" onclick="this.parentElement.style.display='none';" aria-label="Close">
+            <span class="material-symbols-outlined" style="font-size: 1.25rem;">close</span>
+        </span>
+    </div>
+@endif
 
     <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom:5px; display:flex;
     flex-direction:column; justify-content:flex-start; align-items:start;"
@@ -146,7 +176,6 @@
 
     <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom:20px;
      display:flex; justify-content: space-between; align-items: center;">
-    <!-- <span class="material-symbols-outlined"> description </span>  -->
 
     <div style=" margin-left: 1rem">
         <p style="font-weight:bold;">Stream</p> 
@@ -192,31 +221,25 @@
 
     </div>
 
-    <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom: 20px; 
-    display: flex;
-         align-items: center;  justify-content: space-between;"> 
+    <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom: 20px;">
 
-        <form method="POST" action="{{ route('student.updatePlacement', ['id' => $student->id])}}"
-         style="display: flex; margin-left:1rem;
-        flex-direction: row; align-items: center; justify-content: space-between;">
+    <form method="POST" action="{{ route('student.updatePlacement', ['id' => $student->id])}}"
+        style="display: flex; flex-direction: column; align-items: center; justify-content: space-between; margin-top: 1rem; width:100%">
         @csrf
         @method('PUT')
 
-        <label style="font-size: 16px; margin-right:0.5rem; font-weight:bold;">Contact Number:</label>
+        <label style="font-size: 16px; margin-bottom: 0.5rem; align-self: flex-start; margin-left:10px;">Contact Number:</label>
 
         <input type="text" name="contact_number" value="{{ old('contact_number', $student->contact_number) }}"
-        pattern="(975\d{8}|(17|77)\d{6})" title="Enter a valid phone number. Ex. 17123456 or 77123456"
-        style=" padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 3px;"
-        id="contactNumberInput">
+            pattern="(975\d{8}|(17|77)\d{6})"
+            title="Enter a valid phone number. Ex. 17123456 or 77123456"
+            style="padding: 10px; border: 1px solid #ccc; border-radius: 3px; width: 95%;"
+            id="contactNumberInput">
 
-
-        <label style="font-size: 16px; margin-left:1rem; margin-right:0.5rem; font-weight:bold;">Placement:</label>
-
-        <div style="display: flex; flex-direction: row; align-items: center;">
+        <label style="font-size: 16px; margin-top: 1rem; margin-bottom: 0.5rem; align-self: flex-start; margin-left:10px;">Placement:</label>
 
         <select name="placement_id" id="placementSelect"
-            style="padding: 10px 0px 10px 0px; border: 1px solid #ccc; border-radius: 3px;"
-            >
+            style="padding: 10px 0; border: 1px solid #ccc; border-radius: 3px; width: 98%;">
             <option value="" @if($student->placement_id === null) selected @endif>Choose your placement</option>
             @foreach($placement as $item)
             <option value="{{ $item->id }}" @if($student->placement_id == $item->id) selected @endif>
@@ -224,14 +247,14 @@
             </option>
             @endforeach
         </select>
-    
-            <button id="saveButton2" type="submit"
-            style="padding: 10px 20px; background-color: #73AF42; color: #fff; border: none; border-radius: 3px; cursor: pointer; margin: 10px;">
-            Save</button>
-        </div>
-        </form>
 
-    </div>
+        <button id="saveButton2" type="submit"
+        style="padding: 10px 20px; background-color: #73AF42; color: #fff;
+         border: none; border-radius: 3px; cursor: pointer; margin: 10px; width: 20%; align-self: flex-end;">
+        Save</button>
+    </form>
+
+</div>
 
     @if($student->placement_id !== null)
     <div style="background-color: rgba(115, 175, 66, 0.4); padding: 20px; margin-bottom: 20px; text-align: left;">

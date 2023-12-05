@@ -279,7 +279,7 @@ public function addTotalIntake(Request $request)
     if ($existingRecord) {
         // If a record exists, update total_intake
         $existingRecord->update(['total_intake' => $request->input('total_intake')]);
-        $message = 'Total intake updated successfully';
+        $message = 'Total intake updated.';
     } else {                
         // If no record exists, create a new one
         $rankingCriteria = new RankingCriteria();

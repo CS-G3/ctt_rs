@@ -58,7 +58,7 @@ class eligibilityController extends Controller
         }
 
         // Redirect back with a success message or to a different route
-        return back()->with('success', 'Data updated successfully');
+        return back()->with('success', 'Eligibility info updated.');
     }
 
     public function show($id)
