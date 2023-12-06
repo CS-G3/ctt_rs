@@ -173,35 +173,38 @@
                     'agfs' => 'Agricultural Science',
                 ];
             @endphp
+            
 
-            <form action="{{ route('update-ranking-criteria') }}" id="criteriaForm" method="post">
-            @csrf
-            <div id="messageContainer" class="text-center"></div>
+                <form action="{{ route('update-ranking-criteria') }}" id="criteriaForm" method="post">
+                @csrf
+                <div id="messageContainer" class="text-center"></div>
 
-            <table>
-                <tr style="background-color:#fff">
-                    <!-- <td style="padding:5px; font-weight:500">Subject</td> -->
-                    @foreach ($criteria as $column => $subject)
-                        <td style="padding:5px;">{{ strtoupper($column) }}</td>
-                    @endforeach
-                </tr>
-                <tr style="background-color:#EDEDED;">
-                    <!-- <td style="padding:5px; font-weight:500">Multiplier</td> -->
-                    @foreach ($criteria as $column => $subject)
-                        <td style="padding:5px;">
-                            <input id="{{ $column }}" name="{{ $column }}" value="{{ $rankingCriteria->{$column} }}" type="number" max="9" required>
-                        </td>
-                    @endforeach
-                </tr>
-            </table>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <tr style="background-color:#fff">
+                            <!-- <td style="padding:5px; font-weight:500">Subject</td> -->
+                            @foreach ($criteria as $column => $subject)
+                                <td style="padding:5px;">{{ strtoupper($column) }}</td>
+                            @endforeach
+                        </tr>
+                        <tr style="background-color:#EDEDED;">
+                            <!-- <td style="padding:5px; font-weight:500">Multiplier</td> -->
+                            @foreach ($criteria as $column => $subject)
+                                <td style="padding:5px;">
+                                    <input id="{{ $column }}" name="{{ $column }}" value="{{ $rankingCriteria->{$column} }}" type="number" max="9" required>
+                                </td>
+                            @endforeach
+                        </tr>
+                    </table>
+                </div>
 
-            <div class="modal-footer mt-3">
-                <button type="button" 
-                style="background-color: #ddd; color: #333; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
-                 data-dismiss="modal">Close</button>
-                <button type="submit">Update</button>
-            </div>
-        </form>
+                <div class="modal-footer mt-3">
+                    <button type="button" 
+                    style="background-color: #ddd; color: #333; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
+                    data-dismiss="modal">Close</button>
+                    <button type="submit">Update</button>
+                </div>
+            </form>
 
             </div>
         </div>
@@ -224,6 +227,9 @@
     <button id="cancelDelete123" style="background-color: #ddd; color: #333; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer;">Cancel</button>
 </dialog>
 
+@if($soc->count() === 0)
+    <div style="height: 65vh; margin-top:4rem; text-align:center; color:grey;">No students data to display, yet.</div>
+@else
 <table class="table table-bordered table-fixed table-hover" style="height: 70vh">
     <!-- Thead and other common table structure -->
     <thead style="position: sticky;
@@ -255,6 +261,7 @@
 @php
     $serialNumber = 1;
 @endphp
+
     <tbody class="overflow" style="font-size: 12px">
         @foreach($soc as $item)
             <tr onclick="openDialog123({{ json_encode($item) }})">
@@ -269,8 +276,7 @@
     </tbody>
 </table>
 {{ $soc->links('pagination::bootstrap-5') }}
-
-    <!-- <hr> -->
+@endif
     
    <a href="{{ ('/manager/add-student') }}" style="color:#fff"> 
         <button> Add Student</button>

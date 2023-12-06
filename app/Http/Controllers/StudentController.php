@@ -184,13 +184,20 @@ class StudentController extends Controller
         $request->validate([
             // Define validation rules here for student registration fields
         ]);
-
-        // Create and save a new student record using the Student model
+    
+        // Check if a student with the given index_number already exists
+        $existingStudent = Student::where('index_number', $request->input('index_number'))->first();
+    
+        if ($existingStudent) {
+            // If a student with the same index_number already exists, show an error message
+            return back()->with('error', 'Student with the index number already exists.');
+        }
+    
+        // If no student with the same index_number exists, create and save a new student record
         $student = Student::create($request->all());
+    
+        // Show a success message
         return back()->with('success', 'Student data added.');
-
-        // Redirect or perform any other action after student registration
-        // return redirect('/login'); // Redirect to the student list or another page
     }
 
     public function updateByIndex(Request $request)//apply

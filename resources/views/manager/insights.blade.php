@@ -59,7 +59,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <input name="selectedPlacement" value="{{ $item->id }}" hidden>
-                                    <button type="submit" class="btn btn-sm delete-button">
+                                    <button type="button" class="btn btn-sm delete-button">
                                         <span class="material-symbols-outlined" style="color: darkred;">delete</span>
                                     </button>
                                 </form>
@@ -68,6 +68,12 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                <dialog id="deleteDialog" class="bg-light p-4" style="border-radius: 10px; border: 1px solid #ddd; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                    <p style="font-size: 16px; margin-bottom: 20px;">Are you sure you want to delete this placement?</p>
+                    <button id="confirmDelete" style="background-color: #dc3545; color: #fff; border: none; padding: 8px 16px; margin-right: 10px; border-radius: 5px; cursor: pointer;">Yes, delete</button>
+                    <button id="cancelDelete" style="background-color: #ddd; color: #333; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer;">Cancel</button>
+                </dialog>
 
                 <hr>
 
@@ -80,6 +86,35 @@
                 </div>
     
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script>
+        $(document).ready(function () {
+            // Show the dialog on delete button click
+            $('.delete-button').click(function () {
+                var dialog = document.getElementById('deleteDialog');
+                var form = $(this).closest('form'); // Get the closest form
+
+                // Set up event listeners for the dialog buttons
+                document.getElementById('confirmDelete').onclick = function () {
+                    // Get the selectedPlacement value
+                    var selectedPlacement = form.find('input[name="selectedPlacement"]').val();
+
+                    // Manually set the value in the form
+                    form.find('input[name="selectedPlacement"]').val(selectedPlacement);
+
+                    // Manually trigger the form submission
+                    form.submit();
+                    dialog.close();
+                };
+
+                document.getElementById('cancelDelete').onclick = function () {
+                    dialog.close();
+                };
+
+                dialog.showModal();
+            });
+        });
+    </script>
+
     </body>
     </html>
 @else

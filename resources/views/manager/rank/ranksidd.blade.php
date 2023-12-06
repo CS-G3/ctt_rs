@@ -65,7 +65,7 @@
 </head>
 <body class="d-flex bg-secondary">
 
-@include('components.responsive')
+<!-- @include('components.responsive') -->
 
 @include('manager.sidenav')
 
@@ -173,34 +173,37 @@
                 ];
             @endphp
 
-            <form action="{{ route('update-ranking-criteria') }}" id="criteriaForm" method="post">
-            @csrf
-            <div id="messageContainer" class="text-center"></div>
+                <form action="{{ route('update-ranking-criteria') }}" id="criteriaForm" method="post">
+                @csrf
+                <div id="messageContainer" class="text-center"></div>
 
-            <table>
-                <tr style="background-color:#fff">
-                    <!-- <td style="padding:5px; font-weight:500">Subject</td> -->
-                    @foreach ($criteria as $column => $subject)
-                        <td style="padding:5px;">{{ strtoupper($column) }}</td>
-                    @endforeach
-                </tr>
-                <tr style="background-color:#EDEDED;">
-                    <!-- <td style="padding:5px; font-weight:500">Multiplier</td> -->
-                    @foreach ($criteria as $column => $subject)
-                        <td style="padding:5px;">
-                            <input id="{{ $column }}" name="{{ $column }}" value="{{ $rankingCriteria->{$column} }}" type="number" max="9" required>
-                        </td>
-                    @endforeach
-                </tr>
-            </table>
+                <div style="overflow-x: auto;">
 
-            <div class="modal-footer mt-3">
-                <button type="button" 
-                style="background-color: #ddd; color: #333; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
-                 data-dismiss="modal">Close</button>
-                <button type="submit">Update</button>
-            </div>
-        </form>
+                <table>
+                    <tr style="background-color:#fff">
+                        <!-- <td style="padding:5px; font-weight:500">Subject</td> -->
+                        @foreach ($criteria as $column => $subject)
+                            <td style="padding:5px;">{{ strtoupper($column) }}</td>
+                        @endforeach
+                    </tr>
+                    <tr style="background-color:#EDEDED;">
+                        <!-- <td style="padding:5px; font-weight:500">Multiplier</td> -->
+                        @foreach ($criteria as $column => $subject)
+                            <td style="padding:5px;">
+                                <input id="{{ $column }}" name="{{ $column }}" value="{{ $rankingCriteria->{$column} }}" type="number" max="9" required>
+                            </td>
+                        @endforeach
+                    </tr>
+                </table>
+                </div>
+
+                <div class="modal-footer mt-3">
+                    <button type="button" 
+                    style="background-color: #ddd; color: #333; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;"
+                    data-dismiss="modal">Close</button>
+                    <button type="submit">Update</button>
+                </div>
+            </form>
 
             </div>
         </div>
@@ -226,6 +229,10 @@
     <button id="confirmDelete123" style="background-color: #dc3545; color: #fff; border: none; padding: 8px 16px; margin-right: 10px; border-radius: 5px; cursor: pointer;">Yes, delete</button>
     <button id="cancelDelete123" style="background-color: #ddd; color: #333; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer;">Cancel</button>
 </dialog>
+
+@if($sidd->count() === 0)
+    <div style="height: 65vh; margin-top:4rem; text-align:center; color:grey;">No students data to display, yet.</div>
+@else
 
 <table class="table table-bordered table-fixed table-hover" style="height: 70vh">
     <thead style="position: sticky;
@@ -270,6 +277,7 @@
     </tbody>
 </table>
 {{ $sidd->links('pagination::bootstrap-5') }}
+@endif
 
     <!-- <hr> -->
     

@@ -47,12 +47,12 @@
 
         <div class="form-group col-md-4">
             <label for="name">Name:</label>
-            <input type="text" name="name" class="form-control" placeholder="Student Name" required>
+            <input type="text" name="name" pattern="[A-Za-z ]+" title="Only alphabets are allowed" class="form-control" placeholder="Student Name" required>
         </div>
 
         <div class="form-group col-md-4">
             <label for="index_number">Index Number:</label>
-            <input type="text" name="index_number" class="form-control" placeholder="Index Number" value="{{ old('index_number') }}" required>
+            <input type="text" name="index_number" pattern="[0-9]+" title="Only numbers are allowed" class="form-control" placeholder="Index Number" value="{{ old('index_number') }}" required>
         </div>
 
         <div class="form-group col-md-4">
@@ -65,7 +65,9 @@
 
     <div class="form-group col-md-4">
             <label for="contact_number">Contact Number:</label>
-            <input type="text" name="contact_number" class="form-control" placeholder="Contact Number" value="{{ old('contact_number') }}">
+            <input type="text" name="contact_number" class="form-control" 
+            pattern="(975\d{8}|(17|77)\d{6})" title="Enter a valid number starting with 975, 17 or 77."
+            placeholder="Contact Number" value="{{ old('contact_number') }}">
         </div>
 
         <div class="form-group col-md-4">
@@ -96,89 +98,89 @@
     <div class="form-row">
         <div class="form-group col-md-2">
             <label for="eng">ENG</label>
-            <input type="text" name="eng" class="form-control" placeholder="ENG" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="eng" class="form-control" placeholder="ENG" title="Please enter a number with up to 3 digits">
         </div>
 
         <div class="form-group col-md-2">
             <label for="dzo">DZO</label>
-            <input type="text" name="dzo" class="form-control" placeholder="DZO" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="dzo" class="form-control" placeholder="DZO" title="Please enter a number with up to 3 digits">
         </div>
 
         <div class="form-group col-md-2">
             <label for="com">COM</label>
-            <input type="text" name="com" class="form-control" placeholder="COM" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="com" class="form-control" placeholder="COM" title="Please enter a number with up to 3 digits">
         </div>
 
         <div class="form-group col-md-2">
             <label for="acc">ACC</label>
-            <input type="text" name="acc" class="form-control" placeholder="ACC" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="acc" class="form-control" placeholder="ACC" title="Please enter a number with up to 3 digits">
         </div>
 
         <div class="form-group col-md-2">
             <label for="bmt">BMT</label>
-            <input type="text" name="bmt" class="form-control" placeholder="BMT" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="bmt" class="form-control" placeholder="BMT" title="Please enter a number with up to 3 digits">
         </div>
 
         
         <div class="form-group col-md-2">
             <label for="geo">GEO</label>
-            <input type="text" name="geo" class="form-control" placeholder="GEO" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="geo" class="form-control" placeholder="GEO" title="Please enter a number with up to 3 digits">
         </div>
 
         
         <div class="form-group col-md-2">
             <label for="his">HIS</label>
-            <input type="text" name="his" class="form-control" placeholder="HIS" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="his" class="form-control" placeholder="HIS" title="Please enter a number with up to 3 digits">
         </div>
         
         <div class="form-group col-md-2">
             <label for="eco">ECO</label>
-            <input type="text" name="eco" class="form-control" placeholder="ECO" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="eco" class="form-control" placeholder="ECO" title="Please enter a number with up to 3 digits">
         </div>
         
         <div class="form-group col-md-2">
             <label for="med">MED</label>
-            <input type="text" name="med" class="form-control" placeholder="MED" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="med" class="form-control" placeholder="MED" title="Please enter a number with up to 3 digits">
         </div>
         
         <div class="form-group col-md-2">
             <label for="bent">BENT</label>
-            <input type="text" name="bent" class="form-control" placeholder="BENT" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="bent" class="form-control" placeholder="BENT" title="Please enter a number with up to 3 digits">
         </div>
         
         <div class="form-group col-md-2">
             <label for="evs">EVS</label>
-            <input type="text" name="evs" class="form-control" placeholder="EVS" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="evs" class="form-control" placeholder="EVS" title="Please enter a number with up to 3 digits">
         </div>
         
         <div class="form-group col-md-2">
             <label for="rige">RIGE</label>
-            <input type="text" name="rige" class="form-control" placeholder="RIGE" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="rige" class="form-control" placeholder="RIGE" title="Please enter a number with up to 3 digits">
         </div>
         
         <div class="form-group col-md-2">
             <label for="agfs">AGFS</label>
-            <input type="text" name="agfs" class="form-control" placeholder="AGFS" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="agfs" class="form-control" placeholder="AGFS" title="Please enter a number with up to 3 digits">
         </div>
         
         <div class="form-group col-md-2">
             <label for="mat">MAT</label>
-            <input type="text" name="mat" class="form-control" placeholder="MAT" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="mat" class="form-control" placeholder="MAT" title="Please enter a number with up to 3 digits">
         </div>
         
         <div class="form-group col-md-2">
             <label for="phy">PHY</label>
-            <input type="text" name="phy" class="form-control" placeholder="PHY" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="phy" class="form-control" placeholder="PHY" title="Please enter a number with up to 3 digits">
         </div>
         
         <div class="form-group col-md-2">
             <label for="che">CHE</label>
-            <input type="text" name="che" class="form-control" placeholder="CHE" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="che" class="form-control" placeholder="CHE" title="Please enter a number with up to 3 digits">
         </div>
         
         <div class="form-group col-md-2">
             <label for="bio">BIO</label>
-            <input type="text" name="bio" class="form-control" placeholder="BIO" pattern="[0-9]{1,3}" title="Please enter a number with up to 3 digits">
+            <input type="number" min="0" max="100" name="bio" class="form-control" placeholder="BIO" title="Please enter a number with up to 3 digits">
         </div>
 
     </div>
